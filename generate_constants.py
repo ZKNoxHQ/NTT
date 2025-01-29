@@ -22,12 +22,16 @@ for q in [12 * 1024 + 1, 3329]:  # Falcon, Kyber
     # list of roots of cyclotomic polynomials
     if q == 12*1024 + 1:
         ψ = 1826  # a root of the 2¹¹-th cyclotomic polynomial
+        k = 10
     elif q == 3329:
-        ψ = 1  # the 2¹¹-th cyclotomic polynomial has no root over Fq!
+        ψ = 17  # a root of the 2⁸-th cyclotomic polynomial
+        k = 7
     else:
         print("NOT DEFINED YET")
-    k = 10
     n = 1 << k
+    assert pow(ψ, n, q) == q-1
+    assert pow(ψ, 2*n, q) == 1
+
     ψ_inv = pow(ψ, -1, q)
     assert (ψ*ψ_inv) % q == 1
 
@@ -39,11 +43,13 @@ for q in [12 * 1024 + 1, 3329]:  # Falcon, Kyber
         ψ_inv_table[i] = ((ψ_inv_table[i-1] * ψ_inv) % q)
 
     # Change the lists into bit-reverse order.
-    ψ_table = bit_reverse_order(ψ_table)
-    ψ_inv_table = bit_reverse_order(ψ_inv_table)
+    ψ_rev = bit_reverse_order(ψ_table)
+    ψ_inv_rev = bit_reverse_order(ψ_inv_table)
 
-    f.write("ψ_{}_rev = {}\n".format(q, ψ_table))
-    f.write("ψ_{}_inv_rev = {}\n".format(q, ψ_inv_table))
+    f.write("ψ_{}_rev = {}\n".format(q, ψ_rev))
+    # f.write("ψ_{} = {}\n".format(q, ψ_table))
+    f.write("ψ_{}_inv_rev = {}\n".format(q, ψ_inv_rev))
+    # f.write("ψ_{}_inv = {}\n".format(q, ψ_inv_table))
 
     f.write("# inverse of powers of 2 mod q\n")
     f.write("n_{}_inv = {{\n".format(q))

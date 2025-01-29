@@ -4,9 +4,7 @@ The NTT implemented here is for polynomials in Z_q[x]/(phi), with:
 - The integer modulus q = 12 * 1024 + 1 = 12289
 - The polynomial modulus phi = x ** n + 1, with n a power of two, n =< 1024
 """
-from copy import copy
 from ntt_constants import *
-# from zq import add_zq, sub_zq
 
 # Falcon
 q = 12*1024 + 1
@@ -19,7 +17,7 @@ q = 12*1024 + 1
 
 def ntt(f):
     # following eprint 2016/504 Algorithm 1
-    a = copy(f)
+    a = [_ for _ in f]
     n = len(a)
     t = n
     m = 1
@@ -39,8 +37,8 @@ def ntt(f):
 
 
 def intt(f_ntt):
-    a = copy(f_ntt)
     # following eprint 2016/504 Algorithm 2
+    a = [_ for _ in f_ntt]
     n = len(a)
     t = 1
     m = n

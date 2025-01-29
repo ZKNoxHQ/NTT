@@ -2,6 +2,7 @@
 """
 from copy import copy
 from ntt import ntt, intt, mul_ntt, div_ntt, q
+from ntt_constants import *
 
 
 def add_zq(f, g):
@@ -24,7 +25,24 @@ def sub_zq(f, g):
 
 def mul_zq(f, g):
     """Multiplication of two polynomials (coefficient representation)."""
-    return intt(mul_ntt(ntt(f), ntt(g)))
+    f_ntt = ntt(f)
+    g_ntt = ntt(g)
+    return intt(mul_ntt(f_ntt, g_ntt))
+
+
+def mul_schoolbook_zq(f, g):
+    """Multiplication of two polynomials using the schoolbook algorithm."""
+    n = len(f)
+    assert n == len(g)
+    C = [0] * (2 * n)
+    D = [0] * (n)
+    for j, f_j in enumerate(f):
+        for k, g_k in enumerate(g):
+            C[j+k] = (C[j+k] + f_j * g_k) % q
+    # reduction modulo x^n  + 1
+    for i in range(n):
+        D[i] = (C[i] - C[i+n]) % q
+    return D
 
 
 def div_zq(f, g):
@@ -33,7 +51,6 @@ def div_zq(f, g):
         return intt(div_ntt(ntt(f), ntt(g)))
     except ZeroDivisionError:
         raise
-
 
 # def adj(f):
 #     """Ajoint of a polynomial (coefficient representation)."""

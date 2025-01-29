@@ -5,7 +5,7 @@ Test the code with:
 > make test
 """
 from ntt import intt, ntt, q
-from zq import mul_zq, div_zq
+from zq import mul_schoolbook_zq, mul_zq, div_zq
 from random import randint
 from timeit import default_timer as timer
 
@@ -31,6 +31,15 @@ def test_ntt_linearity(n, iterations=10):
         g_ntt = ntt(g)
         assert ntt(λ_f_plus_μ_g) == [(λ*x+μ*y) %
                                      q for (x, y) in zip(f_ntt, g_ntt)]
+    return True
+
+
+def test_mul_zq_schoolbook(n, iterations=10):
+    """Compare mul_zq with schoolbook multiplication."""
+    for i in range(iterations):
+        f = [randint(0, q - 1) for j in range(n)]
+        g = [randint(0, q - 1) for j in range(n)]
+        assert mul_zq(f, g) == mul_schoolbook_zq(f, g)
     return True
 
 
@@ -72,17 +81,18 @@ def wrapper_test(my_test, name, n, iterations):
 
 def test(n, iterations=500):
     """A battery of tests."""
-    # wrapper_test(test_fft, "FFT", n, iterations)
     wrapper_test(test_div_zq, "division", n, iterations)
-    wrapper_test(test_ntt_intt, "NTT(iNTT) = 1", n, iterations)
+    wrapper_test(test_ntt_intt, "NTT(iNTT) = Id", n, iterations)
     wrapper_test(test_ntt_linearity, "NTT linearity", n, iterations)
+    wrapper_test(test_mul_zq_schoolbook,
+                 "Mul vs Naive", n, iterations)
     print("")
 
 
 # Run all the tests
 if (__name__ == "__main__"):
 
-    for i in range(2, 11):
+    for i in range(2, 10):
         n = (1 << i)
         it = 100
         print("Test battery for n = {n}".format(n=n))
