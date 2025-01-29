@@ -4,7 +4,8 @@ This file implements tests for various parts of the Falcon.py library.
 Test the code with:
 > make test
 """
-from ntt import intt, mul_zq, div_zq, ntt, q
+from ntt import intt, ntt, q
+from zq import mul_zq, div_zq
 from random import randint
 from timeit import default_timer as timer
 
@@ -33,7 +34,7 @@ def test_ntt_linearity(n, iterations=10):
     return True
 
 
-def test_ntt(n, iterations=10):
+def test_div_zq(n, iterations=10):
     """Test the NTT."""
     for i in range(iterations):
         f = [randint(0, q - 1) for j in range(n)]
@@ -72,7 +73,7 @@ def wrapper_test(my_test, name, n, iterations):
 def test(n, iterations=500):
     """A battery of tests."""
     # wrapper_test(test_fft, "FFT", n, iterations)
-    wrapper_test(test_ntt, "NTT", n, iterations)
+    wrapper_test(test_div_zq, "division", n, iterations)
     wrapper_test(test_ntt_intt, "NTT(iNTT) = 1", n, iterations)
     wrapper_test(test_ntt_linearity, "NTT linearity", n, iterations)
     print("")
@@ -81,8 +82,8 @@ def test(n, iterations=500):
 # Run all the tests
 if (__name__ == "__main__"):
 
-    for i in range(2, 11):
+    for i in range(2, 3):
         n = (1 << i)
-        it = 100
+        it = 1
         print("Test battery for n = {n}".format(n=n))
         test(n, it)

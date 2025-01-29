@@ -5,10 +5,16 @@ The NTT implemented here is for polynomials in Z_q[x]/(phi), with:
 - The polynomial modulus phi = x ** n + 1, with n a power of two, n =< 1024
 """
 from copy import copy
-from ntt_constants import ψ_12289_rev, ψ_12289_inv_rev, n_12289_inv
+from ntt_constants import *
+# from zq import add_zq, sub_zq
 
-q = 12*1024 + 1
-ψ_rev, ψ_inv_rev, n_inv = ψ_12289_rev, ψ_12289_inv_rev, n_12289_inv
+# # Falcon
+# q = 12*1024 + 1
+# ψ_rev, ψ_inv_rev, n_inv = ψ_12289_rev, ψ_12289_inv_rev, n_12289_inv
+
+# Kyber
+q = 3329
+ψ_rev, ψ_inv_rev, n_inv = ψ_3329_rev, ψ_3329_inv_rev, n_3329_inv
 
 
 def ntt(f):
@@ -57,50 +63,14 @@ def intt(f_ntt):
     return a
 
 
-def add_zq(f, g):
-    """Addition of two polynomials (coefficient representation)."""
-    assert len(f) == len(g)
-    deg = len(f)
-    return [(f[i] + g[i]) % q for i in range(deg)]
+# def add_ntt(f_ntt, g_ntt):
+#     """Addition of two polynomials (NTT representation)."""
+#     return add_zq(f_ntt, g_ntt)
 
 
-def neg_zq(f):
-    """Negation of a polynomials (any representation)."""
-    deg = len(f)
-    return [(- f[i]) % q for i in range(deg)]
-
-
-def sub_zq(f, g):
-    """Substraction of two polynomials (any representation)."""
-    return add_zq(f, neg_zq(g))
-
-
-def mul_zq(f, g):
-    """Multiplication of two polynomials (coefficient representation)."""
-    return intt(mul_ntt(ntt(f), ntt(g)))
-
-
-def div_zq(f, g):
-    """Division of two polynomials (coefficient representation)."""
-    try:
-        return intt(div_ntt(ntt(f), ntt(g)))
-    except ZeroDivisionError:
-        raise
-
-
-# def adj(f):
-#     """Ajoint of a polynomial (coefficient representation)."""
-#     return intt(adj_ntt(ntt(f)))
-
-
-def add_ntt(f_ntt, g_ntt):
-    """Addition of two polynomials (NTT representation)."""
-    return add_zq(f_ntt, g_ntt)
-
-
-def sub_ntt(f_ntt, g_ntt):
-    """Substraction of two polynomials (NTT representation)."""
-    return sub_zq(f_ntt, g_ntt)
+# def sub_ntt(f_ntt, g_ntt):
+#     """Substraction of two polynomials (NTT representation)."""
+#     return sub_zq(f_ntt, g_ntt)
 
 
 def mul_ntt(f_ntt, g_ntt):

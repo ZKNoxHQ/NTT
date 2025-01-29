@@ -18,10 +18,12 @@ f.write(
 )
 
 
-for q in [12 * 1024 + 1]:
+for q in [12 * 1024 + 1, 3329]:  # Falcon, Kyber
     # list of roots of cyclotomic polynomials
     if q == 12*1024 + 1:
         ψ = 1826  # a root of the 2¹¹-th cyclotomic polynomial
+    elif q == 3329:
+        ψ = 1  # the 2¹¹-th cyclotomic polynomial has no root over Fq!
     else:
         print("NOT DEFINED YET")
     k = 10
@@ -48,4 +50,4 @@ for q in [12 * 1024 + 1]:
     for k in range(1, 11):
         f.write("\t {}: {},\n".format(1 << k, pow(1 << k, -1, q)))
     f.write("}\n")
-    f.close()
+f.close()
