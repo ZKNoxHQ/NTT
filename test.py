@@ -82,8 +82,8 @@ def test(n, iterations=500):
 # Run all the tests
 if (__name__ == "__main__"):
 
-    for i in range(2, 3):
+    for i in range(2, 11):
         n = (1 << i)
-        it = 1
+        it = 100
         print("Test battery for n = {n}".format(n=n))
         test(n, it)

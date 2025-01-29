@@ -8,13 +8,13 @@ from copy import copy
 from ntt_constants import *
 # from zq import add_zq, sub_zq
 
-# # Falcon
-# q = 12*1024 + 1
-# ψ_rev, ψ_inv_rev, n_inv = ψ_12289_rev, ψ_12289_inv_rev, n_12289_inv
+# Falcon
+q = 12*1024 + 1
+ψ_rev, ψ_inv_rev, n_inv = ψ_12289_rev, ψ_12289_inv_rev, n_12289_inv
 
-# Kyber
-q = 3329
-ψ_rev, ψ_inv_rev, n_inv = ψ_3329_rev, ψ_3329_inv_rev, n_3329_inv
+# # Kyber
+# q = 3329
+# ψ_rev, ψ_inv_rev, n_inv = ψ_3329_rev, ψ_3329_inv_rev, n_3329_inv
 
 
 def ntt(f):
