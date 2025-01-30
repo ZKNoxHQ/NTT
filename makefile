@@ -9,8 +9,8 @@ install:
 	$(PIP) install eth_abi pandas pycryptodome scipy matplotlib
 
 test:
-	$(PYTHON) test.py
-
+	$(PYTHON) -m unittest  $(if $(TEST),test_$(TEST).py,discover)
+	
 profile:
 	rm -f $(AUX)
 	rm -rf __pycache__

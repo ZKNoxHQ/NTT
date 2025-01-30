@@ -16,6 +16,9 @@ f.write("# File generated with `python generate_constants.py`.\n")
 f.write(
     "# Precomputations for NTT (reverse table of ψ and its inverse for different n.\n"
 )
+f.write("ψ_rev = dict()\n")
+f.write("ψ_inv_rev = dict()\n")
+f.write("n_inv = dict()\n")
 
 
 for q in [12 * 1024 + 1, 3329]:  # Falcon, Kyber
@@ -46,13 +49,13 @@ for q in [12 * 1024 + 1, 3329]:  # Falcon, Kyber
     ψ_rev = bit_reverse_order(ψ_table)
     ψ_inv_rev = bit_reverse_order(ψ_inv_table)
 
-    f.write("ψ_{}_rev = {}\n".format(q, ψ_rev))
+    f.write("ψ_rev[{}] = {}\n".format(q, ψ_rev))
     # f.write("ψ_{} = {}\n".format(q, ψ_table))
-    f.write("ψ_{}_inv_rev = {}\n".format(q, ψ_inv_rev))
+    f.write("ψ_inv_rev[{}] = {}\n".format(q, ψ_inv_rev))
     # f.write("ψ_{}_inv = {}\n".format(q, ψ_inv_table))
 
     f.write("# inverse of powers of 2 mod q\n")
-    f.write("n_{}_inv = {{\n".format(q))
+    f.write("n_inv[{}] = {{\n".format(q))
     for k in range(1, 11):
         f.write("\t {}: {},\n".format(1 << k, pow(1 << k, -1, q)))
     f.write("}\n")

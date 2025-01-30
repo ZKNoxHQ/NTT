@@ -11,4 +11,7 @@ For now, the prime is hardcoded in `ntt.py`. The implementation requires the fil
 ```make install```
 
 ## Tests
+For running all tests:
 ```make test```
+For running a test of `test_ntt.py` (resp. `test_poly.py`):
+```make test TEST=ntt # resp. TEST=poly```
