@@ -52,7 +52,7 @@ class TestPoly(unittest.TestCase):
                     h = f.div(g)
                     assert h * g == f
 
-    def test_mul_PWC(self, iterations=100):
+    def test_mul_pwc(self, iterations=100):
         """Test the multiplication modulo x^n+1."""
         for (q, n) in TEST_CASES:
             with self.subTest(q=q, n=n):
@@ -60,4 +60,4 @@ class TestPoly(unittest.TestCase):
                     # random f,g
                     f = Poly([randint(0, q-1) for _ in range(n)], q)
                     g = Poly([randint(0, q-1) for _ in range(n)], q)
-                    assert f.mul_PWC(g) == f.mul_schoolbook_PWC(g)
+                    assert f.mul_pwc(g) == f.mul_schoolbook_pwc(g)
