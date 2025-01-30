@@ -8,10 +8,16 @@ We provide for now two examples of implementations:
 For now, the prime is hardcoded in `ntt.py`. The implementation requires the file `ntt_constants.py`, generated using `python generate_constants.py`.
 
 ## Install
-```make install```
+```
+make install
+```
 
 ## Tests
 For running all tests:
-```make test```
+```
+make test
+```
 For running a test of `test_ntt.py` (resp. `test_poly.py`):
-```make test TEST=ntt # resp. TEST=poly```
+```
+make test TEST=ntt # resp. TEST=poly
+```
