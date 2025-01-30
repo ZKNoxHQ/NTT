@@ -11,8 +11,8 @@ class TestPoly(unittest.TestCase):
         q = 3329
         n = 8
         for i in range(rep):
-            f = Poly([randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
-            g = Poly([randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
+            f = Poly([randint(0, q-1) for _ in range(n)], q)
+            g = Poly([randint(0, q-1) for _ in range(n)], q)
             f_plus_g = f+g
             assert f_plus_g - g == f
 
@@ -20,9 +20,9 @@ class TestPoly(unittest.TestCase):
         """ Test if the reduction mod q works."""
         q = 3329
         n = 8
-        zero = Poly([0 for _ in range(n)], q, 0xdeadbeef)
+        zero = Poly([0 for _ in range(n)], q)
         for i in range(rep):
-            f = Poly([q*randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
+            f = Poly([q*randint(0, q-1) for _ in range(n)], q)
             assert f == zero
 
     def test_mul(self, rep=100):
@@ -30,8 +30,8 @@ class TestPoly(unittest.TestCase):
         q = 3329
         n = 8
         for i in range(rep):
-            f = Poly([randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
-            g = Poly([randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
+            f = Poly([randint(0, q-1) for _ in range(n)], q)
+            g = Poly([randint(0, q-1) for _ in range(n)], q)
             f_mul_g = f*g
             assert f_mul_g == f.mul_schoolbook(g)
 
@@ -41,9 +41,9 @@ class TestPoly(unittest.TestCase):
         n = 8
         for i in range(rep):
             # random f
-            f = Poly([randint(0, q-1) for _ in range(n)], q, 0xdeadbeef)
+            f = Poly([randint(0, q-1) for _ in range(n)], q)
             # invertible random g
             g = Poly(f.NTT.intt([randint(1, q-1)
-                     for _ in range(n)]), q, 0xdeadbeef)
+                     for _ in range(n)]), q)
             h = f.div(g)
             assert h * g == f
