@@ -1,15 +1,14 @@
-"""This file contains the polynomial arithmetic implementation."""
+"""This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
 from random import randint
 from ntt import NTT
 from ntt_constants import ψ, ψ_inv
 
 
 class Poly:
-    def __init__(self, coeffs, q, polmod=0):
+    def __init__(self, coeffs, q):
         self.coeffs = coeffs
         self.q = q
         self.NTT = NTT(q)
-        self.polmod = polmod
         self.ψ = ψ[q]
         self.ψ_inv = ψ_inv[q]
 
@@ -24,13 +23,13 @@ class Poly:
         g = other.coeffs
         assert len(f) == len(g)
         deg = len(f)
-        return Poly([(f[i] + g[i]) % self.q for i in range(deg)], self.q, self.polmod)
+        return Poly([(f[i] + g[i]) % self.q for i in range(deg)], self.q)
 
     def __neg__(self):
         """Negation of a polynomials (any representation)."""
         f = self.coeffs
         deg = len(f)
-        return Poly([(- f[i]) % self.q for i in range(deg)], self.q, self.polmod)
+        return Poly([(- f[i]) % self.q for i in range(deg)], self.q)
 
     def __sub__(self, other):
         """Substraction of two polynomials (any representation)."""
@@ -43,7 +42,7 @@ class Poly:
         T = self.NTT
         f_ntt = T.ntt(f)
         g_ntt = T.ntt(g)
-        return Poly(T.intt(T.mul_ntt(f_ntt, g_ntt)), self.q, self.polmod)
+        return Poly(T.intt(T.mul_ntt(f_ntt, g_ntt)), self.q)
 
     def mul_schoolbook(self, other):
         """Multiplication of two polynomials using the schoolbook algorithm."""
@@ -59,11 +58,15 @@ class Poly:
         # reduction modulo x^n  + 1
         for i in range(n):
             D[i] = (C[i] - C[i+n]) % self.q
-        return Poly(D, self.q, self.polmod)
+        return Poly(D, self.q)
 
-    def mul_PWC(self, other):
-        # TODO DEFINE PWC SOMEWHERE
-        """Multiplication of `self` by `other` modulo x^n -1 (and not x^n+1)."""
+    def mul_pwc(self, other):
+        """
+        Multiplication of `self` by `other` modulo x^n -1 (and not x^n+1).
+        PWC means Positive Wrapped Convolution.
+        In this context, the multiplication is the same as when x^n+1, but
+        with pre- and post-computation.
+        """
         f = self.coeffs
         g = other.coeffs
         n = len(f)
@@ -78,7 +81,7 @@ class Poly:
         f_mul_g = [(x * y) % self.q for (x, y) in zip(fp_mul_gp.coeffs, ψ0)]
         return Poly(f_mul_g, self.q)
 
-    def mul_schoolbook_PWC(self, other):
+    def mul_schoolbook_pwc(self, other):
         """Multiplication of two polynomials using the schoolbook algorithm."""
         f = self.coeffs
         g = other.coeffs
@@ -102,7 +105,7 @@ class Poly:
             T = self.NTT
             f_ntt = T.ntt(f)
             g_ntt = T.ntt(g)
-            return Poly(T.intt(T.div_ntt(f_ntt, g_ntt)), self.q, self.polmod)
+            return Poly(T.intt(T.div_ntt(f_ntt, g_ntt)), self.q)
         except ZeroDivisionError:
             raise
 
