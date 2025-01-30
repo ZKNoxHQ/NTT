@@ -1,7 +1,7 @@
 """This file contains the polynomial arithmetic implementation."""
 from random import randint
 from ntt import NTT
-from ntt_constants import *
+from ntt_constants import ψ, ψ_inv
 
 
 class Poly:
@@ -10,6 +10,8 @@ class Poly:
         self.q = q
         self.NTT = NTT(q)
         self.polmod = polmod
+        self.ψ = ψ[q]
+        self.ψ_inv = ψ_inv[q]
 
     def __eq__(self, other):
         for (a, b) in zip(self.coeffs, other.coeffs):
@@ -56,8 +58,41 @@ class Poly:
                 C[j+k] = (C[j+k] + f_j * g_k) % self.q
         # reduction modulo x^n  + 1
         for i in range(n):
-            D[i] = (C[i] - C[i+n]) % self.q  # TODO CHANGE DEPENDING ON POLMOD
+            D[i] = (C[i] - C[i+n]) % self.q
         return Poly(D, self.q, self.polmod)
+
+    def mul_PWC(self, other):
+        # TODO DEFINE PWC SOMEWHERE
+        """Multiplication of `self` by `other` modulo x^n -1 (and not x^n+1)."""
+        f = self.coeffs
+        g = other.coeffs
+        n = len(f)
+        # pre-processing
+        # list of roots for the precomputations
+        ψ0_inv = self.ψ_inv[::len(self.ψ_inv)//n]
+        fp = Poly([(x * y) % self.q for (x, y) in zip(f, ψ0_inv)], self.q)
+        gp = Poly([(x * y) % self.q for (x, y) in zip(g, ψ0_inv)], self.q)
+        fp_mul_gp = fp*gp
+        # post processing
+        ψ0 = self.ψ[::len(self.ψ)//n]
+        f_mul_g = [(x * y) % self.q for (x, y) in zip(fp_mul_gp.coeffs, ψ0)]
+        return Poly(f_mul_g, self.q)
+
+    def mul_schoolbook_PWC(self, other):
+        """Multiplication of two polynomials using the schoolbook algorithm."""
+        f = self.coeffs
+        g = other.coeffs
+        n = len(f)
+        assert n == len(g)
+        C = [0] * (2 * n)
+        D = [0] * (n)
+        for j, f_j in enumerate(f):
+            for k, g_k in enumerate(g):
+                C[j+k] = (C[j+k] + f_j * g_k) % self.q
+        # reduction modulo x^n  - 1
+        for i in range(n):
+            D[i] = (C[i] + C[i+n]) % self.q
+        return Poly(D, self.q)
 
     def div(self, other):
         """Division of two polynomials (coefficient representation)."""
