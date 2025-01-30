@@ -30,12 +30,14 @@ for (q, two_adicity) in TEST_CASES:
     elif q == 3329:
         ψ = 17  # a root of the 2⁸-th cyclotomic polynomial
     elif q == 2013265921:
-        ψ = 137  # a root of the 2²⁷-th cyclotomic polynomial
+        # a root of the 2¹⁰ cyclotomic polynomial (but could be larger 2-adicity)
+        ψ = 1538055801
+        # ψ = 137  # a root of the 2²⁷-th cyclotomic polynomial
     elif q == 18446744069414584321:
         ψ = 7277203076849721926  # a root of the 2³²-th cyclotomic polynomial
     else:
         print("NOT DEFINED YET")
-    n = 1 << (k-1)
+    n = 1 << (two_adicity-1)
     assert pow(ψ, 2*n, q) == 1 and pow(ψ, n, q) != 1
 
     ψ_inv = pow(ψ, -1, q)
@@ -59,7 +61,7 @@ for (q, two_adicity) in TEST_CASES:
 
     f.write("# inverse of powers of 2 mod q\n")
     f.write("n_inv[{}] = {{\n".format(q))
-    for k in range(1, 11):
-        f.write("\t {}: {},\n".format(1 << k, pow(1 << k, -1, q)))
+    for j in range(1, two_adicity+1):
+        f.write("\t {}: {},\n".format(1 << j, pow(1 << j, -1, q)))
     f.write("}\n")
 f.close()

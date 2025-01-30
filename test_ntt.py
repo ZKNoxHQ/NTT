@@ -11,8 +11,9 @@ class TestNTT(unittest.TestCase):
 
     def test_ntt_intt(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
-        for (q, n) in TEST_CASES:
-            with self.subTest(q=q, n=n):
+        for (q, k) in TEST_CASES:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
                 T = NTT(q)
                 for i in range(iterations):
                     f = [randint(0, T.q-1) for j in range(n)]
@@ -20,8 +21,9 @@ class TestNTT(unittest.TestCase):
 
     def test_ntt_linearity(self, iterations=100):
         """Test the linearity of NTT."""
-        for (q, n) in TEST_CASES:
-            with self.subTest(q=q, n=n):
+        for (q, k) in TEST_CASES:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
                 T = NTT(q)
                 for i in range(iterations):
                     f = [randint(0, T.q - 1) for j in range(n)]
