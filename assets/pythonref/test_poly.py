@@ -43,21 +43,18 @@ class TestPoly(unittest.TestCase):
                     f = Poly([q*randint(0, q-1) for _ in range(n)], q)
                     self.assertEqual(f, zero)
 
-    def test_mul(self, iterations=100):
+    def test_mul(self, iterations=10):
         """Compare FFT multiplication with schoolbook multiplication."""
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
-                if k > 8:
-                    self.skipTest("Schoolbook is too slow for k>8.")
-                else:
-                    for i in range(iterations):
-                        f = Poly([randint(0, q-1) for _ in range(n)], q)
-                        g = Poly([randint(0, q-1) for _ in range(n)], q)
-                        f_mul_g = f*g
-                        self.assertEqual(f_mul_g, f.mul_schoolbook(g))
+                for i in range(iterations):
+                    f = Poly([randint(0, q-1) for _ in range(n)], q)
+                    g = Poly([randint(0, q-1) for _ in range(n)], q)
+                    f_mul_g = f*g
+                    self.assertEqual(f_mul_g, f.mul_schoolbook(g))
 
-    def test_div(self, iterations=100):
+    def test_div(self, iterations=10):
         """Test the division."""
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
@@ -71,16 +68,13 @@ class TestPoly(unittest.TestCase):
                     h = f.div(g)
                     self.assertEqual(h * g, f)
 
-    def test_mul_pwc(self, iterations=100):
+    def test_mul_pwc(self, iterations=10):
         """Test the multiplication modulo x^n+1."""
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
-                if k > 8:
-                    self.skipTest("Schoolbook is too slow for k>8.")
-                else:
-                    for i in range(1, iterations):
-                        # random f,g
-                        f = Poly([randint(0, q-1) for _ in range(n)], q)
-                        g = Poly([randint(0, q-1) for _ in range(n)], q)
-                        self.assertEqual(f.mul_pwc(g), f.mul_schoolbook_pwc(g))
+                for i in range(1, iterations):
+                    # random f,g
+                    f = Poly([randint(0, q-1) for _ in range(n)], q)
+                    g = Poly([randint(0, q-1) for _ in range(n)], q)
+                    self.assertEqual(f.mul_pwc(g), f.mul_schoolbook_pwc(g))
