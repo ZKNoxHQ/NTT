@@ -12,16 +12,19 @@ class NTT:
     def __init__(self, q):
         """Implements Number Theoretic Transform for fast polynomial multiplication."""
         self.q = q
-        self.ψ_rev = ψ_rev[q]  # TODO
-        self.ψ_inv_rev = ψ_inv_rev[q]  # TODO
-        """This value is the ratio between:
-        - The degree n
-        - The number of complex coefficients of the NTT
-        While here this ratio is 1, it is possible to develop a short NTT such that it is 2.
-        """
+        # can be removed if run for nodes, increases efficiency of Poly.mul_pwc with a larger storage
+        self.ψ = ψ[q]
+        # can be removed if run for nodes, increases efficiency of Poly.mul_pwc with a larger storage
+        self.ψ_inv = ψ_inv[q]
+        # useful for efficiency (even in nodes)
+        self.ψ_rev = ψ_rev[q]
+        # useful for efficiency (even in nodes)
+        self.ψ_inv_rev = ψ_inv_rev[q]
+        # ratio between degree n and number of complex coefficients of the NTT
+        # while here this ratio is 1, it is possible to develop a short NTT such that it is 2.
         self.ntt_ratio = 1
 
-    def ntt(self, f, NODE=False):
+    def ntt(self, f):
         # following eprint 2016/504 Algorithm 1
         a = [_ for _ in f]
         n = len(a)
@@ -32,10 +35,7 @@ class NTT:
             for i in range(m):
                 j1 = 2*i*t
                 j2 = j1+t-1
-                if NODE:
-                    S = 1  # TODO implement with only one table.
-                else:
-                    S = self.ψ_rev[m+i]
+                S = self.ψ_rev[m+i]
                 for j in range(j1, j2+1):
                     U = a[j]
                     V = a[j+t]*S
@@ -44,7 +44,7 @@ class NTT:
             m = 2*m
         return a
 
-    def intt(self, f_ntt, NODE=False):
+    def intt(self, f_ntt):
         # following eprint 2016/504 Algorithm 2
         a = [_ for _ in f_ntt]
         n = len(a)
@@ -55,10 +55,7 @@ class NTT:
             h = m//2
             for i in range(h):
                 j2 = j1+t-1
-                if NODE:
-                    S = 1  # TODO implement with only one table.
-                else:
-                    S = self.ψ_inv_rev[h+i]
+                S = self.ψ_inv_rev[h+i]
                 for j in range(j1, j2+1):
                     U = a[j]
                     V = a[j+t]
@@ -72,21 +69,21 @@ class NTT:
         return a
 
     # def add_ntt(self, f_ntt, g_ntt):
-    #     """Addition of two polynomials (NTT representation)."""
+    #     """Addition of two polynomials(NTT representation)."""
     #     return add_zq(f_ntt, g_ntt)
 
     # def sub_ntt(self, f_ntt, g_ntt):
-    #     """Substraction of two polynomials (NTT representation)."""
+    #     """Substraction of two polynomials(NTT representation)."""
     #     return sub_zq(f_ntt, g_ntt)
 
     def mul_ntt(self, f_ntt, g_ntt):
-        """Multiplication of two polynomials (coefficient representation)."""
+        """Multiplication of two polynomials(coefficient representation)."""
         assert len(f_ntt) == len(g_ntt)
         deg = len(f_ntt)
         return [(f_ntt[i] * g_ntt[i]) % self.q for i in range(deg)]
 
     def div_ntt(self, f_ntt, g_ntt):
-        """Division of two polynomials (NTT representation)."""
+        """Division of two polynomials(NTT representation)."""
         assert len(f_ntt) == len(g_ntt)
         deg = len(f_ntt)
         if any(elt == 0 for elt in g_ntt):
@@ -94,6 +91,6 @@ class NTT:
         return [(f_ntt[i] * pow(g_ntt[i], -1, self.q)) % self.q for i in range(deg)]
 
     # def adj_ntt(self, f_ntt):
-    #     """Ajoint of a polynomial (NTT representation)."""
+    #     """Ajoint of a polynomial(NTT representation)."""
     #     deg = len(f_ntt)
     #     return [f_ntt[i].conjugate() for i in range(deg)]

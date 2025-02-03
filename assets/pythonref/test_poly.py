@@ -78,3 +78,15 @@ class TestPoly(unittest.TestCase):
                     f = Poly([randint(0, q-1) for _ in range(n)], q)
                     g = Poly([randint(0, q-1) for _ in range(n)], q)
                     self.assertEqual(f.mul_pwc(g), f.mul_schoolbook_pwc(g))
+
+    def test_mul_pwc_one_table(self, iterations=100):
+        """Compare NTT with one and four tables."""
+        for (q, k) in TEST_CASES:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                for i in range(iterations):
+                    f = Poly([randint(0, q-1) for _ in range(n)], q)
+                    g = Poly([randint(0, q-1) for _ in range(n)], q)
+                    f_mul_g_1 = f.mul_pwc(g)
+                    f_mul_g_2 = f.mul_pwc(g, NODE=True)
+                    self.assertEqual(f_mul_g_1, f_mul_g_2)

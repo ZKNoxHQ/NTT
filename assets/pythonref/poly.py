@@ -9,8 +9,6 @@ class Poly:
         self.coeffs = coeffs
         self.q = q
         self.NTT = NTT(q)
-        self.ψ = ψ[q]
-        self.ψ_inv = ψ_inv[q]
 
     def __eq__(self, other):
         for (a, b) in zip(self.coeffs, other.coeffs):
@@ -60,7 +58,7 @@ class Poly:
             D[i] = (C[i] - C[i+n]) % self.q
         return Poly(D, self.q)
 
-    def mul_pwc(self, other):
+    def mul_pwc(self, other, NODE=False):
         """
         Multiplication of `self` by `other` modulo x^n -1 (and not x^n+1).
         PWC means Positive Wrapped Convolution.
@@ -72,12 +70,24 @@ class Poly:
         n = len(f)
         # pre-processing
         # list of roots for the precomputations
-        ψ0_inv = self.ψ_inv[::len(self.ψ_inv)//n]
+        if NODE:
+            from generate_constants import bit_reverse_order
+            bit_rev_index = bit_reverse_order(
+                range(0, len(self.NTT.ψ_inv), len(self.NTT.ψ_inv)//n))
+            ψ0_inv = [self.NTT.ψ_inv_rev[j] for j in bit_rev_index]
+        else:
+            ψ0_inv = self.NTT.ψ_inv[::len(self.NTT.ψ_inv)//n]
         fp = Poly([(x * y) % self.q for (x, y) in zip(f, ψ0_inv)], self.q)
         gp = Poly([(x * y) % self.q for (x, y) in zip(g, ψ0_inv)], self.q)
         fp_mul_gp = fp*gp
         # post processing
-        ψ0 = self.ψ[::len(self.ψ)//n]
+        if NODE:
+            from generate_constants import bit_reverse_order
+            bit_rev_index = bit_reverse_order(
+                range(0, len(self.NTT.ψ_inv), len(self.NTT.ψ)//n))
+            ψ0 = [self.NTT.ψ_rev[j] for j in bit_rev_index]
+        else:
+            ψ0 = self.NTT.ψ[::len(self.NTT.ψ)//n]
         f_mul_g = [(x * y) % self.q for (x, y) in zip(fp_mul_gp.coeffs, ψ0)]
         return Poly(f_mul_g, self.q)
 
