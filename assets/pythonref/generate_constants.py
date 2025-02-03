@@ -35,6 +35,8 @@ for (q, two_adicity) in TEST_CASES:
         # ψ = 137  # a root of the 2²⁷-th cyclotomic polynomial
     elif q == 18446744069414584321:
         ψ = 7277203076849721926  # a root of the 2³²-th cyclotomic polynomial
+    elif q == 8380417:  # Dilithium
+        ψ = 2926054
     else:
         print("NOT DEFINED YET")
     n = 1 << (two_adicity-1)
