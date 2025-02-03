@@ -17,7 +17,7 @@ class TestNTT(unittest.TestCase):
                 T = NTT(q)
                 for i in range(iterations):
                     f = [randint(0, T.q-1) for j in range(n)]
-                    assert T.intt(T.ntt(f)) == f
+                    self.assertEqual(T.intt(T.ntt(f)), f)
 
     def test_ntt_linearity(self, iterations=100):
         """Test the linearity of NTT."""
@@ -33,5 +33,7 @@ class TestNTT(unittest.TestCase):
                     λ_f_plus_μ_g = [(λ*x+μ*y) % T.q for (x, y) in zip(f, g)]
                     f_ntt = T.ntt(f)
                     g_ntt = T.ntt(g)
-                    assert T.ntt(λ_f_plus_μ_g) == [(λ*x+μ*y) %
-                                                   T.q for (x, y) in zip(f_ntt, g_ntt)]
+                    self.assertEqual(
+                        T.ntt(λ_f_plus_μ_g),
+                        [(λ*x+μ*y) % T.q for (x, y) in zip(f_ntt, g_ntt)]
+                    )

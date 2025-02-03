@@ -10,6 +10,18 @@ class TestPoly(unittest.TestCase):
     def shortDescription(self):
         return None  # This prevents unittest from printing docstrings
 
+    # def add_sub(self, q, n):
+    #     with self.subTest(msg="Test of add_sub with q={} and n = {}".format(q, n)):
+    #         f = Poly([randint(0, q-1) for _ in range(n)], q)
+    #         g = Poly([randint(0, q-1) for _ in range(n)], q)
+    #         f_plus_g = f+g
+    #         self.assertEqual(f_plus_g - g, f)
+
+    # def test_all(self, iterations=100):
+    #     for (q, k) in TEST_CASES:
+    #         n = 1 << (k-1)
+    #         self.add_sub(q, n)
+
     def test_add_sub(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
         for (q, k) in TEST_CASES:
@@ -29,7 +41,7 @@ class TestPoly(unittest.TestCase):
                 zero = Poly([0 for _ in range(n)], q)
                 for i in range(iterations):
                     f = Poly([q*randint(0, q-1) for _ in range(n)], q)
-                    assert f == zero
+                    self.assertEqual(f, zero)
 
     def test_mul(self, iterations=100):
         """Compare FFT multiplication with schoolbook multiplication."""
@@ -43,7 +55,7 @@ class TestPoly(unittest.TestCase):
                         f = Poly([randint(0, q-1) for _ in range(n)], q)
                         g = Poly([randint(0, q-1) for _ in range(n)], q)
                         f_mul_g = f*g
-                        assert f_mul_g == f.mul_schoolbook(g)
+                        self.assertEqual(f_mul_g, f.mul_schoolbook(g))
 
     def test_div(self, iterations=100):
         """Test the diviison."""
@@ -57,7 +69,7 @@ class TestPoly(unittest.TestCase):
                     g = Poly(f.NTT.intt([randint(1, q-1)
                                          for _ in range(n)]), q)
                     h = f.div(g)
-                    assert h * g == f
+                    self.assertEqual(h * g, f)
 
     def test_mul_pwc(self, iterations=100):
         """Test the multiplication modulo x^n+1."""
@@ -71,4 +83,4 @@ class TestPoly(unittest.TestCase):
                         # random f,g
                         f = Poly([randint(0, q-1) for _ in range(n)], q)
                         g = Poly([randint(0, q-1) for _ in range(n)], q)
-                        assert f.mul_pwc(g) == f.mul_schoolbook_pwc(g)
+                        self.assertEqual(f.mul_pwc(g), f.mul_schoolbook_pwc(g))
