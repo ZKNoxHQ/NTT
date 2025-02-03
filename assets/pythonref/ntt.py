@@ -21,7 +21,7 @@ class NTT:
         """
         self.ntt_ratio = 1
 
-    def ntt(self, f):
+    def ntt(self, f, NODE=False):
         # following eprint 2016/504 Algorithm 1
         a = [_ for _ in f]
         n = len(a)
@@ -32,7 +32,10 @@ class NTT:
             for i in range(m):
                 j1 = 2*i*t
                 j2 = j1+t-1
-                S = self.ψ_rev[m+i]
+                if NODE:
+                    S = 1  # TODO implement with only one table.
+                else:
+                    S = self.ψ_rev[m+i]
                 for j in range(j1, j2+1):
                     U = a[j]
                     V = a[j+t]*S
@@ -41,7 +44,7 @@ class NTT:
             m = 2*m
         return a
 
-    def intt(self, f_ntt):
+    def intt(self, f_ntt, NODE=False):
         # following eprint 2016/504 Algorithm 2
         a = [_ for _ in f_ntt]
         n = len(a)
@@ -52,7 +55,10 @@ class NTT:
             h = m//2
             for i in range(h):
                 j2 = j1+t-1
-                S = self.ψ_inv_rev[h+i]
+                if NODE:
+                    S = 1  # TODO implement with only one table.
+                else:
+                    S = self.ψ_inv_rev[h+i]
                 for j in range(j1, j2+1):
                     U = a[j]
                     V = a[j+t]

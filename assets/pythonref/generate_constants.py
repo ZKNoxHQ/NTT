@@ -14,14 +14,14 @@ def bit_reverse_order(a):
 f = open("ntt_constants.py", "w")
 f.write("# File generated with `python generate_constants.py`.\n")
 f.write(
-    "# Precomputations for NTT (reverse table of ψ and its inverse for different n.\n"
+    "# Precomputations for NTT.\n\n"
 )
-f.write("ψ_rev = dict()\n")
-f.write("ψ = dict()\n")
-f.write("ψ_inv_rev = dict()\n")
-f.write("ψ_inv = dict()\n")
-f.write("n_inv = dict()\n")
 
+ψ_table = dict()
+ψ_inv_table = dict()
+ψ_rev = dict()
+ψ_inv_rev = dict()
+n_inv = dict()
 
 for (q, two_adicity) in TEST_CASES:
     # list of roots of cyclotomic polynomials
@@ -44,24 +44,58 @@ for (q, two_adicity) in TEST_CASES:
     assert (ψ*ψ_inv) % q == 1
 
     # Precompute powers of ψ to speedup main NTT process.
-    ψ_table = [1] * n
-    ψ_inv_table = [1] * n
+    ψ_table[q] = [1] * n
+    ψ_inv_table[q] = [1] * n
     for i in range(1, n):
-        ψ_table[i] = ((ψ_table[i-1] * ψ) % q)
-        ψ_inv_table[i] = ((ψ_inv_table[i-1] * ψ_inv) % q)
+        ψ_table[q][i] = ((ψ_table[q][i-1] * ψ) % q)
+        ψ_inv_table[q][i] = ((ψ_inv_table[q][i-1] * ψ_inv) % q)
 
     # Change the lists into bit-reverse order.
-    ψ_rev = bit_reverse_order(ψ_table)
-    ψ_inv_rev = bit_reverse_order(ψ_inv_table)
+    ψ_rev[q] = bit_reverse_order(ψ_table[q])
+    ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
 
-    f.write("ψ_rev[{}] = {}\n".format(q, ψ_rev))
-    f.write("ψ[{}] = {}\n".format(q, ψ_table))
-    f.write("ψ_inv_rev[{}] = {}\n".format(q, ψ_inv_rev))
-    f.write("ψ_inv[{}] = {}\n".format(q, ψ_inv_table))
+# writing ψ
+f.write("# Dictionary containing the powers ψ, a 2^n-th root of unity.\n")
+f.write("ψ = {\n")
+for (q, two_adicity) in TEST_CASES:
+    f.write("\t# ψ = {}, ψ has multiplicative order {}.\n".format(
+        ψ_table[q][1], 1 << two_adicity))
+    f.write("\t{} : {},\n".format(q, ψ_table[q]))
+f.write("}\n\n")
 
-    f.write("# inverse of powers of 2 mod q\n")
-    f.write("n_inv[{}] = {{\n".format(q))
+# writing ψ_inv
+f.write("# Dictionary containing the powers of ψ_inv.\n")
+f.write("ψ_inv = {\n")
+for (q, two_adicity) in TEST_CASES:
+    f.write("\t # ψ_inv = {}, ψ*ψ_inv = 1.\n".format(ψ_inv_table[q][1]))
+    f.write("\t{} : {},\n".format(q, ψ_inv_table[q]))
+f.write("}\n\n")
+
+# writing ψ_rev
+f.write(
+    "# The table ψ, but in bit-reversed order, i.e. the i-th element corresponds to ψ^{BitReversed(i)}.\n")
+f.write("ψ_rev = {\n")
+for (q, two_adicity) in TEST_CASES:
+    f.write("\t{} : {},\n".format(q, ψ_rev[q]))
+f.write("}\n\n")
+
+# writing ψ_rev_inv
+f.write(
+    "# The table ψ_inv, but in bit-reversed order, i.e. the i-th element corresponds to ψ^{BitReversed(-i)}.\n")
+f.write("ψ_inv_rev = {\n")
+for (q, two_adicity) in TEST_CASES:
+    f.write("\t{} : {},\n".format(q, ψ_inv_rev[q]))
+f.write("}\n\n")
+
+# writing n_inv
+f.write("# The inverses of powers of 2 mod q\n")
+f.write("n_inv = {\n")
+for (q, two_adicity) in TEST_CASES:
+    f.write("\t{}: {{\n".format(q))
+    # n_inv[{}] = {{\n".format(q))
     for j in range(1, two_adicity+1):
-        f.write("\t {}: {},\n".format(1 << j, pow(1 << j, -1, q)))
-    f.write("}\n")
+        f.write("\t\t{}: {},\n".format(1 << j, pow(1 << j, -1, q)))
+    f.write("\t},\n")
+f.write("}")
+
 f.close()

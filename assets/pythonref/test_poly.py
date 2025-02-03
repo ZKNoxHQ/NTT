@@ -58,7 +58,7 @@ class TestPoly(unittest.TestCase):
                         self.assertEqual(f_mul_g, f.mul_schoolbook(g))
 
     def test_div(self, iterations=100):
-        """Test the diviison."""
+        """Test the division."""
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
