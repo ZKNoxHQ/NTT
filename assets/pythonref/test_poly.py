@@ -31,7 +31,7 @@ class TestPoly(unittest.TestCase):
                     f = Poly([randint(0, q-1) for _ in range(n)], q)
                     g = Poly([randint(0, q-1) for _ in range(n)], q)
                     f_plus_g = f+g
-                    assert f_plus_g - g == f
+                    self.assertEqual(f_plus_g - g, f)
 
     def test_mod_q(self, iterations=100):
         """ Test if the reduction mod q works."""
