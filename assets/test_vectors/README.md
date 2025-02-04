@@ -26,4 +26,4 @@ The test data is declared in a 'json' file:
 
 All byte(s) fields are encoded as strings, hexadecimal encoding.
 
-An example of python test is done in `../pythonref/runtest_vec.py`.
+An example of python test is done in `../pythonref/test_vectors.py`.
