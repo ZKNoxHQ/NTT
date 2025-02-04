@@ -1,4 +1,4 @@
-# NTT
+# NTT-EIP as a building block for FALCON, DILITHIUM and Stark verifiers
 
 This repository contains the EIP for NTT transform, along with a python reference code, and a solidity implementation.
 
@@ -15,7 +15,7 @@ In the past Ethereum chose specificity by picking secp256k1 as its sole candidat
 
 Picking NTT as EIP instead of a given scheme would provide massive gas cost reduction for all schemes relying on it.
 - **pros** : massive reduction to all cited protocols, more agility for evolutions.
-- **cons**: still requires to be wrapped into larger implementation, not optimal for a given target compared to dedicated EIP, probably not stateless.
+- **cons**:  requires to be wrapped into  implementations, not optimal for a given target compared to dedicated EIP, not stateless.
 
 ## Overview
 
@@ -57,13 +57,22 @@ The Inverse NTT is computed through the following algorithm:
 |  InvNTT iterative       | ZKNOX |  | OK|
 | Full FalconSol verification          | ZKNOX  | 9.5 M| OK|
 
+There are still large improvment for optimization by using Yul for critical sections and using the CODECOPY and EXTCODECOPY trick detailed in of [[RD23]](https://eprint.iacr.org/2023/939.pdf) (section 3.3, "Hacking EVM memory access cost"). Memory access cost shall be reduced by 2M using deployed proxy contracts for precomputed values. However, it doesn't seem  possible to reach a cost below 4M gas.
 
+
+### Go Ethereum (WIP)
+
+ZKNOX is planning a client implementation for node of the considered EIP.
 
 ## Conclusion
 
+We provided an optimized version of FALCON, using an optimized version of NTT. This code can be used to speed up Stark verification as well as other lattices primitives (Dilithium, Kyber, etc.). While it seems achievable to use FALCON as a progressive precompile, the cost remains very high. Using a client implementation with NTT-EIP (in a Geth fork for example), ETHEREUM could become from a PQ-Friendly and ZK-Friendly chain. This work is supported by the Ethereum Foundation.
 
 
 ## References
 
-[[LN16]](https://eprint.iacr.org/2016/504.pdf) Speeding up the Number Theoretic Transform
-for Faster Ideal Lattice-Based Cryptography. Patrick Longa, Michael Naehrig
+- [[LN16]](https://eprint.iacr.org/2016/504.pdf) Speeding up the Number Theoretic Transform
+for Faster Ideal Lattice-Based Cryptography. Patrick Longa, Michael Naehrig.
+- [[EIP616]](https://eips.ethereum.org/EIPS/eip-616) EIP-616: SIMD Operations for the EVM 
+- [[RD23]](https://eprint.iacr.org/2023/939.pdf) Speeding up elliptic computations for Ethereum Account
+Abstraction
