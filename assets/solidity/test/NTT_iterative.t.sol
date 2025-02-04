@@ -80,13 +80,11 @@ def ntt(self, f):
         uint256[] memory g=ntt.NWC_Intt(f_12289_512);
     }
 
-
     function test_mulNTTPoly() public view{
         uint256[] memory g=ntt.mul_NTTPoly(f_12289_512, g_12289_512);
         for(uint i=0;i<512;i++)
            assertEq(f_mul_g_12289_512[i], g[i]);
         }
-
     
     function test_mul_halfNTTPoly() public view{
         uint256[] memory g=ntt.mul_halfNTTPoly(f_12289_512, g_ntt_12289_512);
@@ -95,7 +93,7 @@ def ntt(self, f):
         }
 
     function testbench_halfNTTPoly() public view{
-        uint256[] memory g=ntt.mul_halfNTTPoly(f_12289_512, g_ntt_12289_512);
+        uint256[] memory g=ntt.mul_halfNTTPoly(f_12289_512, g_ntt_12289_512);  
         } 
 
 }
