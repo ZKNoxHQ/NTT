@@ -68,13 +68,13 @@ class NTT:
             a[j] = (a[j] * n_inv[self.q][n]) % self.q
         return a
 
-    # def add_ntt(self, f_ntt, g_ntt):
-    #     """Addition of two polynomials(NTT representation)."""
-    #     return add_zq(f_ntt, g_ntt)
+    def add_ntt(self, f_ntt, g_ntt):
+        """Addition of two polynomials(NTT representation)."""
+        return [(x+y) % self.q for (x, y) in zip(f_ntt, g_ntt)]
 
-    # def sub_ntt(self, f_ntt, g_ntt):
-    #     """Substraction of two polynomials(NTT representation)."""
-    #     return sub_zq(f_ntt, g_ntt)
+    def sub_ntt(self, f_ntt, g_ntt):
+        """Substraction of two polynomials(NTT representation)."""
+        return self.add_ntt(f_ntt, [(-x) % self.q for x in g_ntt])
 
     def mul_ntt(self, f_ntt, g_ntt):
         """Multiplication of two polynomials(coefficient representation)."""

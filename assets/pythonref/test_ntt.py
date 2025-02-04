@@ -37,3 +37,5 @@ class TestNTT(unittest.TestCase):
                         T.ntt(λ_f_plus_μ_g),
                         [(λ*x+μ*y) % T.q for (x, y) in zip(f_ntt, g_ntt)]
                     )
+
+    # TODO TEST ADD AND SUB HERE
