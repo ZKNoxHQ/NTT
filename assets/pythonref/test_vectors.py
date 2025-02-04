@@ -39,11 +39,11 @@ class TestVectors(unittest.TestCase):
                             self.assertEqual(T.intt(in1), ex1)
                             self.assertEqual(T.intt(in2), ex2)
                         if name == 'vec_mul':
-                            self.assertEqual(T.mul_ntt(in1, in2), expected)
+                            self.assertEqual(T.vec_mul(in1, in2), expected)
                         if name == 'pol_mul':
                             self.assertEqual(Poly(in1, q) *
                                              Poly(in2, q), Poly(expected, q))
                         if name == 'vec_add':
-                            self.assertEqual(T.add_ntt(in1, in2), expected)
+                            self.assertEqual(T.vec_add(in1, in2), expected)
                         if name == 'vec_sub':
-                            self.assertEqual(T.sub_ntt(in1, in2), expected)
+                            self.assertEqual(T.vec_sub(in1, in2), expected)

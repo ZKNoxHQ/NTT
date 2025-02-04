@@ -40,7 +40,7 @@ class Poly:
         T = self.NTT
         f_ntt = T.ntt(f)
         g_ntt = T.ntt(g)
-        return Poly(T.intt(T.mul_ntt(f_ntt, g_ntt)), self.q)
+        return Poly(T.intt(T.vec_mul(f_ntt, g_ntt)), self.q)
 
     def mul_schoolbook(self, other):
         """Multiplication of two polynomials using the schoolbook algorithm."""
@@ -115,7 +115,7 @@ class Poly:
             T = self.NTT
             f_ntt = T.ntt(f)
             g_ntt = T.ntt(g)
-            return Poly(T.intt(T.div_ntt(f_ntt, g_ntt)), self.q)
+            return Poly(T.intt(T.vec_div(f_ntt, g_ntt)), self.q)
         except ZeroDivisionError:
             raise
 

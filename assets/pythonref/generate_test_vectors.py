@@ -57,12 +57,12 @@ for (q, two_adicity) in TEST_CASES:
         assert f_ntt_intt == f
         assert g_ntt_intt == g
 
-        f_ntt_mul_g_ntt = T.mul_ntt(f_ntt, g_ntt)
+        f_ntt_mul_g_ntt = T.vec_mul(f_ntt, g_ntt)
         f_mul_g = T.intt(f_ntt_mul_g_ntt)
         assert f_mul_g == (Poly(f, q) * Poly(g, q)).coeffs
 
-        f_ntt_add_g_ntt = T.add_ntt(f_ntt, g_ntt)
-        f_ntt_sub_g_ntt = T.sub_ntt(f_ntt, g_ntt)
+        f_ntt_add_g_ntt = T.vec_add(f_ntt, g_ntt)
+        f_ntt_sub_g_ntt = T.vec_sub(f_ntt, g_ntt)
 
         file.write("[\n")
         # 1. ntt
