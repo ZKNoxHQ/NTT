@@ -1,4 +1,5 @@
 
+import hashlib
 from math import ceil
 from random import randint
 from struct import unpack
@@ -37,7 +38,13 @@ def decode(hex_poly, q):
     return [int.from_bytes(bytes_poly[i:i+size_q], 'big') for i in range(0, len(bytes_poly), size_q)]
 
 
-f = [2011, 3045, 818, 251, 2602, 3298, 782, 2838]
+def deterministic_poly(q, n, seed="fixed_seed"):
+    # This function is used for generating polynomials for the tests.
+    # No randomness.
+    return [int(hashlib.sha256(f"{seed}{i}".encode()).hexdigest(), 16) % q for i in range(n)]
+
+
+f = deterministic_poly(8, 3329)
 assert decode(encode(f, 12345), 12345) == f
 assert decode(encode(f, 12345), 12345) == f
 
@@ -46,8 +53,8 @@ for (q, two_adicity) in TEST_CASES:
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.json".format(q, n), "w")
 
-        f = [randint(0, q-1) for _ in range(n)]
-        g = [randint(0, q-1) for _ in range(n)]
+        f = deterministic_poly(q, n)
+        g = deterministic_poly(q, n)
 
         T = NTT(q)
         f_ntt = T.ntt(f)
