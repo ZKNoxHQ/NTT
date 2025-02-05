@@ -50,12 +50,12 @@ The Inverse NTT is computed through the following algorithm:
 
 | Function                   | Description               | gas cost | Tests Status |
 |------------------------|---------------------|---------------------|---------------------|
-| NTT recursive       | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)         |  | OK|
-| InvNTT recursive          | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)  | | OK|
-| Full FalconSol verification          | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)  | 24 M| OK|
-| NTT iterative      | ZKNOX  |   | OK|
-|  InvNTT iterative       | ZKNOX |  | OK|
-| Full FalconSol verification          | ZKNOX  | 9.5 M| OK|
+| NTT recursive       | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)         | 6.9M | OK|
+| InvNTT recursive          | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)  | 7.8M | OK|
+| Full FalconSol verification         | original gas cost from [falcon-solidity](https://github.com/Tetration-Lab/falcon-solidity/blob/main/src/Falcon.sol)  | 24 M| OK|
+| NTT iterative      | ZKNOX  |  4M | OK|
+|  InvNTT iterative       | ZKNOX | 4.2M | OK|
+| Full FalconSol verification          | ZKNOX  | 8.5 M| OK|
 
 There are still large improvment for optimization by using Yul for critical sections and using the CODECOPY and EXTCODECOPY trick detailed in of [[RD23]](https://eprint.iacr.org/2023/939.pdf) (section 3.3, "Hacking EVM memory access cost"). Memory access cost shall be reduced by 2M using deployed proxy contracts for precomputed values. However, it doesn't seem  possible to reach a cost below 4M gas.
 
@@ -76,3 +76,4 @@ for Faster Ideal Lattice-Based Cryptography. Patrick Longa, Michael Naehrig.
 - [[EIP616]](https://eips.ethereum.org/EIPS/eip-616) EIP-616: SIMD Operations for the EVM 
 - [[RD23]](https://eprint.iacr.org/2023/939.pdf) Speeding up elliptic computations for Ethereum Account
 Abstraction
+- [[DILITHIUM]](https://eprint.iacr.org/2017/633.pdf)
