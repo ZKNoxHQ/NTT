@@ -5,8 +5,6 @@ from poly import Poly
 from math import log
 from ntt import NTT
 
-# q = 3329
-
 
 class TestMert:
 
