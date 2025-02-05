@@ -45,16 +45,16 @@ def deterministic_poly(q, n, seed="fixed_seed"):
 
 
 f = deterministic_poly(8, 3329)
-assert decode(encode(f, 12345), 12345) == f
-assert decode(encode(f, 12345), 12345) == f
+assert decode(encode(f, 3329), 3329) == f
+assert decode(encode(f, 3329), 3329) == f
 
 for (q, two_adicity) in TEST_CASES:
 
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.json".format(q, n), "w")
 
-        f = deterministic_poly(q, n)
-        g = deterministic_poly(q, n)
+        f = deterministic_poly(q, n, seed="seed_f")
+        g = deterministic_poly(q, n, seed="seed_g")
 
         T = NTT(q)
         f_ntt = T.ntt(f)
