@@ -1,6 +1,6 @@
 """This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
 from random import randint
-from ntt import NTT
+from ntt_iterative import NTTIterative
 from ntt_constants import ψ, ψ_inv
 from ntt_recursive import NTTRecursive
 
@@ -10,7 +10,7 @@ class Poly:
         self.coeffs = coeffs
         self.q = q
         if ntt == 'NTT':
-            self.NTT = NTT(q)
+            self.NTT = NTTIterative(q)
         elif ntt == 'NTTRecursive':
             self.NTT = NTTRecursive(q)
 

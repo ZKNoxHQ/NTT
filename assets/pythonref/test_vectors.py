@@ -1,7 +1,7 @@
 # This file import the json test vectors and verify the expected output.
 
 import json
-from ntt import NTT
+from ntt_iterative import NTTIterative
 from poly import Poly
 from test_cases import TEST_CASES
 import unittest
@@ -17,7 +17,7 @@ class TestVectors(unittest.TestCase):
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
 
                 with open("../test_vectors/q{}_n{}.json".format(q, n), 'r') as file:
-                    T = NTT(q)
+                    T = NTTIterative(q)
                     for test in json.load(file):
                         input = decode(test['Input'], q)
                         mid = len(input)//2

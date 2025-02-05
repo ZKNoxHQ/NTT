@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from ntt import NTT
+from ntt_iterative import NTTIterative
 import unittest
 from test_cases import TEST_CASES
 
 
-class TestNTT(unittest.TestCase):
+class TestNTTIterative(unittest.TestCase):
     def shortDescription(self):
         return None  # This prevents unittest from printing docstrings
 
@@ -14,7 +14,7 @@ class TestNTT(unittest.TestCase):
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
-                T = NTT(q)
+                T = NTTIterative(q)
                 for i in range(iterations):
                     f = [randint(0, T.q-1) for j in range(n)]
                     self.assertEqual(T.intt(T.ntt(f)), f)
@@ -24,7 +24,7 @@ class TestNTT(unittest.TestCase):
         for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
-                T = NTT(q)
+                T = NTTIterative(q)
                 for i in range(iterations):
                     f = [randint(0, T.q - 1) for j in range(n)]
                     g = [randint(0, T.q - 1) for j in range(n)]

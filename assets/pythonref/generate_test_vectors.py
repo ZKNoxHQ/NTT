@@ -4,7 +4,7 @@ from math import ceil
 from random import randint
 from struct import unpack
 import sys
-from ntt import NTT
+from ntt_iterative import NTTIterative
 from poly import Poly
 from test_cases import TEST_CASES
 
@@ -56,7 +56,7 @@ for (q, two_adicity) in TEST_CASES:
         f = deterministic_poly(q, n, seed="seed_f")
         g = deterministic_poly(q, n, seed="seed_g")
 
-        T = NTT(q)
+        T = NTTIterative(q)
         f_ntt = T.ntt(f)
         g_ntt = T.ntt(g)
         f_ntt_intt = T.intt(f_ntt)

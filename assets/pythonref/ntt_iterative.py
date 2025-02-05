@@ -7,7 +7,7 @@ The NTT implemented here is for polynomials in Z_q[x]/(phi), with:
 from ntt_constants import *
 
 
-class NTT:
+class NTTIterative:
 
     def __init__(self, q):
         """Implements Number Theoretic Transform for fast polynomial multiplication."""
