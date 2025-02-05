@@ -2,13 +2,17 @@
 from random import randint
 from ntt import NTT
 from ntt_constants import ψ, ψ_inv
+from ntt_recursive import NTTRecursive
 
 
 class Poly:
-    def __init__(self, coeffs, q):
+    def __init__(self, coeffs, q, ntt='NTT'):
         self.coeffs = coeffs
         self.q = q
-        self.NTT = NTT(q)
+        if ntt == 'NTT':
+            self.NTT = NTT(q)
+        elif ntt == 'NTTRecursive':
+            self.NTT = NTTRecursive(q)
 
     def __eq__(self, other):
         for (a, b) in zip(self.coeffs, other.coeffs):
