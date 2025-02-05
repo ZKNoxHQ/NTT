@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+"""This file contains an iterative implementation of the NTT using Mert implementation.
+It is optimized for x^n-1, but requires pre- and post-computations for ot x^n+1.
+We provide it here for comparison.
+"""
 from ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
 from random import randint
 from poly import Poly
@@ -6,10 +9,18 @@ from math import log
 from ntt import NTT
 
 
-class TestMert:
+class NTTMert:
 
     def __init__(self, q):
+        """Implements Number Theoretic Transform for fast polynomial multiplication."""
         self.q = q
+        self.ψ = ψ_rev[q]
+        self.ψ_inv = ψ_inv_rev[q]
+        self.ψ_rev = ψ_rev[q]
+        self.ψ_inv_rev = ψ_inv_rev[q]
+        # ratio between degree n and number of complex coefficients of the NTT
+        # while here this ratio is 1, it is possible to develop a short NTT such that it is 2.
+        self.ntt_ratio = 1
 
     def intReverse(self, a, n):
         b = ('{:0'+str(n)+'b}').format(a)
@@ -104,7 +115,7 @@ class TestMert:
 
 
 q = 3329
-Mert = TestMert(q)
+Mert = NTTMert(q)
 f = [1, 2, 3, 4]
 # f = [randint(0, q-1) for i in range(4)]
 F = Mert.ntt_mert(f)
