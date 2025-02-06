@@ -1,8 +1,7 @@
-from random import randint
 from time import time
-from generate_test_vectors import deterministic_poly
-from poly import Poly
-from test_cases import TEST_CASES
+from polyntt.generate_test_vectors import deterministic_poly
+from polyntt.poly import Poly
+from polyntt.test_cases import TEST_CASES
 
 iterations = 100
 print("iterations:{}\n".format(iterations))

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from ntt_recursive import NTTRecursive
+from polyntt.ntt_recursive import NTTRecursive
 import unittest
-from test_cases import TEST_CASES  # We test only Falcon parameters
+from polyntt.test_cases import TEST_CASES  # We test only Falcon parameters
 
 
 class TestNTTRecursive(unittest.TestCase):

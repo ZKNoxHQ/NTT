@@ -1,9 +1,8 @@
-from ntt_mert import TestMert
-from random import randint
+from polyntt.ntt_mert import NTTMert
 from time import time
-from generate_test_vectors import deterministic_poly
-from poly import Poly
-from test_cases import TEST_CASES
+from polyntt.generate_test_vectors import deterministic_poly
+from polyntt.poly import Poly
+from polyntt.test_cases import TEST_CASES
 
 iterations = 100
 print("iterations:{}\n".format(iterations))
@@ -31,7 +30,7 @@ for (q, two_adicity) in TEST_CASES:
         p3_schoolbook = p3
         print("{:.2f} ms".format((t4-t3) * 10**3), end='\t\t')
 
-        Mert = TestMert(q)
+        Mert = NTTMert(q)
         p1 = Poly(deterministic_poly(q, n), q)
         p2 = Poly(deterministic_poly(q, n), q)
         t5 = time()

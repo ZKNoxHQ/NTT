@@ -1,12 +1,8 @@
 
 import hashlib
-from math import ceil
-from random import randint
-from struct import unpack
-import sys
-from ntt_iterative import NTTIterative
-from poly import Poly
-from test_cases import TEST_CASES
+from polyntt.ntt_iterative import NTTIterative
+from polyntt.poly import Poly
+from polyntt.test_cases import TEST_CASES
 
 
 def write_test(f, input, name, expected, gas, final=False):

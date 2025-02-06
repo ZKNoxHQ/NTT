@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from poly import Poly
+from polyntt.poly import Poly
 import unittest
-from test_cases import TEST_CASES
+from polyntt.test_cases import TEST_CASES
 
 
 class TestPoly(unittest.TestCase):

@@ -2,11 +2,10 @@
 It is optimized for x^n-1, but requires pre- and post-computations for ot x^n+1.
 We provide it here for comparison.
 """
-from ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
-from random import randint
-from poly import Poly
+from polyntt.ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
+from polyntt.poly import Poly
 from math import log
-from ntt_iterative import NTT
+from polyntt.ntt_iterative import NTTIterative
 
 
 class NTTMert:
@@ -144,7 +143,7 @@ f_mul_g_2 = Mert.post(fp_mul_gp)
 assert f_mul_g_2 == (Poly(f, q) * Poly(g, q)).coeffs
 
 # now, the other way around, using ntt and intt instead of ntt_mert and intt_mert
-T = NTT(q)
+T = NTTIterative(q)
 assert Mert.ntt_mert(Mert.prec(f)) == T.ntt(f)
 assert Mert.post(Mert.intt_mert(F)) == T.intt(F)
 assert Mert.ntt_mert(f) == T.ntt(Mert.post(f))

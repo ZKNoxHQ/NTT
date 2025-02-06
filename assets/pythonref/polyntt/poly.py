@@ -1,8 +1,7 @@
 """This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
-from random import randint
-from ntt_iterative import NTTIterative
-from ntt_constants import ψ, ψ_inv
-from ntt_recursive import NTTRecursive
+from polyntt.ntt_iterative import NTTIterative
+from polyntt.ntt_constants import ψ, ψ_inv
+from polyntt.ntt_recursive import NTTRecursive
 
 
 class Poly:

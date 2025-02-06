@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from ntt_iterative import NTTIterative
+from polyntt.ntt_iterative import NTTIterative
 import unittest
-from test_cases import TEST_CASES
+from polyntt.test_cases import TEST_CASES
 
 
 class TestNTTIterative(unittest.TestCase):

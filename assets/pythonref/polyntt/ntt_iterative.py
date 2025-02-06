@@ -4,7 +4,7 @@ The NTT implemented here is for polynomials in Z_q[x]/(phi), with:
 - The integer modulus q = 12 * 1024 + 1 = 12289
 - The polynomial modulus phi = x ** n + 1, with n a power of two, n =< 1024
 """
-from ntt_constants import *
+from polyntt.ntt_constants import *
 
 
 class NTTIterative:

@@ -19,7 +19,7 @@ It is probably possible to use templating to merge both implementations.
 
 """i2 is the inverse of 2 mod q."""
 
-from ntt_constants_recursive import roots_dict_Zq
+from polyntt.ntt_constants_recursive import roots_dict_Zq
 i2 = 6145
 q = 12 * 1024 + 1
 

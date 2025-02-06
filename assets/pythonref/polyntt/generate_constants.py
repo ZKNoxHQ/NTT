@@ -1,4 +1,4 @@
-from test_cases import TEST_CASES
+from polyntt.test_cases import TEST_CASES
 
 
 def bit_reverse_order(a):

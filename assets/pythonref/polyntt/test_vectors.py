@@ -1,11 +1,11 @@
 # This file import the json test vectors and verify the expected output.
 
 import json
-from ntt_iterative import NTTIterative
-from poly import Poly
-from test_cases import TEST_CASES
+from polyntt.ntt_iterative import NTTIterative
+from polyntt.poly import Poly
+from polyntt.test_cases import TEST_CASES
 import unittest
-from generate_test_vectors import decode
+from polyntt.generate_test_vectors import decode
 
 
 class TestVectors(unittest.TestCase):
