@@ -11,8 +11,8 @@ def bit_reverse_order(a):
     return result
 
 
-f = open("ntt_constants.py", "w")
-f.write("# File generated with `python generate_constants.py`.\n")
+f = open("polyntt/ntt_constants.py", "w")
+f.write("# File generated with `python polyntt/generate_constants.py`.\n")
 f.write(
     "# Precomputations for NTT.\n\n"
 )

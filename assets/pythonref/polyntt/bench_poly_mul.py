@@ -1,4 +1,4 @@
-from mert import TestMert
+from ntt_mert import TestMert
 from random import randint
 from time import time
 from generate_test_vectors import deterministic_poly

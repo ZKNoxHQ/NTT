@@ -6,7 +6,7 @@ from ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
 from random import randint
 from poly import Poly
 from math import log
-from ntt import NTT
+from ntt_iterative import NTT
 
 
 class NTTMert:

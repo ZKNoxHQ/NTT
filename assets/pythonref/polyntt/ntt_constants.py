@@ -1,4 +1,4 @@
-# File generated with `python generate_constants.py`.
+# File generated with `python polyntt/generate_constants.py`.
 # Precomputations for NTT.
 
 # Dictionary containing the powers ψ, a 2^n-th root of unity.

@@ -9,8 +9,8 @@ install:
 	$(PIP) install eth_abi pandas pycryptodome scipy matplotlib
 
 test:
-	$(PYTHON) generate_test_vectors.py
-	$(PYTHON) -m unittest  $(if $(TEST),test_$(TEST).py,discover) -v
+	$(PYTHON) polyntt/generate_test_vectors.py
+	$(PYTHON) -m unittest  $(if $(TEST),test_$(TEST).py,discover) -v -s polyntt
 	
 profile:
 	rm -f $(AUX)
