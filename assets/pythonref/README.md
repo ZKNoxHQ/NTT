@@ -21,3 +21,10 @@ For running a test of `test_ntt.py` (resp. `test_poly.py`):
 ```
 make test TEST=ntt # resp. TEST=poly
 ```
+
+## Benchmarks
+For running the benchmarks:
+```
+mke bench
+```
+Note that the field arithmetic is not optimized. For example, Montgomery multiplication is not implemented here.
