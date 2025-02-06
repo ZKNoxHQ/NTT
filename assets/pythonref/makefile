@@ -11,6 +11,10 @@ install:
 test:
 	$(PYTHON) polyntt/generate_test_vectors.py
 	$(PYTHON) -m unittest  $(if $(TEST),test_$(TEST).py,discover) -v -s polyntt
+
+bench:
+	$(PYTHON) polyntt/bench_poly_mul.py
+	$(PYTHON) polyntt/bench_iterative_recursive.py
 	
 profile:
 	rm -f $(AUX)
