@@ -1,7 +1,7 @@
 """This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
 from polyntt.ntt_iterative import NTTIterative
-from polyntt.ntt_constants import ψ, ψ_inv
 from polyntt.ntt_recursive import NTTRecursive
+from polyntt.generate_constants import bit_reverse_order
 
 
 class Poly:
@@ -74,7 +74,6 @@ class Poly:
         # pre-processing
         # list of roots for the precomputations
         if NODE:
-            from generate_constants import bit_reverse_order
             bit_rev_index = bit_reverse_order(
                 range(0, len(self.NTT.ψ_inv), len(self.NTT.ψ_inv)//n))
             ψ0_inv = [self.NTT.ψ_inv_rev[j] for j in bit_rev_index]
@@ -85,7 +84,6 @@ class Poly:
         fp_mul_gp = fp*gp
         # post processing
         if NODE:
-            from generate_constants import bit_reverse_order
             bit_rev_index = bit_reverse_order(
                 range(0, len(self.NTT.ψ_inv), len(self.NTT.ψ)//n))
             ψ0 = [self.NTT.ψ_rev[j] for j in bit_rev_index]

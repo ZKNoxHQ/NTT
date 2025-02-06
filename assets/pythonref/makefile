@@ -10,7 +10,7 @@ install:
 
 test:
 	$(PYTHON) polyntt/generate_test_vectors.py
-	$(PYTHON) -m unittest  $(if $(TEST),test_$(TEST).py,discover) -v -s polyntt
+	$(PYTHON) -m unittest  $(if $(TEST),polyntt.test_$(TEST),discover) -v
 
 bench:
 	$(PYTHON) polyntt/bench_poly_mul.py
