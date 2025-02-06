@@ -19,7 +19,7 @@ for (q, two_adicity) in TEST_CASES:
             p3 = p1*p2
         t2 = time()
         p3_patrick = p3
-        print("{:.2f} ms".format((t2-t1) * 10**3), end='\t\t')
+        print("{:.2f} μs".format((t2-t1) * 10**6/iterations), end='\t')
 
         p1 = Poly(deterministic_poly(q, n), q)
         p2 = Poly(deterministic_poly(q, n), q)
@@ -28,7 +28,7 @@ for (q, two_adicity) in TEST_CASES:
             p3 = p1.mul_schoolbook(p2)
         t4 = time()
         p3_schoolbook = p3
-        print("{:.2f} ms".format((t4-t3) * 10**3), end='\t\t')
+        print("{:.2f} μs".format((t4-t3) * 10**6/iterations), end='\t')
 
         Mert = NTTMert(q)
         p1 = Poly(deterministic_poly(q, n), q)
@@ -38,6 +38,6 @@ for (q, two_adicity) in TEST_CASES:
             p3 = Mert.poly_mul_mert(p1.coeffs, p2.coeffs)
         t6 = time()
         p3_mert = p3
-        print("{:.2f} ms".format((t6-t5) * 10**3))
+        print("{:.2f} μs".format((t6-t5) * 10**6/iterations))
 
         assert p3_mert == p3_patrick.coeffs and p3_mert == p3_schoolbook.coeffs
