@@ -5,9 +5,10 @@ The NTT implemented here is for polynomials in Z_q[x]/(phi), with:
 - The polynomial modulus phi = x ** n + 1, with n a power of two, n =< 1024
 """
 from polyntt.ntt_constants import *
+from polyntt.ntt import NTT
 
 
-class NTTIterative:
+class NTTIterative(NTT):
 
     def __init__(self, q):
         """Implements Number Theoretic Transform for fast polynomial multiplication."""
@@ -67,31 +68,3 @@ class NTTIterative:
         for j in range(n):
             a[j] = (a[j] * n_inv[self.q][n]) % self.q
         return a
-
-    def vec_add(self, f_ntt, g_ntt):
-        """Addition of two polynomials(NTT representation)."""
-        return [(x+y) % self.q for (x, y) in zip(f_ntt, g_ntt)]
-
-    def vec_sub(self, f_ntt, g_ntt):
-        """Substraction of two polynomials(NTT representation)."""
-        return self.vec_add(f_ntt, [(-x) % self.q for x in g_ntt])
-
-    def vec_mul(self, f_ntt, g_ntt):
-        """Multiplication of two polynomials(coefficient representation)."""
-        assert len(f_ntt) == len(g_ntt)
-        deg = len(f_ntt)
-        return [(f_ntt[i] * g_ntt[i]) % self.q for i in range(deg)]
-
-    def vec_div(self, f_ntt, g_ntt):
-        """Division of two polynomials(NTT representation)."""
-        assert len(f_ntt) == len(g_ntt)
-        deg = len(f_ntt)
-        if any(elt == 0 for elt in g_ntt):
-            raise ZeroDivisionError
-        inv_g_ntt = [pow(g_ntt[i], -1, self.q) % self.q for i in range(deg)]
-        return self.vec_mul(f_ntt, inv_g_ntt)
-
-    # def adj_ntt(self, f_ntt):
-    #     """Ajoint of a polynomial(NTT representation)."""
-    #     deg = len(f_ntt)
-    #     return [f_ntt[i].conjugate() for i in range(deg)]

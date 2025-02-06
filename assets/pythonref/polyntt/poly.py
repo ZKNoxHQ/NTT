@@ -5,10 +5,10 @@ from polyntt.ntt_recursive import NTTRecursive
 
 
 class Poly:
-    def __init__(self, coeffs, q, ntt='NTT'):
+    def __init__(self, coeffs, q, ntt='NTTIterative'):
         self.coeffs = coeffs
         self.q = q
-        if ntt == 'NTT':
+        if ntt == 'NTTIterative':
             self.NTT = NTTIterative(q)
         elif ntt == 'NTTRecursive':
             self.NTT = NTTRecursive(q)

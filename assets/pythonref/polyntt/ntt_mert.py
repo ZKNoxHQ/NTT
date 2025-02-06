@@ -6,9 +6,10 @@ from polyntt.ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as
 from polyntt.poly import Poly
 from math import log
 from polyntt.ntt_iterative import NTTIterative
+from polyntt.ntt import NTT
 
 
-class NTTMert:
+class NTTMert(NTT):
 
     def __init__(self, q):
         """Implements Number Theoretic Transform for fast polynomial multiplication."""
@@ -25,7 +26,7 @@ class NTTMert:
         b = ('{:0'+str(n)+'b}').format(a)
         return int(b[::-1], 2)
 
-    def ntt_mert(self, A):
+    def ntt(self, A):
         # from https://github.com/acmert/ntt-based-polmul/blob/3476c2d9f22eac7696f2785eba036ffae1b4460e/baseline/ntt.py#L206
         N = len(A)
         B = [_ for _ in A]
@@ -44,7 +45,7 @@ class NTTMert:
 
         return B
 
-    def intt_mert(self, A):
+    def intt(self, A):
         # from
         # https://github.com/acmert/ntt-based-polmul/blob/3476c2d9f22eac7696f2785eba036ffae1b4460e/baseline/ntt.py#L353
         # and
@@ -107,47 +108,47 @@ class NTTMert:
         return [(x * y) % self.q for (x, y) in zip(A, Ψ0_inv)]
 
     def poly_mul_mert(self, A, B):
-        A_ntt = self.ntt_mert(self.prec(A))
-        B_ntt = self.ntt_mert(self.prec(B))
+        A_ntt = self.ntt(self.prec(A))
+        B_ntt = self.ntt(self.prec(B))
         A_B_ntt = [(x*y) % self.q for (x, y) in zip(A_ntt, B_ntt)]
-        return self.post(self.intt_mert(A_B_ntt))
+        return self.post(self.intt(A_B_ntt))
 
 
 q = 3329
 Mert = NTTMert(q)
 f = [1, 2, 3, 4]
 # f = [randint(0, q-1) for i in range(4)]
-F = Mert.ntt_mert(f)
-back_f = Mert.intt_mert(F)
+F = Mert.ntt(f)
+back_f = Mert.intt(F)
 for i in range(len(f)):
     assert back_f[i] == f[i]
 g = [5, 6, 7, 8]
 # g = [randint(0, q-1) for i in range(4)]
-G = Mert.ntt_mert(g)
-back_g = Mert.intt_mert(G)
+G = Mert.ntt(g)
+back_g = Mert.intt(G)
 for i in range(len(g)):
     assert back_g[i] == g[i]
 
 # check multiplication mod x^n-1
 F_mul_G = [(x*y) % q for (x, y) in zip(F, G)]
-f_mul_g = Mert.intt_mert(F_mul_G)
+f_mul_g = Mert.intt(F_mul_G)
 assert f_mul_g == Mert.mul_schoolbook_x_n_minus_one(f, g)
 # check multiplication mod x^n+1
 fp = Mert.prec(f)
 gp = Mert.prec(g)
-Fp = Mert.ntt_mert(fp)
-Gp = Mert.ntt_mert(gp)
+Fp = Mert.ntt(fp)
+Gp = Mert.ntt(gp)
 Fp_mul_Gp = [(x*y) % q for (x, y) in zip(Fp, Gp)]
-fp_mul_gp = Mert.intt_mert(Fp_mul_Gp)
+fp_mul_gp = Mert.intt(Fp_mul_Gp)
 f_mul_g_2 = Mert.post(fp_mul_gp)
 assert f_mul_g_2 == (Poly(f, q) * Poly(g, q)).coeffs
 
 # now, the other way around, using ntt and intt instead of ntt_mert and intt_mert
 T = NTTIterative(q)
-assert Mert.ntt_mert(Mert.prec(f)) == T.ntt(f)
-assert Mert.post(Mert.intt_mert(F)) == T.intt(F)
-assert Mert.ntt_mert(f) == T.ntt(Mert.post(f))
-assert Mert.intt_mert(F) == Mert.prec(T.intt(F))
+assert Mert.ntt(Mert.prec(f)) == T.ntt(f)
+assert Mert.post(Mert.intt(F)) == T.intt(F)
+assert Mert.ntt(f) == T.ntt(Mert.post(f))
+assert Mert.intt(F) == Mert.prec(T.intt(F))
 
 # now we compute the multiplication mod x^n-1 using T.(i)ntt:
 F1 = T.ntt(Mert.post(f))

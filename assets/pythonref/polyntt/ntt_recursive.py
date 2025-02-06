@@ -20,6 +20,7 @@ It is probably possible to use templating to merge both implementations.
 """i2 is the inverse of 2 mod q."""
 
 from polyntt.ntt_constants_recursive import roots_dict_Zq
+from polyntt.ntt import NTT
 i2 = 6145
 q = 12 * 1024 + 1
 
@@ -82,7 +83,7 @@ def inv_mod_q(elt):
     return inv_elt
 
 
-class NTTRecursive:
+class NTTRecursive(NTT):
 
     def __init__(self, q):
         """Implements Number Theoretic Transform for fast polynomial multiplication."""
@@ -165,26 +166,3 @@ class NTTRecursive:
             f[0] = (i2 * (f_ntt[0] + f_ntt[1])) % q
             f[1] = (i2 * inv_mod_q(sqr1) * (f_ntt[0] - f_ntt[1])) % q
         return f
-
-    def vec_add(self, f_ntt, g_ntt):
-        """Addition of two polynomials(NTT representation)."""
-        return [(x+y) % self.q for (x, y) in zip(f_ntt, g_ntt)]
-
-    def vec_sub(self, f_ntt, g_ntt):
-        """Substraction of two polynomials(NTT representation)."""
-        return self.vec_add(f_ntt, [(-x) % self.q for x in g_ntt])
-
-    def vec_mul(self, f_ntt, g_ntt):
-        """Multiplication of two polynomials(coefficient representation)."""
-        assert len(f_ntt) == len(g_ntt)
-        deg = len(f_ntt)
-        return [(f_ntt[i] * g_ntt[i]) % self.q for i in range(deg)]
-
-    def vec_div(self, f_ntt, g_ntt):
-        """Division of two polynomials(NTT representation)."""
-        assert len(f_ntt) == len(g_ntt)
-        deg = len(f_ntt)
-        if any(elt == 0 for elt in g_ntt):
-            raise ZeroDivisionError
-        inv_g_ntt = [pow(g_ntt[i], -1, self.q) % self.q for i in range(deg)]
-        return self.vec_mul(f_ntt, inv_g_ntt)
