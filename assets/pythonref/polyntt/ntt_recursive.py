@@ -19,8 +19,10 @@ It is probably possible to use templating to merge both implementations.
 
 """i2 is the inverse of 2 mod q."""
 
+
 from polyntt.ntt_constants_recursive import roots_dict_Zq
 from polyntt.ntt import NTT
+from polyntt.utils import inv_mod
 i2 = 6145
 q = 12 * 1024 + 1
 
@@ -63,26 +65,6 @@ def merge(f_list):
     return f
 
 
-def xgcd(a, b):
-    """ Returns gcd(a, b), and x, y such that ax + by = gcd(a, b) """
-    x0, x1, y0, y1 = 1, 0, 0, 1
-    while b:
-        q, a, b = a // b, b, a % b
-        x0, x1 = x1, x0 - q * x1
-        y0, y1 = y1, y0 - q * y1
-    return a, x0, y0
-
-
-def inv_mod_q(elt):
-    """
-    Thomas Prest stores the inverses mod q, but in the long term, we will consider a larger q,
-    and thus we do not store the inverses mod q (it would require a too large storage).
-    """
-    _, inv_elt, _ = xgcd(elt, q)
-    assert (inv_elt * elt) % q == 1
-    return inv_elt
-
-
 class NTTRecursive(NTT):
 
     def __init__(self, q):
@@ -107,7 +89,7 @@ class NTTRecursive(NTT):
         for i in range(n // 2):
             f0_ntt[i] = (i2 * (f_ntt[2 * i] + f_ntt[2 * i + 1])) % q
             f1_ntt[i] = (i2 * (f_ntt[2 * i] - f_ntt[2 * i + 1])
-                         * inv_mod_q(w[2 * i])) % q
+                         * inv_mod(w[2 * i], q)) % q
         return [f0_ntt, f1_ntt]
 
     def merge_ntt(self, f_list_ntt):
@@ -164,5 +146,5 @@ class NTTRecursive(NTT):
         elif (n == 2):
             f = [0] * n
             f[0] = (i2 * (f_ntt[0] + f_ntt[1])) % q
-            f[1] = (i2 * inv_mod_q(sqr1) * (f_ntt[0] - f_ntt[1])) % q
+            f[1] = (i2 * inv_mod(sqr1, q) * (f_ntt[0] - f_ntt[1])) % q
         return f

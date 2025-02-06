@@ -2,9 +2,10 @@
 from random import randint
 import unittest
 from polyntt.ntt import batch_modular_inversion
+from polyntt.utils import batch_modular_inversion
 
 
-class TestNTT(unittest.TestCase):
+class TestUtils(unittest.TestCase):
     def shortDescription(self):
         return None  # This prevents unittest from printing docstrings
 
