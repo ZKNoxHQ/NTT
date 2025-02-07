@@ -65,7 +65,7 @@ class TestPoly(unittest.TestCase):
                     # invertible random g
                     g = Poly(f.NTT.intt([randint(1, q-1)
                                          for _ in range(n)]), q)
-                    h = f.div(g)
+                    h = f/g
                     self.assertEqual(h * g, f)
 
     def test_mul_pwc(self, iterations=10):

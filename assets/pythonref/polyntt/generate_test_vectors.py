@@ -1,4 +1,3 @@
-
 import hashlib
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly

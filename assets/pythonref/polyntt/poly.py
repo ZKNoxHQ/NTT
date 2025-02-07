@@ -1,7 +1,7 @@
 """This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.ntt_recursive import NTTRecursive
-from polyntt.generate_constants import bit_reverse_order
+from polyntt.utils import bit_reverse_order
 
 
 class Poly:
@@ -108,7 +108,7 @@ class Poly:
             D[i] = (C[i] + C[i+n]) % self.q
         return Poly(D, self.q)
 
-    def div(self, other):
+    def __truediv__(self, other):
         """Division of two polynomials (coefficient representation)."""
         try:
             f = self.coeffs

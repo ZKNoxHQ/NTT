@@ -24,24 +24,29 @@ def batch_modular_inversion(elements, q):
     n = len(elements)
     if n == 0:
         return []
-
     # Prefix products
     prefix = [None] * n
     prefix[0] = elements[0]
     for i in range(1, n):
         prefix[i] = (prefix[i - 1] * elements[i]) % q
-
     # Iinverse of the total product
     total_inv = inv_mod(prefix[-1], q)
-
     # Individual inverses using the prefix products
     inverses = [None] * n
     inverses[-1] = total_inv
     for i in range(n - 2, -1, -1):
         inverses[i] = (inverses[i + 1] * elements[i + 1]) % q
-
     # Final inverses
     for i in range(1, n):
         inverses[i] = (inverses[i] * prefix[i - 1]) % q
-
     return inverses
+
+
+def bit_reverse_order(a):
+    '''Reorders the given array in reverse-bit order.'''
+    num_bits = len(bin(len(a) - 1)) - 2
+    result = [0] * len(a)
+    for i in range(len(a)):
+        rev_index = int(bin(i)[2:].zfill(num_bits)[::-1], 2)
+        result[rev_index] = a[i]
+    return result

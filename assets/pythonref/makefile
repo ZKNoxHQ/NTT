@@ -6,10 +6,10 @@ AUX = *.pyc *.cprof */*.pyc
 
 install:
 	$(PY) -m venv $(VENV)
-	$(PIP) install eth_abi pandas pycryptodome scipy matplotlib
+	$(PIP) install pycryptodome
 
 test:
-	$(PYTHON) polyntt/generate_test_vectors.py
+	$(PYTHON) -m polyntt.generate_test_vectors
 	$(PYTHON) -m unittest  $(if $(TEST),polyntt.test_$(TEST),discover) -v
 
 bench:
