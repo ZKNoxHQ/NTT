@@ -129,6 +129,9 @@ class Poly:
             raise
         return Poly(T.intt(one_over_f_ntt), self.q)
 
+    def ntt(self):
+        return self.NTT.ntt(self.coeffs)
+
     # def adj(f):
     #     """Ajoint of a polynomial (coefficient representation)."""
     #     return intt(adj_ntt(ntt(f)))
