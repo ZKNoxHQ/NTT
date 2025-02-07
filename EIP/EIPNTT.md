@@ -53,17 +53,117 @@ With the release of Willow cheap, the concern for quantum threat against Ethereu
 
 We introduce *four* separate precompiles to perform the following operations:
 
-- NTT_FW - to perform the forward NTT transformation (Negative wrap convolution)
-- NTT_INV - to perform the inverse NTT transformation (Negative wrap convolution)
-- NTT_VECMULMOD - to perform vectorized modular multiplication 
-- NTT_VECADDMOD - to perform vectorized modular addition
+- NTT_FW - to perform the forward NTT transformation (Negative wrap convolution) with a gas cost of `500` gas
+- NTT_INV - to perform the inverse NTT transformation (Negative wrap convolution) with a gas cost of `500` gas
+- NTT_VECMULMOD - to perform vectorized modular multiplication with a gas cost formula defined in the corresponding section
+- NTT_VECADDMOD - to perform vectorized modular addition with a gas cost formula defined in the corresponding section
+
+
+### Field parameters
+
+The NTT_FW and NTT_INV are fully defined  by the following set of parameters. 
+Let R be the ring of cyclotomic integers, i.e $R=Z[X]/X^n+1 \mod q $, where
+- $n$ is the degree
+- $q$ is the field characteristic such that $q=1 \mod 2n$
+- $\omega$ is a n-th root of unity in $\mathbb Z_q$ i.e $\omega^n=1 \mod q$
+- $\psi$ is a n-th root of unity in $\mathbb Z_q$ i.e $\psi^n=1 \mod q$
+
+Any element $a \in R$ is a polynomial of degree at most $n − 1$ with integer coefficients, written
+as $a=\sum_{i=0}^{n-1} aiX^i$
+
+
+### NTT_FW
+The NTT transformation is described by the following algorithm.
+
+**Input:** A vector $a = (a[0], a[1], \dots, a[n-1]) \in \mathbb{Z}_q^n$ in standard ordering, where $q$ is a prime such that $q \equiv 1 \mod 2n$ and $n$ is a power of two, and a precomputed table $\Psi_{rev} \in \mathbb{Z}_q^n$ storing powers of $\psi$ in bit-reversed order.
+
+**Output:** $a \leftarrow \text{NTT}(a)$ in bit-reversed ordering.
+
+```plaintext
+t ← n
+for m = 1 to n-1 by 2m do
+    t ← t / 2
+    for i = 0 to m-1 do
+        j1 ← 2 ⋅ i ⋅ t
+        j2 ← j1 + t - 1
+        S ← Ψrev[m + i]
+        for j = j1 to j2 do
+            U ← a[j]
+            V ← a[j + t] ⋅ S
+            a[j] ← (U + V) mod q
+            a[j + t] ← (U - V) mod q
+        end for
+    end for
+end for
+return a
+```
+
+### NTT_INV
+The Inverse NTT is described by the following algorithm.
+
+
+
+Input: A vector $a = (a[0], a[1], \dots, a[n-1]) \in \mathbb{Z}q^n$ in bit-reversed ordering, where $q$ is a prime such that $q \equiv 1 \mod 2n$ and $n$ is a power of two, and a precomputed table $\Psi^{-1}{rev} \in \mathbb{Z}_q^n$ storing powers of $\psi^{-1}$ in bit-reversed order.
+
+Output: $a \leftarrow \text{INTT}(a)$ in standard ordering.
+
+```plaintext
+t ← 1
+for m = n to 1 by m/2 do
+    j1 ← 0
+    h ← m / 2
+    for i = 0 to h-1 do
+        j2 ← j1 + t - 1
+        S ← Ψ⁻¹rev[h + i]
+        for j = j1 to j2 do
+            U ← a[j]
+            V ← a[j + t]
+            a[j] ← (U + V) mod q
+            a[j + t] ← (U - V) ⋅ S mod q
+        end for
+        j1 ← j1 + 2t
+    end for
+    t ← 2t
+end for
+for j = 0 to n-1 do
+    a[j] ← a[j] ⋅ n⁻¹ mod q
+end for
+return a
+```
+
+
+### NTT_VECMULMOD
+The Inverse NTT is described by the following algorithm.
+
+### NTT_VECADDMOD
+
+The Inverse NTT is described by the following algorithm.
 
 
 
 ## Rationale
 
+If $f$ and $g$ are two polynomials of $R$, then $fg$=NTT_INV(NTT_VECMULMOD(NTT_FW(a), NTT_FW(b))) is equal to the product of f and g in R. 
 
-The motivation section covers a total motivation to have NTT operations.
+
+
+
+### Fields of interest
+
+- FALCON: $p=3.2^{12}+1$
+- DILITHIUM: $p=1023.2^{13}+1$
+- KYBER: $p=13.2^8+1$
+- Babybear: $p=15.2^{27}+1$ (Risc0)
+- Goldilocks: $p=2^{64}-2^{32}+1$ (Polygon's Plonky2)
+- M31: $p=2^{31}-1$ (Circle STARKS, STwo, Plonky3)
+- StarkCurve: $p=2^{251}+17.2^{192}+1$
+
+In the provided [code example](), 
+a solidity implementation in FALCON field of such a multiplication is 16M gas. Adopting the Hash function as a separate EIP would enable a gas verification cost of 2000 gas.
+This is in line with the ratio  looking at SUPERCOP implementations.
+
+
+
 <!--
   The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
 
