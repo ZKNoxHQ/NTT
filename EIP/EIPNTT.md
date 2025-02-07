@@ -53,8 +53,8 @@ With the release of Willow cheap, the concern for quantum threat against Ethereu
 
 We introduce *four* separate precompiles to perform the following operations:
 
-- NTT_FW - to perform the forward NTT transformation (Negative wrap convolution) with a gas cost of `500` gas
-- NTT_INV - to perform the inverse NTT transformation (Negative wrap convolution) with a gas cost of `500` gas
+- NTT_FW - to perform the forward NTT transformation (Negative wrap convolution) with a gas cost of `600` gas
+- NTT_INV - to perform the inverse NTT transformation (Negative wrap convolution) with a gas cost of `600` gas
 - NTT_VECMULMOD - to perform vectorized modular multiplication with a gas cost formula defined in the corresponding section
 - NTT_VECADDMOD - to perform vectorized modular addition with a gas cost formula defined in the corresponding section
 
@@ -133,18 +133,36 @@ return a
 
 
 ### NTT_VECMULMOD
-The Inverse NTT is described by the following algorithm.
+
+The NTT_VECMULMOD is similar to SIMD in the functionning, but operates with larger sizes it takes as input:
+- q is the 
+- n the bit size of q, coded over the smallest integer in {16, 32, 64, 128, 256}
+- x the length of the vector of operands. x is  a power of 2 in {4, 8, 16, 32, 64, 128,256, 512}
+- a the first operand of x elements of size n
+- b the second operand of x elements of size n
+
+and computes the element-wise products mulmod(ai,bi,q) .
+The gas cost of the operation is $\log_2(x).n \over 8$
+
 
 ### NTT_VECADDMOD
 
 The Inverse NTT is described by the following algorithm.
 
+The NTT_VECMULMOD is similar to SIMD in the functionning, but operates with larger sizes it takes as input:
+- q is the 
+- n the bit size of q, coded over the smaller integer in {16, 32, 64, 128, 256}
+- x the size of the vector of operands. x is  a power of 2 in {16, 32, 64, 128,512}
+- a the first operand of x elements of size n
+- b the second operand of x elements of size n
 
+and computes the element-wise addition addmod(ai,bi,q) .
+The gas cost of the operation is $\log_2(x).n \over 32$
 
 ## Rationale
 
 If $f$ and $g$ are two polynomials of $R$, then $fg$=NTT_INV(NTT_VECMULMOD(NTT_FW(a), NTT_FW(b))) is equal to the product of f and g in R. 
-
+The algorithm has a complexity of $n \log n$ rather than $n^2$ of the classical schoolbook multiplication.
 
 
 
