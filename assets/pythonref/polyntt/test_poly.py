@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from random import randint
+from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
 import unittest
 from polyntt.test_cases import TEST_CASES
@@ -67,6 +68,20 @@ class TestPoly(unittest.TestCase):
                                          for _ in range(n)]), q)
                     h = f/g
                     self.assertEqual(h * g, f)
+
+    def test_inv(self, iterations=10):
+        """Test the division."""
+        for (q, k) in TEST_CASES:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                T = NTTIterative(q)
+                one = Poly([1]+[0 for i in range(n-1)], q)
+                for i in range(iterations):
+                    # invertible random f
+                    f = Poly(T.intt([randint(1, q-1)
+                                     for _ in range(n)]), q)
+                    inv_f = f.inverse()
+                    self.assertEqual(inv_f * f, one)
 
     def test_mul_pwc(self, iterations=10):
         """Test the multiplication modulo x^n+1."""

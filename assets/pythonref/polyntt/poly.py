@@ -1,7 +1,7 @@
 """This file contains the implementation of the polynomial arithmetic modulo the cyclotomic polynomial x**n+1 (where n is a power of 2)."""
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.ntt_recursive import NTTRecursive
-from polyntt.utils import bit_reverse_order
+from polyntt.utils import batch_modular_inversion, bit_reverse_order
 
 
 class Poly:
@@ -119,6 +119,15 @@ class Poly:
             return Poly(T.intt(T.vec_div(f_ntt, g_ntt)), self.q)
         except ZeroDivisionError:
             raise
+
+    def inverse(self):
+        T = self.NTT
+        f_ntt = T.ntt(self.coeffs)
+        try:
+            one_over_f_ntt = batch_modular_inversion(f_ntt, self.q)
+        except ZeroDivisionError:
+            raise
+        return Poly(T.intt(one_over_f_ntt), self.q)
 
     # def adj(f):
     #     """Ajoint of a polynomial (coefficient representation)."""
