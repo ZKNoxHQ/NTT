@@ -168,18 +168,30 @@ The algorithm has a complexity of $n \log n$ rather than $n^2$ of the classical 
 
 ### Fields of interest
 
-- FALCON: $p=3.2^{12}+1$
-- DILITHIUM: $p=1023.2^{13}+1$
-- KYBER: $p=13.2^8+1$
-- Babybear: $p=15.2^{27}+1$ (Risc0)
-- Goldilocks: $p=2^{64}-2^{32}+1$ (Polygon's Plonky2)
-- M31: $p=2^{31}-1$ (Circle STARKS, STwo, Plonky3)
-- StarkCurve: $p=2^{251}+17.2^{192}+1$
+- FALCON: $q=3.2^{12}+1$
+- DILITHIUM: $q=1023.2^{13}+1$
+- KYBER: $q=13.2^8+1$
+- Babybear: $q=15.2^{27}+1$ (Risc0)
+- Goldilocks: $q=2^{64}-2^{32}+1$ (Polygon's Plonky2)
+- M31: $q=2^{31}-1$ (Circle STARKS, STwo, Plonky3)
+- StarkCurve: $q=2^{251}+17.2^{192}+1$
 
-In the provided [code example](), 
-a solidity implementation in FALCON field of such a multiplication is 16M gas. Adopting the Hash function as a separate EIP would enable a gas verification cost of 2000 gas.
+
+### Benchmarks
+
+#### Pure solidity
+
+To illustrate the interest of the precompile, the assets provide the measured gas const for a single NTT and extrapolates the minimal gas cost taking into account the required number of NTT_FW and NTT_INV. The provided assets use pure Yul optimizations, with memory access hacks. It is unlikely that more than one order of magnitude could be spared on such a minimal code. 
+
+|Use case| Parameters                   | single NTT gas cost               | Estimated NTT/Full cost |
+|--|------------------------|---------------------|---------------------|
+|Falcon| $q=512, n=512$       | 1.8 M |5.4 M|
+|Dilithium| $q=1023.2^{13}+1, n=256$| X |22.X|
+
+This demonstrates that using pure solidity enables cheap L2s to experiment with FALCON from now, but is to expensive for L1.
+This numbers are reduced to 1500 gas when this EIP is adopted.
+Adopting the Hash function as a separate EIP would enable a gas verification cost of 2000 gas.
 This is in line with the ratio  looking at SUPERCOP implementations.
-
 
 
 <!--
