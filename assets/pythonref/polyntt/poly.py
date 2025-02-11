@@ -132,6 +132,13 @@ class Poly:
     def ntt(self):
         return self.NTT.ntt(self.coeffs)
 
+    def mul_opt(self, other_ntt):
+        f = self.coeffs
+        T = self.NTT
+        f_ntt = T.ntt(f)
+        g_ntt = other_ntt
+        return Poly(T.intt(T.vec_mul(f_ntt, g_ntt)), self.q)
+
     # def adj(f):
     #     """Ajoint of a polynomial (coefficient representation)."""
     #     return intt(adj_ntt(ntt(f)))

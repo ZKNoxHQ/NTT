@@ -105,3 +105,15 @@ class TestPoly(unittest.TestCase):
                     f_mul_g_1 = f.mul_pwc(g)
                     f_mul_g_2 = f.mul_pwc(g, NODE=True)
                     self.assertEqual(f_mul_g_1, f_mul_g_2)
+
+    def test_mul_opt(self, iterations=100):
+        """Compare mul_opt with __mul__."""
+        for (q, k) in TEST_CASES:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                for i in range(iterations):
+                    f = Poly([randint(0, q-1) for _ in range(n)], q)
+                    g = Poly([randint(0, q-1) for _ in range(n)], q)
+                    f_mul_g_1 = f*g
+                    f_mul_g_2 = f.mul_opt(g.ntt())
+                    self.assertEqual(f_mul_g_1, f_mul_g_2)
