@@ -13,8 +13,8 @@ test:
 	$(PYTHON) -m unittest  $(if $(TEST),polyntt.test_$(TEST),discover) -v
 
 bench:
-	$(PYTHON) polyntt/bench_poly_mul.py
-	$(PYTHON) polyntt/bench_iterative_recursive.py
+	$(PYTHON) -m polyntt.bench_poly_mul
+	$(PYTHON) -m polyntt.bench_iterative_recursive
 	
 clean:
 	rm -f $(AUX)
