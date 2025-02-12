@@ -15,7 +15,7 @@ generate_test_vectors:
 	$(PYTHON) -m polyntt.scripts.generate_test_vectors
 
 test: generate_test_vectors
-	$(PYTHON) -m unittest $(if $(TEST),polyntt.$(TEST),discover) -v
+	$(PYTHON) -m unittest $(if $(TEST),polyntt.tests.$(TEST),discover -s polyntt.tests) -v
 
 bench:
 	$(PYTHON) -m polyntt.bench_iterative_recursive
