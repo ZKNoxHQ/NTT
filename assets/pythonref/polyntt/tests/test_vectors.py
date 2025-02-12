@@ -5,7 +5,7 @@ from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
 from polyntt.params import PARAMS
 import unittest
-from polyntt.generate_test_vectors import decode
+from polyntt.scripts.generate_test_vectors import decode
 
 
 class TestVectors(unittest.TestCase):

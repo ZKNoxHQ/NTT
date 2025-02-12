@@ -47,10 +47,10 @@ The Inverse NTT is computed through the following algorithm:
 
 | Field | $n$ | Recursive NTT (Tetration) | Iterative NTT (ZKNox) | Iterative InvNTT (ZKNox)|
 |-|-|-|-|-|
-|Falcon   | 512  | 641 μs  | 462 μs  | 517 μs  |
+|Falcon   | 512  | 761 μs  | 528 μs  | 561 μs  |
 |Falcon   | 1024 | 1642 μs | 1076 μs | 1199 μs |
-|Dilithium| 512  | 658 μs  | 865 μs  | 596 μs  |
-|Dilithium| 1024 | 1476 μs | 1887 μs | 1344 μs |
+|Dilithium| 128  | 165 μs  | 114 μs  | 113 μs  |
+|Dilithium| 256  | 371 μs  | 258 μs  | 260 μs  |
 |BabyBear | 256  | 531 μs  | 389 μs  | 404 μs  |
 |BabyBear | 512  | 1199 μs | 1166 μs | 974 μs  |
 

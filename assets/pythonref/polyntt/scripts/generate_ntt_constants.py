@@ -30,8 +30,8 @@ for (q, two_adicity) in PARAMS:
         ψ = 3296
     elif q == 8380417:
         # Dilithium
-        # ψ is a root of the 2¹¹-th cyclotomic polynomial
-        ψ = 8379111
+        # ψ is a root of the 2⁹-th cyclotomic polynomial
+        ψ = 2926054
     elif q == 2013265921:
         # BabyBear
         # ψ is a root of the 2¹⁰-th cyclotomic polynomial
