@@ -15,9 +15,9 @@ For running all tests:
 ```
 make test
 ```
-For running a test of `test_ntt.py` (resp. `test_poly.py`):
+For running a specific test, use:
 ```
-make test TEST=ntt # resp. TEST=poly
+make test TEST=test_ntt_recursive.TestNTTRecursive.test_ntt_intt
 ```
 
 ## Benchmarks

@@ -10,7 +10,7 @@ class BenchIterativeRecursive:
         print("iterations:{}\n".format(iterations))
 
         print("q\tn\tIterative\t\tRecursive")
-        for (q, two_adicity) in [TEST_CASES[1]]:
+        for (q, two_adicity) in TEST_CASES:
 
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
