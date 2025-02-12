@@ -9,10 +9,10 @@ install:
 	$(PIP) install pycryptodome
 
 generate_ntt_constants:
-	$(PYTHON) -m polyntt.generate_ntt_constants
+	$(PYTHON) -m polyntt.scripts.generate_ntt_constants
 
 generate_test_vectors:
-	$(PYTHON) -m polyntt.generate_test_vectors
+	$(PYTHON) -m polyntt.scripts.generate_test_vectors
 
 test: generate_test_vectors
 	$(PYTHON) -m unittest $(if $(TEST),polyntt.$(TEST),discover) -v
