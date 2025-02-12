@@ -3,7 +3,7 @@ from random import randint
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
 import unittest
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 
 
 class TestPoly(unittest.TestCase):
@@ -19,13 +19,13 @@ class TestPoly(unittest.TestCase):
     #         self.assertEqual(f_plus_g - g, f)
 
     # def test_all(self, iterations=100):
-    #     for (q, k) in TEST_CASES:
+    #     for (q, k) in PARAMS:
     #         n = 1 << (k-1)
     #         self.add_sub(q, n)
 
     def test_add_sub(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):
@@ -36,7 +36,7 @@ class TestPoly(unittest.TestCase):
 
     def test_mod_q(self, iterations=100):
         """ Test if the reduction mod q works."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 zero = Poly([0 for _ in range(n)], q)
@@ -46,7 +46,7 @@ class TestPoly(unittest.TestCase):
 
     def test_mul(self, iterations=10):
         """Compare FFT multiplication with schoolbook multiplication."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):
@@ -57,7 +57,7 @@ class TestPoly(unittest.TestCase):
 
     def test_div(self, iterations=10):
         """Test the division."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):
@@ -71,7 +71,7 @@ class TestPoly(unittest.TestCase):
 
     def test_inv(self, iterations=10):
         """Test the division."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 T = NTTIterative(q)
@@ -85,7 +85,7 @@ class TestPoly(unittest.TestCase):
 
     def test_mul_pwc(self, iterations=10):
         """Test the multiplication modulo x^n+1."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(1, iterations):
@@ -96,7 +96,7 @@ class TestPoly(unittest.TestCase):
 
     def test_mul_pwc_one_table(self, iterations=100):
         """Compare NTT with one and four tables."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):
@@ -108,7 +108,7 @@ class TestPoly(unittest.TestCase):
 
     def test_mul_opt(self, iterations=100):
         """Compare mul_opt with __mul__."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):

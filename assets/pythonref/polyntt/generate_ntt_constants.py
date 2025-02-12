@@ -1,4 +1,4 @@
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 from polyntt.utils import bit_reverse_order, sqrt_mod
 
 
@@ -18,7 +18,7 @@ f.write(
 ψ_inv_rev = dict()
 n_inv = dict()
 
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     # list of roots of cyclotomic polynomials
     if q == 12*1024 + 1:
         # Falcon
@@ -59,7 +59,7 @@ for (q, two_adicity) in TEST_CASES:
 # writing ψ
 f.write("# Dictionary containing the powers ψ, a 2^n-th root of unity.\n")
 f.write("ψ = {\n")
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     f.write("\t# ψ = {}, ψ has multiplicative order {}.\n".format(
         ψ_table[q][1], 1 << two_adicity))
     f.write("\t{} : {},\n".format(q, ψ_table[q]))
@@ -68,7 +68,7 @@ f.write("}\n\n")
 # writing ψ_inv
 f.write("# Dictionary containing the powers of ψ_inv.\n")
 f.write("ψ_inv = {\n")
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     f.write("\t # ψ_inv = {}, ψ*ψ_inv = 1.\n".format(ψ_inv_table[q][1]))
     f.write("\t{} : {},\n".format(q, ψ_inv_table[q]))
 f.write("}\n\n")
@@ -77,7 +77,7 @@ f.write("}\n\n")
 f.write(
     "# The table ψ, but in bit-reversed order, i.e. the i-th element corresponds to ψ^{BitReversed(i)}.\n")
 f.write("ψ_rev = {\n")
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     f.write("\t{} : {},\n".format(q, ψ_rev[q]))
 f.write("}\n\n")
 
@@ -85,14 +85,14 @@ f.write("}\n\n")
 f.write(
     "# The table ψ_inv, but in bit-reversed order, i.e. the i-th element corresponds to ψ^{BitReversed(-i)}.\n")
 f.write("ψ_inv_rev = {\n")
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     f.write("\t{} : {},\n".format(q, ψ_inv_rev[q]))
 f.write("}\n\n")
 
 # writing n_inv
 f.write("# The inverses of powers of 2 mod q\n")
 f.write("n_inv = {\n")
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     f.write("\t{}: {{\n".format(q))
     # n_inv[{}] = {{\n".format(q))
     for j in range(1, two_adicity+1):
@@ -114,7 +114,7 @@ file.write(
     "# roots_dict_mod[q][n] corresponds to the roots of x^{2n} + 1 mod q\n")
 file.write("roots_dict_mod = {\n")
 
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
     file.write("\t{}: {{\n".format(q))
     phi_roots_Zq = [sqrt_mod(-1, q), q-sqrt_mod(-1, q)]
     for k in range(1, two_adicity):

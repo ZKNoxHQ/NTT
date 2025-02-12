@@ -1,7 +1,7 @@
 import hashlib
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 
 
 def write_test(f, input, name, expected, gas, final=False):
@@ -43,7 +43,7 @@ f = deterministic_poly(8, 3329)
 assert decode(encode(f, 3329), 3329) == f
 assert decode(encode(f, 3329), 3329) == f
 
-for (q, two_adicity) in TEST_CASES:
+for (q, two_adicity) in PARAMS:
 
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.json".format(q, n), "w")

@@ -1,4 +1,4 @@
-TEST_CASES = [
+PARAMS = [
     (3329, 7),  # Kyber
     (12289, 11),  # Falcon
     # could be 27 instead of 10, but larger storage

@@ -1,7 +1,7 @@
 from time import time
 from polyntt.generate_test_vectors import deterministic_poly
 from polyntt.poly import Poly
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 
 
 class BenchIterativeRecursive:
@@ -10,7 +10,7 @@ class BenchIterativeRecursive:
         print("({} iterations)".format(iterations))
 
         print("\tq\tn\tIterative\tRecursive")
-        for (q, two_adicity) in TEST_CASES:
+        for (q, two_adicity) in PARAMS:
 
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
@@ -39,7 +39,7 @@ class BenchIterativeRecursive:
         print("({} iterations)".format(iterations))
 
         print("\tq\tn\tIterative\tRecursive")
-        for (q, two_adicity) in TEST_CASES:
+        for (q, two_adicity) in PARAMS:
 
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:

@@ -3,7 +3,7 @@
 import json
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 import unittest
 from polyntt.generate_test_vectors import decode
 
@@ -11,7 +11,7 @@ from polyntt.generate_test_vectors import decode
 class TestVectors(unittest.TestCase):
     def test_vectors(self):
         """Run tests on the test vectors."""
-        for (q, two_adicity) in TEST_CASES:
+        for (q, two_adicity) in PARAMS:
 
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:

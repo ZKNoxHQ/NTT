@@ -2,7 +2,7 @@
 from random import randint
 from polyntt.ntt_recursive import NTTRecursive
 import unittest
-from polyntt.test_cases import TEST_CASES
+from polyntt.params import PARAMS
 
 
 class TestNTTRecursive(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestNTTRecursive(unittest.TestCase):
 
     def test_ntt_intt(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 T = NTTRecursive(q)
@@ -21,7 +21,7 @@ class TestNTTRecursive(unittest.TestCase):
 
     def test_ntt_linearity(self, iterations=100):
         """Test the linearity of NTT."""
-        for (q, k) in TEST_CASES:
+        for (q, k) in PARAMS:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 T = NTTRecursive(q)
