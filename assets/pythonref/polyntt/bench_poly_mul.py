@@ -11,7 +11,7 @@ class BenchPolyMul:
         iterations = 100
         print("iterations:{}\n".format(iterations))
 
-        print("        q\tn\tPatrick\t\tSchoolbook\tMert")
+        print("        q\tn\t[LN16]\t\tSchoolbook\tACMert")
         for (q, two_adicity) in TEST_CASES:
 
             # for two sizes of polynomials
@@ -23,7 +23,7 @@ class BenchPolyMul:
                 for i in range(iterations):
                     p3 = p1*p2
                 t2 = time()
-                p3_patrick = p3
+                p3_ln16 = p3
                 print("{:.2f} μs".format((t2-t1) * 10**6/iterations), end='\t')
 
                 p1 = Poly(deterministic_poly(q, n), q)
@@ -45,7 +45,7 @@ class BenchPolyMul:
                 p3_mert = p3
                 print("{:.2f} μs".format((t6-t5) * 10**6/iterations))
 
-                assert p3_mert == p3_patrick.coeffs and p3_mert == p3_schoolbook.coeffs
+                assert p3_mert == p3_ln16.coeffs and p3_mert == p3_schoolbook.coeffs
 
 
 BenchPolyMul.bench_poly_mul()
