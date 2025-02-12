@@ -1,5 +1,10 @@
 from polyntt.test_cases import TEST_CASES
-from polyntt.utils import bit_reverse_order
+from polyntt.utils import bit_reverse_order, sqrt_mod
+
+
+#
+# Generate constants for the iterative case
+#
 
 f = open("polyntt/ntt_constants.py", "w")
 f.write("# File generated with `python polyntt/generate_constants.py`.\n")
@@ -18,7 +23,7 @@ for (q, two_adicity) in TEST_CASES:
     if q == 12*1024 + 1:
         ψ = 1826  # a root of the 2¹¹-th cyclotomic polynomial
     elif q == 3329:
-        ψ = 17  # a root of the 2⁸-th cyclotomic polynomial
+        ψ = 3296  # a root of the 2⁷-th cyclotomic polynomial
     elif q == 2013265921:
         # a root of the 2¹⁰ cyclotomic polynomial (but could be larger 2-adicity)
         ψ = 1538055801
@@ -91,3 +96,26 @@ for (q, two_adicity) in TEST_CASES:
 f.write("}")
 
 f.close()
+
+#
+# Generate constants for the recursive case
+#
+
+file = open("polyntt/ntt_constants_recursive.py", 'w')
+file.write(
+    "# Roots of the cyclotomic polynomials mod q for the recursive ntt implementation\n")
+file.write("# File generated using `generate_contants_recursive.sage`\n")
+file.write(
+    "# roots_dict_mod[q][n] corresponds to the roots of x^{2n} + 1 mod q\n")
+file.write("roots_dict_mod = {\n")
+
+for (q, two_adicity) in TEST_CASES:
+    file.write("\t{}: {{\n".format(q))
+    phi_roots_Zq = [sqrt_mod(-1, q), q-sqrt_mod(-1, q)]
+    for k in range(1, two_adicity):
+        file.write("\t\t{} : {},\n".format(1 << k, phi_roots_Zq))
+        phi_roots_Zq = sum([[sqrt_mod(elt, q), q - sqrt_mod(elt, q)]
+                           for elt in phi_roots_Zq], [])
+    file.write("\t},\n")
+file.write("}\n")
+file.close()

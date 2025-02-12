@@ -2,7 +2,7 @@
 from random import randint
 from polyntt.ntt_recursive import NTTRecursive
 import unittest
-from polyntt.test_cases import TEST_CASES  # We test only Falcon parameters
+from polyntt.test_cases import TEST_CASES
 
 
 class TestNTTRecursive(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestNTTRecursive(unittest.TestCase):
 
     def test_ntt_intt(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
-        for (q, k) in [TEST_CASES[1]]:
+        for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 T = NTTRecursive(q)
@@ -21,7 +21,7 @@ class TestNTTRecursive(unittest.TestCase):
 
     def test_ntt_linearity(self, iterations=100):
         """Test the linearity of NTT."""
-        for (q, k) in [TEST_CASES[1]]:
+        for (q, k) in TEST_CASES:
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 T = NTTRecursive(q)
@@ -37,5 +37,3 @@ class TestNTTRecursive(unittest.TestCase):
                         T.ntt(λ_f_plus_μ_g),
                         [(λ*x+μ*y) % T.q for (x, y) in zip(f_ntt, g_ntt)]
                     )
-
-    # TODO TEST ADD AND SUB HERE

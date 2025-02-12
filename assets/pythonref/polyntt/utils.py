@@ -50,3 +50,41 @@ def bit_reverse_order(a):
         rev_index = int(bin(i)[2:].zfill(num_bits)[::-1], 2)
         result[rev_index] = a[i]
     return result
+
+
+def legendre_symbol(a, q):
+    """ Compute the Legendre symbol a|q using Euler's criterion. """
+    return pow(a, (q - 1) // 2, q)
+
+
+def tonelli_shanks(a, q):
+    """ Solve x^2 ≡ a (mod q) using the Tonelli-Shanks algorithm. """
+    if legendre_symbol(a, q) != 1:
+        raise ValueError(f"No square root exists for {a} modulo {q}")
+    s, m = 0, q - 1
+    while m % 2 == 0:
+        s += 1
+        m //= 2
+    z = 2
+    while legendre_symbol(z, q) != q - 1:
+        z += 1
+    c = pow(z, m, q)
+    t = pow(a, m, q)
+    r = pow(a, (m + 1) // 2, q)
+    while t != 1:
+        # Find the smallest i such that t^(2^i) ≡ 1 (mod q)
+        i = 0
+        t2i = t
+        while t2i != 1:
+            t2i = pow(t2i, 2, q)
+            i += 1
+        b = pow(c, 2**(s-i-1), q)
+        r = (r * b) % q
+        t = (t * b * b) % q
+        c = (b * b) % q
+        s = i
+    return r
+
+
+def sqrt_mod(x, q):
+    return tonelli_shanks(x, q)

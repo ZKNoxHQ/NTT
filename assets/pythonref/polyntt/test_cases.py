@@ -1,5 +1,5 @@
 TEST_CASES = [
-    (3329, 8),  # Kyber
+    (3329, 7),  # Kyber
     (12289, 11),  # Falcon
     # could be 27 instead of 10, but larger storage
     (2013265921, 10),  # Babybear # !Warining, 67.1Mb of storage needed!

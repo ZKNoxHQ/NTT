@@ -8,8 +8,13 @@ install:
 	$(PY) -m venv $(VENV)
 	$(PIP) install pycryptodome
 
-test:
+generate_ntt_constants:
+	$(PYTHON) -m polyntt.generate_ntt_constants
+
+generate_test_vectors:
 	$(PYTHON) -m polyntt.generate_test_vectors
+
+test: generate_test_vectors
 	$(PYTHON) -m unittest  $(if $(TEST),polyntt.test_$(TEST),discover) -v
 
 bench:
