@@ -55,6 +55,7 @@ The Inverse NTT is computed through the following algorithm:
 |BabyBear | 512  | 1199 μs | 1166 μs | 974 μs  |
 
 The recursive inverse NTT is very costly because of the required inversions. For Falcon, the field is small enough so that field inversions can be precomputed, but the cost is still higher than the iterative inverse NTT.
+The field arithmetic has not been optimized. In the case of BabyBear, this becomes significant and so the comparison is not really significant.
 
 ### Solidity
 
