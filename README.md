@@ -71,9 +71,7 @@ We provided an optimized version of FALCON, using an optimized version of NTT. T
 
 ## References
 
-- [[LN16]](https://eprint.iacr.org/2016/504.pdf) Speeding up the Number Theoretic Transform
-for Faster Ideal Lattice-Based Cryptography. Patrick Longa, Michael Naehrig.
+- [[LN16]](https://eprint.iacr.org/2016/504.pdf) Speeding up the Number Theoretic Transform for Faster Ideal Lattice-Based Cryptography. Patrick Longa, Michael Naehrig.
 - [[EIP616]](https://eips.ethereum.org/EIPS/eip-616) EIP-616: SIMD Operations for the EVM 
-- [[RD23]](https://eprint.iacr.org/2023/939.pdf) Speeding up elliptic computations for Ethereum Account
-Abstraction
-- [[DILITHIUM]](https://eprint.iacr.org/2017/633.pdf)
+- [[RD23]](https://eprint.iacr.org/2023/939.pdf) Speeding up elliptic computations for Ethereum Account Abstraction. Renaud Dubois.
+- [[DILITHIUM]](https://eprint.iacr.org/2017/633.pdf) CRYSTALS-Dilithium: A Lattice-Based Digital Signature Scheme. Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, Peter Schwabe, Gregor Seiler and Damien Stehlé.
