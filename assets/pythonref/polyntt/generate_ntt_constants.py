@@ -21,17 +21,22 @@ n_inv = dict()
 for (q, two_adicity) in TEST_CASES:
     # list of roots of cyclotomic polynomials
     if q == 12*1024 + 1:
-        ψ = 1826  # a root of the 2¹¹-th cyclotomic polynomial
+        # Falcon
+        # ψ is a root of the 2¹¹-th cyclotomic polynomial
+        ψ = 1826
     elif q == 3329:
-        ψ = 3296  # a root of the 2⁷-th cyclotomic polynomial
+        # Kyber
+        # ψ is a root of the 2⁷-th cyclotomic polynomial
+        ψ = 3296
+    elif q == 8380417:
+        # Dilithium
+        # ψ is a root of the 2¹¹-th cyclotomic polynomial
+        ψ = 8379111
     elif q == 2013265921:
-        # a root of the 2¹⁰ cyclotomic polynomial (but could be larger 2-adicity)
+        # BabyBear
+        # ψ is a root of the 2¹⁰-th cyclotomic polynomial
+        # (larger 2-adicity can be considered)
         ψ = 1538055801
-        # ψ = 137  # a root of the 2²⁷-th cyclotomic polynomial
-    elif q == 18446744069414584321:
-        ψ = 7277203076849721926  # a root of the 2³²-th cyclotomic polynomial
-    elif q == 8380417:  # Dilithium
-        ψ = 2926054
     else:
         print("NOT DEFINED YET")
     n = 1 << (two_adicity-1)

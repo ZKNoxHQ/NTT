@@ -18,7 +18,6 @@ test: generate_test_vectors
 	$(PYTHON) -m unittest  $(if $(TEST),polyntt.$(TEST),discover) -v
 
 bench:
-	$(PYTHON) -m polyntt.bench_poly_mul
 	$(PYTHON) -m polyntt.bench_iterative_recursive
 	
 clean:
