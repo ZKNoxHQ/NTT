@@ -6,8 +6,8 @@ from polyntt.utils import bit_reverse_order, sqrt_mod
 # Generate constants for the iterative case
 #
 
-f = open("polyntt/ntt_constants.py", "w")
-f.write("# File generated with `python polyntt/generate_constants.py`.\n")
+f = open("polyntt/ntt_constants_iterative.py", "w")
+f.write("# File generated with `python polyntt/generate_ntt_constants.py`.\n")
 f.write(
     "# Precomputations for NTT.\n\n"
 )

@@ -2,10 +2,8 @@
 It is optimized for x^n-1, but requires pre- and post-computations for ot x^n+1.
 We provide it here for comparison.
 """
-from polyntt.ntt_constants import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
-from polyntt.poly import Poly
+from polyntt.ntt_constants_iterative import n_inv, ψ_rev, ψ_inv_rev, ψ as Ψ, ψ_inv as Ψ_inv
 from math import log
-from polyntt.ntt_iterative import NTTIterative
 from polyntt.ntt import NTT
 
 
