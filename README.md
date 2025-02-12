@@ -45,6 +45,17 @@ The Inverse NTT is computed through the following algorithm:
 
 ### Python
 
+| Field | $n$ | Recursive NTT (Tetration) | Iterative NTT (ZKNox) | Iterative InvNTT (ZKNox)|
+|-|-|-|-|-|
+|Falcon   | 512  | 641 μs  | 462 μs  | 517 μs  |
+|Falcon   | 1024 | 1642 μs | 1076 μs | 1199 μs |
+|Dilithium| 512  | 658 μs  | 865 μs  | 596 μs  |
+|Dilithium| 1024 | 1476 μs | 1887 μs | 1344 μs |
+|BabyBear | 256  | 531 μs  | 389 μs  | 404 μs  |
+|BabyBear | 512  | 1199 μs | 1166 μs | 974 μs  |
+
+The recursive inverse NTT is very costly because of the required inversions. For Falcon, the field is small enough so that field inversions can be precomputed, but the cost is still higher than the iterative inverse NTT.
+
 ### Solidity
 
 
