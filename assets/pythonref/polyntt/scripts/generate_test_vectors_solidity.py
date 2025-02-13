@@ -13,29 +13,19 @@ def encode(poly, q):
     return byte_string.hex()
 
 
-def decode(hex_poly, q):
-    # By default, q is a 32-bit integer.
-    # NB: this does not apply to q_baby_bear nor q_plonky2.
-    size_q = (q.bit_length()+7)//8
-    bytes_poly = bytes.fromhex(hex_poly)
-    return [int.from_bytes(bytes_poly[i:i+size_q], 'big') for i in range(0, len(bytes_poly), size_q)]
-
-
 def deterministic_poly(q, n, seed="fixed_seed"):
     # This function is used for generating polynomials for the tests.
     # No randomness.
     return [int(hashlib.sha256(f"{seed}{i}".encode()).hexdigest(), 16) % q for i in range(n)]
 
 
-f = deterministic_poly(8, 3329)
-assert decode(encode(f, 3329), 3329) == f
-assert decode(encode(f, 3329), 3329) == f
-
 for (q, two_adicity) in PARAMS:
 
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.sol".format(q, n), "w")
 
+        file.write(
+            "// File generated using ../pythonref/scripts/generate_test_vectors_solidity.py\n\n")
         f = deterministic_poly(q, n, seed="seed_f")
         g = deterministic_poly(q, n, seed="seed_g")
 
