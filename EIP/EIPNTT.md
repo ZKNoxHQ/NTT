@@ -183,10 +183,12 @@ The algorithm has a complexity of $n \log n$ rather than $n^2$ of the classical 
 
 To illustrate the interest of the precompile, the assets provide the measured gas const for a single NTT and extrapolates the minimal gas cost taking into account the required number of NTT_FW and NTT_INV. The provided assets use pure Yul optimizations, with memory access hacks. It is unlikely that more than one order of magnitude could be spared on such a minimal code. 
 
-|Use case| Parameters                   | single NTT gas cost               | Estimated NTT/Full cost |
-|--|------------------------|---------------------|---------------------|
-|Falcon| $q=512, n=512$       | 1.8 M |5.4 M|
-|Dilithium| $q=1023.2^{13}+1, n=256$| X |22.X|
+|Use case| Parameters                   | single NTT gas cost         |  Required NTT(FW/INV)    | Estimated NTT/Full cost |
+|--|------------------------|---------------------|---------------------|---|
+|Falcon| $q=512, n=512$       | 1.8 M | 1 NTTFW+1 NTTINV |3.6 M| 
+|Dilithium| $q=1023.2^{13}+1, n=256$| 460K | 4 NTTFW +1 NTTINV|2.3M|
+
+Falcon cost has been measured over a full implementation and is compliant to the estimation. Dilithium cost is evaluated assuming
 
 This demonstrates that using pure solidity enables cheap L2s to experiment with FALCON from now, but is to expensive for L1.
 This numbers are reduced to 1500 gas when this EIP is adopted.
