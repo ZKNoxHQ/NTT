@@ -30,11 +30,13 @@ jobs:
           forge --version
 
       - name: Run Forge build
+        working-directory: assets/solidity
         run: |
           forge build 
         id: build
 
       - name: Run Forge tests
+        working-directory: assets/solidity
         run: |
           forge test -vvv
         id: test
