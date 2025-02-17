@@ -75,6 +75,10 @@ The field arithmetic has not been optimized. In the case of BabyBear, this becom
 Further optimizations are reached by using Yul for critical sections and using the CODECOPY and EXTCODECOPY trick detailed in of [[RD23]](https://eprint.iacr.org/2023/939.pdf) (section 3.3, "Hacking EVM memory access cost"). 
 
 
+| Function                   | Description               | gas cost | Tests Status |
+|------------------------|---------------------|---------------------|---------------------|
+| ntt.NTTFW       | ZKNOX_NTTFW, iterative yuled    | 1.9MM | OK|
+| falcon.verify_opt       | Full falcon verification with precomputated pubkey         | 3.6M | OK|
 
 ### Go Ethereum (WIP)
 
