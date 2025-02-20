@@ -5,12 +5,12 @@ from polyntt.utils import batch_modular_inversion, bit_reverse_order
 
 
 class Poly:
-    def __init__(self, coeffs, q, ntt='NTTIterative'):
+    def __init__(self, coeffs, q, ntt=NTTIterative):
         self.coeffs = coeffs
         self.q = q
-        if ntt == 'NTTIterative':
+        if ntt == NTTIterative:
             self.NTT = NTTIterative(q)
-        elif ntt == 'NTTRecursive':
+        elif ntt == NTTRecursive:
             self.NTT = NTTRecursive(q)
 
     def __eq__(self, other):

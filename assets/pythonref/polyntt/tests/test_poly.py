@@ -4,6 +4,7 @@ from polyntt.ntt_iterative import NTTIterative
 from polyntt.poly import Poly
 import unittest
 from polyntt.params import PARAMS
+from polyntt.utils import inv_mod
 
 
 class TestPoly(unittest.TestCase):
@@ -117,3 +118,18 @@ class TestPoly(unittest.TestCase):
                     f_mul_g_1 = f*g
                     f_mul_g_2 = f.mul_opt(g.ntt())
                     self.assertEqual(f_mul_g_1, f_mul_g_2)
+
+    def test_parseval(self):
+        q = 12289
+        n = 4
+        f = Poly([1, 2, 3, 4], q)
+        norm_f = sum([(elt**2) for elt in f.coeffs])
+        print(norm_f % q)
+
+        F = f.ntt()
+        normF = sum([(elt**2) for elt in F])
+        print(normF % q)
+
+        '''
+        Σ|fi|² = Σ |fi + αq|² = Σ fi² + 2fiαq + α²q² 
+        '''

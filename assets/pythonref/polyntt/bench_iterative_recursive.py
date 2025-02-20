@@ -2,6 +2,8 @@ from time import time
 from polyntt.scripts.generate_test_vectors import deterministic_poly
 from polyntt.poly import Poly
 from polyntt.params import PARAMS
+from polyntt.ntt_iterative import NTTIterative
+from polyntt.ntt_recursive import NTTRecursive
 
 
 class BenchIterativeRecursive:
@@ -15,7 +17,7 @@ class BenchIterativeRecursive:
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
                 print("{:10.0f}\t{}".format(q, n), end='\t')
-                p1 = Poly(deterministic_poly(q, n), q, 'NTTRecursive')
+                p1 = Poly(deterministic_poly(q, n), q, NTTRecursive)
                 T = p1.NTT
                 tmp = p1.ntt()
                 t1 = time()
@@ -25,7 +27,7 @@ class BenchIterativeRecursive:
                 print("{:.0f} μs".format(
                     (t2-t1) * 10**6/iterations), end='\t\t')
 
-                p1 = Poly(deterministic_poly(q, n), q, 'NTTIterative')
+                p1 = Poly(deterministic_poly(q, n), q, NTTIterative)
                 T = p1.NTT
                 tmp = p1.ntt()
                 t3 = time()
@@ -44,7 +46,7 @@ class BenchIterativeRecursive:
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
                 print("{:10.0f}\t{}".format(q, n), end='\t')
-                p1 = Poly(deterministic_poly(q, n), q, 'NTTRecursive')
+                p1 = Poly(deterministic_poly(q, n), q, NTTRecursive)
                 T = p1.NTT
                 tmp = p1.ntt()
                 t1 = time()
@@ -54,7 +56,7 @@ class BenchIterativeRecursive:
                 print("{:.0f} μs".format(
                     (t2-t1) * 10**6/iterations), end='\t\t')
 
-                p1 = Poly(deterministic_poly(q, n), q, 'NTTIterative')
+                p1 = Poly(deterministic_poly(q, n), q, NTTIterative)
                 T = p1.NTT
                 tmp = p1.ntt()
                 t3 = time()
