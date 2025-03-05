@@ -28,10 +28,10 @@ for (q, two_adicity) in PARAMS:
         # Kyber
         # ψ is a root of the 2⁷-th cyclotomic polynomial
         ψ = 3296
-    elif q == 8380417:
+    elif q == 8380417 and two_adicity == 9:
         # Dilithium
         # ψ is a root of the 2⁹-th cyclotomic polynomial
-        ψ = 2926054
+        ψ = 1753
     elif q == 2013265921:
         # BabyBear
         # ψ is a root of the 2¹⁰-th cyclotomic polynomial
