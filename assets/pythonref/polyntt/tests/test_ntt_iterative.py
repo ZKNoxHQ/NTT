@@ -38,4 +38,30 @@ class TestNTTIterative(unittest.TestCase):
                         [(λ*x+μ*y) % T.q for (x, y) in zip(f_ntt, g_ntt)]
                     )
 
+    def test_ntt_without_mod(self, iterations=1):
+        """Test for a more efficient intt."""
+        for (q, k) in [PARAMS[0]]:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                T = NTTIterative(q)
+                for i in range(iterations):
+                    f = [randint(0, T.q - 1) for j in range(n)]
+                    self.assertEqual(
+                        T.ntt(f),
+                        T.ntt_without_mod(f)
+                    )
+
+    def test_intt_without_mod(self, iterations=100):
+        """Test for a more efficient intt."""
+        for (q, k) in [PARAMS[0]]:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                T = NTTIterative(q)
+                for i in range(iterations):
+                    f = [randint(0, T.q - 1) for j in range(n)]
+                    self.assertEqual(
+                        T.intt(T.ntt(f)),
+                        T.intt_without_mod(T.ntt(f))
+                    )
+
     # TODO TEST ADD AND SUB HERE
