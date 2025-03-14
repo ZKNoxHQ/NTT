@@ -47,6 +47,11 @@ class NTTIterative(NTT):
 
     def ntt_without_mod(self, f):
         # following eprint 2016/504 Algorithm 1
+        # with modular reduction only in the final loop
+        # at every step, V < 2**ell * q**(ell+2)
+        # using powers of 2, V < 2**ell * 2**(14*ell + 14) * q
+        # so -V = q << (15*ell+14)
+
         a = [_ for _ in f]
         n = len(a)
         t = n
@@ -61,7 +66,7 @@ class NTTIterative(NTT):
                 for j in range(j1, j2+1):
                     U = a[j]
                     V = a[j+t]*S
-                    V_neg = (self.q << ((ell+1)*15)) - V
+                    V_neg = (self.q << (15*ell + 14)) - V
                     a[j] = (U+V)
                     a[j+t] = (U+V_neg)
                     assert a[j+t] < (1 << 256)
