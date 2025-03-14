@@ -51,7 +51,8 @@ class NTTIterative(NTT):
         # at every step, V < 2**ell * q**(ell+2)
         # using powers of 2, V < 2**ell * 2**(14*ell + 14) * q
         # so -V = q << (15*ell+14)
-
+        # THIS WORKS FOR Q OF THE SIZE OF FALCON Q=12289!!!
+        assert self.q == 12289
         a = [_ for _ in f]
         n = len(a)
         t = n
@@ -105,6 +106,8 @@ class NTTIterative(NTT):
         # at every step, U,V < 2**ell * q**(ell+1)
         # using powers of 2, U,V < 2**ell * 2**(14*ell) * q
         # so -V = q << (15*ell)
+        # THIS WORKS FOR Q OF THE SIZE OF FALCON Q=12289!!!
+        assert self.q == 12289
         a = [_ for _ in f_ntt]
         n = len(a)
         t = 1
