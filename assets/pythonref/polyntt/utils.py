@@ -16,6 +16,8 @@ def inv_mod(elt, q):
     """
     _, inv_elt, _ = xgcd(elt, q)
     assert (inv_elt * elt) % q == 1
+    if inv_elt < 0:
+        inv_elt += q
     return inv_elt
 
 

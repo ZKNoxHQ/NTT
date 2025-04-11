@@ -23,7 +23,7 @@ for (q, two_adicity) in PARAMS:
     if q == 12*1024 + 1:
         # Falcon
         # ψ is a root of the 2¹¹-th cyclotomic polynomial
-        ψ = 1826
+        ψ = 1826  # TODO CHANGE TO ψ=7 for NIST CONSISTENCY OF THE SIGNER
     elif q == 3329:
         # Kyber
         # ψ is a root of the 2⁷-th cyclotomic polynomial
