@@ -1,0 +1,8 @@
+assets/solidity/out
+assets/solidity/cache
+assets/pythonref/myenv/
+assets/pythonref/polyntt.egg-info/
+assets/pythonref/polyntt/__pycache__/
+assets/pythonref/polyntt/scripts/__pycache__/
+assets/pythonref/polyntt/tests/__pycache__/
+
