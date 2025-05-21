@@ -34,14 +34,14 @@ for (q, two_adicity) in PARAMS:
         ψ = 1753
     elif q == 2013265921:
         # BabyBear
-        # ψ is a root of the 2¹⁰-th cyclotomic polynomial
+        # ψ is a root of the 2⁹-th cyclotomic polynomial
         # (larger 2-adicity can be considered)
-        ψ = 1538055801
+        ψ = 16303300
     elif q == 2**31-2**24+1:
         # KoalaBear
-        # ψ is a root of the 2¹⁰-th cyclotomic polynomial
+        # ψ is a root of the 2⁹-th cyclotomic polynomial
         # (larger 2-adicity can be considered)
-        ψ = 2127996627
+        ψ = 1506173
     else:
         print("NOT DEFINED YET")
     n = 1 << (two_adicity-1)
