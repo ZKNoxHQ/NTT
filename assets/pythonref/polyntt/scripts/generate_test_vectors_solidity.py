@@ -48,58 +48,55 @@ for (q, two_adicity) in PARAMS:
         #   Input: f,g
         #   Output: ntt(f), ntt(g).
         file.write("// ntt of f and g;\n")
-        file.write("uint{}[] f = {};\n".format(len(f), f))
-        file.write("uint{}[] g = {};\n".format(len(g), g))
-        file.write("uint{}[] f_ntt = {};\n".format(len(f_ntt), f_ntt))
-        file.write("uint{}[] g_ntt = {};\n".format(len(g_ntt), g_ntt))
+        file.write("uint256[] f = {};\n".format(f))
+        file.write("uint256[] g = {};\n".format(g))
+        file.write("uint256[] f_ntt = {};\n".format(f_ntt))
+        file.write("uint256[] g_ntt = {};\n".format(g_ntt))
         file.write("\n")
 
         # 2. intt
         #   Input: f_ntt,g_ntt
         #   Output: f, g
         file.write("// intt of f_ntt and g_ntt;\n")
-        file.write("uint{}[] f_ntt = {};\n".format(len(f_ntt), f_ntt))
-        file.write("uint{}[] g_ntt = {};\n".format(len(g_ntt), g_ntt))
-        file.write("uint{}[] f = {};\n".format(len(f), f))
-        file.write("uint{}[] g = {};\n".format(len(g), g))
+        file.write("uint256[] f_ntt = {};\n".format(f_ntt))
+        file.write("uint256[] g_ntt = {};\n".format(g_ntt))
+        file.write("uint256[] f = {};\n".format(f))
+        file.write("uint256[] g = {};\n".format(g))
         file.write("\n")
 
         # 3. vec_mul
         #   Input: f_ntt, g_ntt,
         #   Output: f_ntt*g_ntt.
         file.write("// vec_mul of f_ntt and g_ntt;\n")
-        file.write("uint{}[] f_ntt = {};\n".format(len(f_ntt), f_ntt))
-        file.write("uint{}[] g_ntt = {};\n".format(len(g_ntt), g_ntt))
-        file.write("uint{}[] f_ntt_mul_g_ntt = {};\n".format(
-            len(f_ntt_mul_g_ntt), f_ntt_mul_g_ntt))
+        file.write("uint256[] f_ntt = {};\n".format(f_ntt))
+        file.write("uint256[] g_ntt = {};\n".format(g_ntt))
+        file.write("uint256[] f_ntt_mul_g_ntt = {};\n".format(f_ntt_mul_g_ntt))
         file.write("\n")
 
         # 4. pol_mul
         #   Input: f,g,
         #   Output: f*g.
         file.write("// pol_mul of f and g;\n")
-        file.write("uint{}[] f = {};\n".format(len(f), f))
-        file.write("uint{}[] g = {};\n".format(len(g), g))
-        file.write("uint{}[] f_mul_g = {};\n".format(len(f_mul_g), f_mul_g))
+        file.write("uint256[] f = {};\n".format(f))
+        file.write("uint256[] g = {};\n".format(g))
+        file.write("uint256[] f_mul_g = {};\n".format(f_mul_g))
         file.write("\n")
 
         # 5. vec_add
         #   Input: f_ntt, g_ntt,
         #   Output: f_ntt + g_ntt.
         file.write("// vec_add of f_ntt and g_ntt;\n")
-        file.write("uint{}[] f_ntt = {};\n".format(len(f_ntt), f_ntt))
-        file.write("uint{}[] g_ntt = {};\n".format(len(g_ntt), g_ntt))
-        file.write("uint{}[] f_ntt_add_g_ntt = {};\n".format(
-            len(f_ntt_add_g_ntt), f_ntt_add_g_ntt))
+        file.write("uint256[] f_ntt = {};\n".format(f_ntt))
+        file.write("uint256[] g_ntt = {};\n".format(g_ntt))
+        file.write("uint256[] f_ntt_add_g_ntt = {};\n".format(f_ntt_add_g_ntt))
         file.write("\n")
 
         # 6. vec_sub
         #   Input: f_ntt, g_ntt,
         #   Output: f_ntt - g_ntt.
         file.write("// vec_sub of f_ntt and g_ntt;\n")
-        file.write("uint{}[] f_ntt = {};\n".format(len(f_ntt), f_ntt))
-        file.write("uint{}[] g_ntt = {};\n".format(len(g_ntt), g_ntt))
-        file.write("uint{}[] f_ntt_sub_g_ntt = {};\n".format(
-            len(f_ntt_sub_g_ntt), f_ntt_sub_g_ntt))
+        file.write("uint256[] f_ntt = {};\n".format(f_ntt))
+        file.write("uint256[] g_ntt = {};\n".format(g_ntt))
+        file.write("uint256[] f_ntt_sub_g_ntt = {};\n".format(f_ntt_sub_g_ntt))
         file.write("\n")
     file.close()
