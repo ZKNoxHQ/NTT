@@ -37,6 +37,11 @@ for (q, two_adicity) in PARAMS:
         # ψ is a root of the 2¹⁰-th cyclotomic polynomial
         # (larger 2-adicity can be considered)
         ψ = 1538055801
+    elif q == 2**31-2**24+1:
+        # KoalaBear
+        # ψ is a root of the 2¹⁰-th cyclotomic polynomial
+        # (larger 2-adicity can be considered)
+        ψ = 2127996627
     else:
         print("NOT DEFINED YET")
     n = 1 << (two_adicity-1)
