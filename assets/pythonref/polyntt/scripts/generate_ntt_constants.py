@@ -1,6 +1,7 @@
 from polyntt.params import PARAMS
 from polyntt.utils import bit_reverse_order, sqrt_mod
-
+# from polyntt.m31 import *
+from polyntt.m31_2 import mul2, inv2, p, sqrt_m31_2, opp2
 
 #
 # Generate constants for the iterative case
@@ -42,24 +43,58 @@ for (q, two_adicity) in PARAMS:
         # ψ is a root of the 2⁹-th cyclotomic polynomial
         # (larger 2-adicity can be considered)
         ψ = 1506173
+    elif q == 2**31 - 1:
+        # Mersenne 31
+        # ψ is a root of the 2⁹-th cyclotomic polynomial
+        # (larger 2-adicity can be considered)
+        # defined over Fp² with i = sqrt(-i)
+        ψ = [13610297, 1064696601]
     else:
         print("NOT DEFINED YET")
-    n = 1 << (two_adicity-1)
-    assert pow(ψ, 2*n, q) == 1 and pow(ψ, n, q) != 1
 
-    ψ_inv = pow(ψ, -1, q)
-    assert (ψ*ψ_inv) % q == 1
+    if q != 2**31-1 :
 
-    # Precompute powers of ψ to speedup main NTT process.
-    ψ_table[q] = [1] * n
-    ψ_inv_table[q] = [1] * n
-    for i in range(1, n):
-        ψ_table[q][i] = ((ψ_table[q][i-1] * ψ) % q)
-        ψ_inv_table[q][i] = ((ψ_inv_table[q][i-1] * ψ_inv) % q)
+        n = 1 << (two_adicity-1)
+        assert pow(ψ, 2*n, q) == 1 and pow(ψ, n, q) != 1
 
-    # Change the lists into bit-reverse order.
-    ψ_rev[q] = bit_reverse_order(ψ_table[q])
-    ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
+        ψ_inv = pow(ψ, -1, q)
+        assert (ψ*ψ_inv) % q == 1
+
+        # Precompute powers of ψ to speedup main NTT process.
+        ψ_table[q] = [1] * n
+        ψ_inv_table[q] = [1] * n
+        for i in range(1, n):
+            ψ_table[q][i] = ((ψ_table[q][i-1] * ψ) % q)
+            ψ_inv_table[q][i] = ((ψ_inv_table[q][i-1] * ψ_inv) % q)
+
+        # Change the lists into bit-reverse order.
+        ψ_rev[q] = bit_reverse_order(ψ_table[q])
+        ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
+
+    else : # q = 2³¹ - 1, we use the NTT over Fp2
+        # check that ψ⁹ == 1  and ψ⁸ ≠ 1
+        toto = ψ
+        for i in range(two_adicity-1):
+            toto = mul2(toto, toto)
+        assert toto != [1, 0]
+        assert mul2(toto, toto) == [1, 0]
+
+        ψ_inv = inv2(ψ)
+        assert mul2(ψ, ψ_inv) == [1, 0]
+
+
+
+        # Precompute powers of ψ to speedup main NTT process.
+        ψ_table[q] = [[1, 0]] * n
+        ψ_inv_table[q] = [[1, 0]] * n
+        for i in range(1, n):
+            ψ_table[q][i] = mul2(ψ_table[q][i-1], ψ)
+            ψ_inv_table[q][i] = mul2(ψ_inv_table[q][i-1], ψ_inv)
+
+        # Change the lists into bit-reverse order.
+        ψ_rev[q] = bit_reverse_order(ψ_table[q])
+        ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
+
 
 # writing ψ
 f.write("# Dictionary containing the powers ψ, a 2^n-th root of unity.\n")
@@ -100,8 +135,11 @@ f.write("n_inv = {\n")
 for (q, two_adicity) in PARAMS:
     f.write("\t{}: {{\n".format(q))
     # n_inv[{}] = {{\n".format(q))
-    for j in range(1, two_adicity+1):
-        f.write("\t\t{}: {},\n".format(1 << j, pow(1 << j, -1, q)))
+    for j in range(two_adicity+1):
+        if q!= 2**31-1:
+            f.write("\t\t{}: {},\n".format(1 << j, pow(1 << j, -1, q)))
+        else:
+            f.write("\t\t{}: {},\n".format(1 << j, [pow(1 << j, -1, q), 0]))
     f.write("\t},\n")
 f.write("}")
 
@@ -121,11 +159,21 @@ file.write("roots_dict_mod = {\n")
 
 for (q, two_adicity) in PARAMS:
     file.write("\t{}: {{\n".format(q))
-    phi_roots_Zq = [sqrt_mod(-1, q), q-sqrt_mod(-1, q)]
+    if q != 2**31-1:
+        phi_roots = [sqrt_mod(-1, q), q-sqrt_mod(-1, q)]
+    else:
+        phi_roots = [[0, 1], [0, p-1]]
+
     for k in range(1, two_adicity):
-        file.write("\t\t{} : {},\n".format(1 << k, phi_roots_Zq))
-        phi_roots_Zq = sum([[sqrt_mod(elt, q), q - sqrt_mod(elt, q)]
-                           for elt in phi_roots_Zq], [])
+        file.write("\t\t{} : {},\n".format(1 << k, phi_roots))
+        if q!= 2**31-1:
+            phi_roots = sum([[sqrt_mod(elt, q), q - sqrt_mod(elt, q)]
+                            for elt in phi_roots], [])
+        else:
+            phi_roots = sum([[sqrt_m31_2(elt), opp2(sqrt_m31_2(elt))]
+                for elt in phi_roots], [])
+
     file.write("\t},\n")
 file.write("}\n")
 file.close()
+

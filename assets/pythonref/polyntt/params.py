@@ -7,4 +7,5 @@ PARAMS = [
     # (18446744069414584321, 32),  # Plonky2 # !WARNING, 4.2Gb of storage needed!
     (2**31-2**24+1, 9),  # Koalabear
     # (2**31-2**24+1, 24),  # Koalabear with full 2-adicity # !WARNING big storage
+    (2**31-1, 9), # Mersenne 31
 ]

@@ -2,7 +2,7 @@
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.ntt_recursive import NTTRecursive
 from polyntt.utils import batch_modular_inversion, bit_reverse_order
-
+from polyntt.m31_2 import p, mul2, inv2
 
 class Poly:
     def __init__(self, coeffs, q, ntt=NTTIterative):
