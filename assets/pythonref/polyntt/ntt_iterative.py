@@ -24,12 +24,12 @@ class NTTIterative(NTT):
         self.ψ_inv_rev = ψ_inv_rev[q]
         # inverse of n mod q for intt
         self.n_inv = n_inv[q]
-        # roots_dict_mod (could be removed as we need only one element for Fp->Fp² and back TODO)
+        # TODO description
         self.roots_dict_mod = roots_dict_mod[q]
         # ratio between degree n and number of complex coefficients of the NTT
         # while here this ratio is 1, it is possible to develop a short NTT such that it is 2.
         self.ntt_ratio = 1
-        if q == (1<<31)-1:
+        if q == (2**31)-1:
             self.ntt = self.ntt_m31
             self.intt = self.intt_m31
 

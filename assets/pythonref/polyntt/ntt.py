@@ -1,5 +1,5 @@
 from polyntt.utils import batch_modular_inversion
-
+from polyntt.m31_2 import mul2
 
 class NTT():
     """Base class for Number Theoretic Transform"""
@@ -30,7 +30,10 @@ class NTT():
         """Multiplication of two polynomials (NTT representation)."""
         assert len(f_ntt) == len(g_ntt)
         deg = len(f_ntt)
-        return [(f_ntt[i] * g_ntt[i]) % self.q for i in range(deg)]
+        if self.q==2**31-1: # we assume these are Fp² elements
+            return [mul2(f_ntt[i], g_ntt[i]) for i in range(deg)]
+        else:
+            return [(f_ntt[i] * g_ntt[i]) % self.q for i in range(deg)]
 
     def vec_div(self, f_ntt, g_ntt):
         """Division of two polynomials (NTT representation)."""

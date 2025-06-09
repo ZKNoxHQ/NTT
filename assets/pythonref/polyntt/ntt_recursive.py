@@ -49,6 +49,8 @@ class NTTRecursive(NTT):
             self.intt = self.intt_m31
             self.split_ntt = self.split_ntt_m31
             self.merge_ntt = self.merge_ntt_m31
+            self.n = 2**8
+
 
     def split_ntt(self, f_ntt):
         """Split a polynomial f in two or three polynomials.
@@ -161,28 +163,30 @@ class NTTRecursive(NTT):
 
 
     def ntt_m31(self, f):
+        return self.ntt_m31_2(self.fp_to_fp2(f))
+    
+    def fp_to_fp2(self, f):
+        # this map is Fp[x]/(x^n+1) -> Fp²[y]/(y^{n/2}+1)
+        # by x -> ωy
+        a = [_ for _ in f]
+        r = []
+        n = len(a)//2
+        ω = self.roots_dict_mod[2*n][0]
+        ω_i = [1, 0]
+        for i in range(n):
+            r.append(mul2([a[i], self.q-a[i+n]], ω_i))
+            ω_i = mul2(ω_i, ω)
+        return r
+    
+    def ntt_m31_2(self, f):
         """Compute the NTT of a polynomial.
         """
-        # first, convert into Fp² elements
-        # if needed
-        if not(isinstance(f[0], list)):
-            # this map is Fp[x]/(x^n+1) -> Fp²[y]/(y^{n/2}+1)
-            # by x -> ωy
-            a = f
-            r = []
-            n = len(a)//2
-            ω = self.roots_dict_mod[2*n][0]
-            ω_i = [1, 0]
-            for i in range(n):
-                r.append(mul2([a[i], self.q-a[i+n]], ω_i))
-                ω_i = mul2(ω_i, ω)
-        else:
-            r = [_ for _ in f]
+        r = [_ for _ in f]
         n = len(r)
         if (n > 2):
             f0, f1 = r[::2], r[1::2]
-            f0_ntt = self.ntt_m31(f0)
-            f1_ntt = self.ntt_m31(f1)
+            f0_ntt = self.ntt_m31_2(f0)
+            f1_ntt = self.ntt_m31_2(f1)
             f_ntt = self.merge_ntt([f0_ntt, f1_ntt])
         elif (n == 2):
             f_ntt = [0] * n
@@ -190,36 +194,34 @@ class NTTRecursive(NTT):
             f_ntt[1] = sub2(r[0], mul2(r[1], sqr1))
         return f_ntt
 
+    
+    def intt_m31(self, f):
+        return self.fp2_to_fp(self.intt_m31_2(f))
 
-    def intt_m31(self, f_ntt):
+    def intt_m31_2(self, f_ntt):
         """Compute the inverse NTT of a polynomial.
         """
-        # first, iNTT in Fp²
         n = len(f_ntt)
         if (n > 2):
             f0_ntt, f1_ntt = self.split_ntt(f_ntt)
-            f0 = self.intt_m31(f0_ntt)
-            f1 = self.intt_m31(f1_ntt)
+            f0 = self.intt_m31_2(f0_ntt)
+            f1 = self.intt_m31_2(f1_ntt)
             f = merge([f0, f1])
         elif (n == 2):
             f = [0] * n
             f[0] = mul2(add2(f_ntt[0], f_ntt[1]), [i2, 0])
             f[1] = mul2(sub2(f_ntt[0], f_ntt[1]), mul2([i2, 0], sqr1_inv))
-        # second, convert back to Fp
-        # if needed
-        if len(f) == 2**6: # TODO FIX THIS BECAUSE ITS NOT WORKING FROM A GENERAL POINT OF VIEW
-            a = [_ for _ in f]
-            r = []
-            s = []
-            n = len(a)
-            ω = self.roots_dict_mod[2*n][0]
-            ω_inv = inv2(ω)
-            ω_inv_i = [1, 0]
-            for i in range(n):
-                c = mul2(a[i], ω_inv_i)
-                ω_inv_i = mul2(ω_inv_i, ω_inv)
-                r.append(c[0])
-                s.append(self.q-c[1])
-            return r+s
-        else:
-            return f
+        return f
+    
+    def fp2_to_fp(self, f):
+        a = [_ for _ in f]
+        r,s = [], []
+        ω = self.roots_dict_mod[2*len(a)][0]
+        ω_inv = inv2(ω)
+        ω_inv_i = [1, 0]
+        for i in range(len(a)):
+            c = mul2(a[i], ω_inv_i)
+            ω_inv_i = mul2(ω_inv_i, ω_inv)
+            r.append(c[0])
+            s.append(self.q-c[1])
+        return r+s

@@ -2,7 +2,7 @@
 from polyntt.ntt_iterative import NTTIterative
 from polyntt.ntt_recursive import NTTRecursive
 from polyntt.utils import batch_modular_inversion, bit_reverse_order
-from polyntt.m31_2 import p, mul2, inv2
+from polyntt.m31_2 import p, mul2, add2
 
 class Poly:
     def __init__(self, coeffs, q, ntt=NTTIterative):
@@ -100,13 +100,23 @@ class Poly:
         assert n == len(g)
         C = [0] * (2 * n)
         D = [0] * (n)
-        for j, f_j in enumerate(f):
-            for k, g_k in enumerate(g):
-                C[j+k] = (C[j+k] + f_j * g_k) % self.q
-        # reduction modulo x^n  - 1
-        for i in range(n):
-            D[i] = (C[i] + C[i+n]) % self.q
-        return Poly(D, self.q)
+
+        if self.q == 2**31-1:
+            for j, f_j in enumerate(f):
+                for k, g_k in enumerate(g):
+                    C[j+k] = add2(C[j+k], mul2(f_j, g_k))
+            # reduction modulo x^n  - 1
+            for i in range(n):
+                D[i] = add2(C[i], C[i+n])
+            return Poly(D, self.q)
+        else:
+            for j, f_j in enumerate(f):
+                for k, g_k in enumerate(g):
+                    C[j+k] = (C[j+k] + f_j * g_k) % self.q
+            # reduction modulo x^n  - 1
+            for i in range(n):
+                D[i] = (C[i] + C[i+n]) % self.q
+            return Poly(D, self.q)
 
     def __truediv__(self, other):
         """Division of two polynomials (coefficient representation)."""

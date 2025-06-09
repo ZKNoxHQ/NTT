@@ -45,7 +45,7 @@ assert decode(encode(f, 3329), 3329) == f
 
 for (q, two_adicity) in PARAMS:
 
-    if q == (1<<31)-1:
+    if q == (2**31)-1:
         continue
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.json".format(q, n), "w")

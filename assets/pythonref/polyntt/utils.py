@@ -1,3 +1,4 @@
+from polyntt.m31_2 import mul2, inv2
 
 def xgcd(a, b):
     """ Returns gcd(a, b), and x, y such that ax + by = gcd(a, b) """
@@ -30,17 +31,30 @@ def batch_modular_inversion(elements, q):
     prefix = [None] * n
     prefix[0] = elements[0]
     for i in range(1, n):
-        prefix[i] = (prefix[i - 1] * elements[i]) % q
-    # Iinverse of the total product
-    total_inv = inv_mod(prefix[-1], q)
+        # TODO IMPLEMENT FIELD CLASS
+        if q == 2**31-1:
+            prefix[i] = mul2(prefix[i - 1], elements[i])
+        else:
+            prefix[i] = (prefix[i - 1] * elements[i]) % q
+    # Inverse of the total product
+    if q == 2**31-1:
+        total_inv = inv2(prefix[-1])
+    else:
+        total_inv = inv_mod(prefix[-1], q)
     # Individual inverses using the prefix products
     inverses = [None] * n
     inverses[-1] = total_inv
     for i in range(n - 2, -1, -1):
-        inverses[i] = (inverses[i + 1] * elements[i + 1]) % q
+        if q == 2**31-1:
+            inverses[i] = mul2(inverses[i + 1], elements[i + 1])
+        else:
+            inverses[i] = (inverses[i + 1] * elements[i + 1]) % q
     # Final inverses
     for i in range(1, n):
-        inverses[i] = (inverses[i] * prefix[i - 1]) % q
+        if q == 2**31-1:
+            inverses[i] = mul2(inverses[i], prefix[i - 1])
+        else:
+            inverses[i] = (inverses[i] * prefix[i - 1]) % q
     return inverses
 
 

@@ -164,7 +164,7 @@ for (q, two_adicity) in PARAMS:
     else:
         phi_roots = [[0, 1], [0, p-1]]
 
-    for k in range(1, two_adicity):
+    for k in range(1, two_adicity+(q==2**31-1)):
         file.write("\t\t{} : {},\n".format(1 << k, phi_roots))
         if q!= 2**31-1:
             phi_roots = sum([[sqrt_mod(elt, q), q - sqrt_mod(elt, q)]
