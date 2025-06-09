@@ -1,5 +1,6 @@
 from polyntt.m31_2 import mul2, inv2
 
+
 def xgcd(a, b):
     """ Returns gcd(a, b), and x, y such that ax + by = gcd(a, b) """
     x0, x1, y0, y1 = 1, 0, 0, 1
