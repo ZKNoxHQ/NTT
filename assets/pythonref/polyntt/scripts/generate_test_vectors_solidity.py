@@ -21,6 +21,9 @@ def deterministic_poly(q, n, seed="fixed_seed"):
 
 for (q, two_adicity) in PARAMS:
 
+    if q == 2**31 - 1:
+        continue
+    
     for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:  # for two sizes of polynomials
         file = open("../test_vectors/q{}_n{}.sol".format(q, n), "w")
 

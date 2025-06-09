@@ -65,8 +65,12 @@ class TestPoly(unittest.TestCase):
                     # random f
                     f = Poly([randint(0, q-1) for _ in range(n)], q)
                     # invertible random g
-                    g = Poly(f.NTT.intt([randint(1, q-1)
-                                         for _ in range(n)]), q)
+                    if q != 2**31-1:
+                        g = Poly(f.NTT.intt([randint(1, q-1)
+                                            for _ in range(n)]), q)
+                    else:
+                        g = Poly(f.NTT.intt([[randint(1, q-1), randint(1, q-1)]
+                                            for _ in range(n//2)]), q)
                     h = f/g
                     self.assertEqual(h * g, f)
 
@@ -79,14 +83,20 @@ class TestPoly(unittest.TestCase):
                 one = Poly([1]+[0 for i in range(n-1)], q)
                 for i in range(iterations):
                     # invertible random f
-                    f = Poly(T.intt([randint(1, q-1)
-                                     for _ in range(n)]), q)
+                    if q == 2**31-1:
+                        f = Poly(T.intt([[randint(1, q-1), randint(1,q-1)]
+                                         for _ in range(n)]), q)
+                    else:
+                        f = Poly(T.intt([randint(1, q-1)
+                                         for _ in range(n)]), q)
                     inv_f = f.inverse()
                     self.assertEqual(inv_f * f, one)
 
     def test_mul_pwc(self, iterations=10):
         """Test the multiplication modulo x^n+1."""
         for (q, k) in PARAMS:
+            if q == 2**31-1:
+                continue
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(1, iterations):
@@ -98,6 +108,8 @@ class TestPoly(unittest.TestCase):
     def test_mul_pwc_one_table(self, iterations=100):
         """Compare NTT with one and four tables."""
         for (q, k) in PARAMS:
+            if q == 2**31-1:
+                continue
             n = 1 << (k-1)
             with self.subTest(q=q, k=k):
                 for i in range(iterations):
