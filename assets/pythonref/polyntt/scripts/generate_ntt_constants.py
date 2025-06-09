@@ -52,7 +52,7 @@ for (q, two_adicity) in PARAMS:
     else:
         print("NOT DEFINED YET")
 
-    if q != 2**31-1 :
+    if q != 2**31-1:
 
         n = 1 << (two_adicity-1)
         assert pow(ψ, 2*n, q) == 1 and pow(ψ, n, q) != 1
@@ -71,7 +71,7 @@ for (q, two_adicity) in PARAMS:
         ψ_rev[q] = bit_reverse_order(ψ_table[q])
         ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
 
-    else : # q = 2³¹ - 1, we use the NTT over Fp2
+    else:  # q = 2³¹ - 1, we use the NTT over Fp2
         # check that ψ⁹ == 1  and ψ⁸ ≠ 1
         toto = ψ
         for i in range(two_adicity-1):
@@ -81,8 +81,6 @@ for (q, two_adicity) in PARAMS:
 
         ψ_inv = inv2(ψ)
         assert mul2(ψ, ψ_inv) == [1, 0]
-
-
 
         # Precompute powers of ψ to speedup main NTT process.
         ψ_table[q] = [[1, 0]] * n
@@ -136,7 +134,7 @@ for (q, two_adicity) in PARAMS:
     f.write("\t{}: {{\n".format(q))
     # n_inv[{}] = {{\n".format(q))
     for j in range(two_adicity+1):
-        if q!= 2**31-1:
+        if q != 2**31-1:
             f.write("\t\t{}: {},\n".format(1 << j, pow(1 << j, -1, q)))
         else:
             f.write("\t\t{}: {},\n".format(1 << j, [pow(1 << j, -1, q), 0]))
@@ -164,16 +162,15 @@ for (q, two_adicity) in PARAMS:
     else:
         phi_roots = [[0, 1], [0, p-1]]
 
-    for k in range(1, two_adicity+(q==2**31-1)):
+    for k in range(1, two_adicity+(q == 2**31-1)):
         file.write("\t\t{} : {},\n".format(1 << k, phi_roots))
-        if q!= 2**31-1:
+        if q != 2**31-1:
             phi_roots = sum([[sqrt_mod(elt, q), q - sqrt_mod(elt, q)]
                             for elt in phi_roots], [])
         else:
             phi_roots = sum([[sqrt_m31_2(elt), opp2(sqrt_m31_2(elt))]
-                for elt in phi_roots], [])
+                             for elt in phi_roots], [])
 
     file.write("\t},\n")
 file.write("}\n")
 file.close()
-

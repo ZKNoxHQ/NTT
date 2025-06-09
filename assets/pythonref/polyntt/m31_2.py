@@ -4,6 +4,7 @@ two_adicity = 9
 sqr1 = [0, 1]
 sqr1_inv = [0, p-1]
 
+
 def opp2(x):
     return [p-x[0], p-x[1]]
 
