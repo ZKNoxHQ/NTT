@@ -15,7 +15,7 @@ class TestVectors(unittest.TestCase):
 
             if q == 2**31-1:
                 continue
-            
+
             # for two sizes of polynomials
             for n in [1 << (two_adicity-2), 1 << (two_adicity-1)]:
 
