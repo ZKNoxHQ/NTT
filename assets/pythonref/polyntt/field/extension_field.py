@@ -16,10 +16,17 @@ class ExtensionField(Field):
         self.alpha = alpha  # integer
 
     def __call__(self, coeffs):
-        if isinstance(coeffs, FieldElement):
-            coeffs = [coeffs, self.base(0)]
-        elif isinstance(coeffs, int):
-            coeffs = [self.base(coeffs), self.base(0)]
+        list_coeffs = []
+        print('coeff', coeffs)
+        print(isinstance(coeffs, int))
+        if isinstance(coeffs, int):
+            list_coeffs = [coeffs]
+        while len(list_coeffs) != self.degree:
+            list_coeffs += [self.base(0)]
+        # if isinstance(coeffs, FieldElement):
+        #     coeffs = [coeffs, self.base(0)]
+        # elif isinstance(coeffs, int):
+        #     coeffs = [self.base(coeffs), self.base(0)]
         return ExtensionFieldElement(coeffs, self)
 
     def random(self):
@@ -33,8 +40,10 @@ class ExtensionFieldElement(FieldElement):
     def __init__(self, coeffs, field):
         super().__init__(field)
         self.coeffs = [field.base(c) for c in coeffs]
-        while len(self.coeffs) < 2:
-            self.coeffs.append(field.base(0))
+        # if isinstance(coeffs, list):
+        #     self.coeffs = [field.base(c) for c in coeffs]
+        # else:  # base field case
+        #     self.coeffs = [coeffs, field.base(0)]
 
     def __add__(self, other):
         # a+bX + c+dX = a+c + (b+c)X

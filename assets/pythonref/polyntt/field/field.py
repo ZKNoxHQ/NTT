@@ -2,6 +2,7 @@ class FieldElement:
     def __init__(self, field):
         self.field = field
         self.coeffs = []
+        self.degree = 1
 
     def __iter__(self):
         return iter(self.coeffs)

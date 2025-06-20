@@ -20,14 +20,14 @@ class PolynomialRingNTT(PolynomialRing):
         # inverse of n mod q for intt
         self.n_inv = n_inv[F.p]
 
-    def __call__(self, coefficients, ntt=False):
-        if isinstance(coefficients, int):
-            return self.element(self, [coefficients], ntt=ntt)
-        if not isinstance(coefficients, list):
-            raise TypeError(
-                f"Polynomials should be constructed from a list of integers, of length at most d = {self.n}"
-            )
-        return self.element(self, coefficients, ntt=ntt)
+    # def __call__(self, coefficients, ntt=False):
+    #     if isinstance(coefficients, int):
+    #         return self.element(self, [coefficients], ntt=ntt)
+    #     if not isinstance(coefficients, list):
+    #         raise TypeError(
+    #             f"Polynomials should be constructed from a list of integers, of length at most d = {self.n}"
+    #         )
+    #     return self.element(self, coefficients, ntt=ntt)
 
     def ntt(self, f):
         # following eprint 2016/504 Algorithm 1

@@ -35,7 +35,7 @@ class TestPolynomialNTT(unittest.TestCase):
         # F = PrimeField(p=2**31 - 2**24 + 1)
         for k in range(1, 9):
             n = 1 << k
-            Fx = PolynomialRing(F, n)
+            Fx = PolynomialRingNTT(F, n)
             P = Fx.random()
             Q = Fx.random()
             P_mul_Q = P*Q
@@ -77,8 +77,12 @@ class TestPolynomialNTT(unittest.TestCase):
 
         # Polynomials of degree 128 over F_BB²
         F2 = ExtensionField(F, 2, 11)
-        F2x = PolynomialRingNTT(F2, 1 << 7)
+        # F2x = PolynomialRingNTT(F2, 1 << 7)
+        F2x = PolynomialRingNTT(F2, 1 << 1)
+        print('comp P2')
         P2 = F2x.random()
+        print('p2')
+        print(P2)
         Q2 = F2x.random()
         t = time()
         for i in range(nreps):
@@ -146,6 +150,11 @@ class TestPolynomialNTT(unittest.TestCase):
     #             Fx.intt(Fx.ntt(f)),
     #             Fx.intt_without_mod(Fx.ntt(f))
     #         )
+
+    def test_edge(self):
+        F = M31ExtensionField()
+        toto = F([1])
+        print(toto)
 
 
 if __name__ == '__main__':

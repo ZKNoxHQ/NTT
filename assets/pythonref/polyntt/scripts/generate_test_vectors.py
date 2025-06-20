@@ -24,12 +24,16 @@ def encode(poly):
     # By default, q is a 32-bit integer.
     # NB: this does not apply to q_plonky2.
     q = poly.parent.F.p
-    assert all([[x.coeffs < q for x in c] for c in poly.coeffs])
     size_q = (q.bit_length()+7)//8
-    byte_string = b''.join(
-        b''.join(num.coeffs.to_bytes(size_q, 'big') for num in c.coeffs)
-        for c in poly.coeffs
-    )
+
+    if poly.parent.F.degree == 2:
+        byte_string = b''.join(
+            b''.join(num.coeffs.to_bytes(size_q, 'big') for num in c.coeffs)
+            for c in poly.coeffs
+        )
+    else:  # degree=1
+        byte_string = b''.join(num.coeffs.to_bytes(size_q, 'big')
+                               for num in poly.coeffs)
     return byte_string.hex()
 
 
@@ -94,8 +98,6 @@ for (q, two_adicity) in PARAMS:
         # 1. ntt
         #   Input: f,g
         #   Output: ntt(f), ntt(g).
-        print(f.coeffs[0].coeffs)
-        print(q)
         input = encode(f)+encode(g)
         name = "q{}_n{}_{{ntt_of_two_polynomials}}".format(q, n)
         expected = encode(f_ntt)+encode(g_ntt)
