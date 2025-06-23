@@ -80,8 +80,6 @@ class TestPolynomialOverM31_2(unittest.TestCase):
         zero = self.Fpx(0)
         for _ in range(100):
             P = self.Fpx.random()
-            print((P*zero).coeffs)
-            print(zero.coeffs)
             self.assertEqual(P * zero, zero)
 
 

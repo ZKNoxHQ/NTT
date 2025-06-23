@@ -86,7 +86,7 @@ class Polynomial:
     def __repr__(self):
         return " + ".join(
             f"({c})" if i == 0 else (f"({c})·X^{i}" if i > 1 else f"({c})·X")
-            for i, c in enumerate(self.coeffs) if c != self.parent.F(0)
+            for i, c in enumerate(self.coeffs)
         ) or "0"
 
     def __add__(self, other):
