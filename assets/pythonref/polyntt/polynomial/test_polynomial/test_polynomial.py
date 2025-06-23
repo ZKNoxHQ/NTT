@@ -82,6 +82,12 @@ class TestPolynomialOverM31_2(unittest.TestCase):
             P = self.Fpx.random()
             self.assertEqual(P * zero, zero)
 
+    def test_compact(self):
+        R = PolynomialRing(self.field, 256)
+        P = R.random()
+        toto = P.compact_256(32)
+        print(toto)
+
 
 if __name__ == "__main__":
     unittest.main()

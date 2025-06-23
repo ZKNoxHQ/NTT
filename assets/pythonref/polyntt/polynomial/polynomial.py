@@ -302,7 +302,10 @@ class Polynomial:
     def compact_256(self, m):
         # compact a list of n small element of m bits into n*m/256 elements of 256 bits
         # (assuming 2^log_m = m is a divisor of n)
-        a = self.coeffs
+        if self.parent.F.degree == 2:
+            a = [elt.coeffs for field_element in self.coeffs for elt in field_element]
+        else:  # prime field
+            a = [x.coeffs for x in self.coeffs]
         assert m < 256
         assert len(a) % m == 0
         for elt in a:
