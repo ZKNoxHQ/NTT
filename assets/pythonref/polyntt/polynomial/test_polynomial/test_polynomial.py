@@ -40,7 +40,8 @@ class TestPolynomialOverM31_2(unittest.TestCase):
         expected = [
             self.one,
             self.omega + self.one,
-            self.omega
+            self.omega,
+            self.field([0, 0])
         ]
         self.assertEqual(h.coeffs, expected)
 
@@ -74,10 +75,14 @@ class TestPolynomialOverM31_2(unittest.TestCase):
     #     self.assertTrue(isinstance(r, Polynomial))
     #     self.assertEqual(f, q * g + r)
 
-    def test_debug(self):
-        # P = self.Fpx([1, 2, 3])
-        Q = self.Fpx([self.field([1, 1]), 2, 3])
-        # self.assertEqual(P, Q)
+    def test_mul_zero(self):
+
+        zero = self.Fpx(0)
+        for _ in range(100):
+            P = self.Fpx.random()
+            print((P*zero).coeffs)
+            print(zero.coeffs)
+            self.assertEqual(P * zero, zero)
 
 
 if __name__ == "__main__":

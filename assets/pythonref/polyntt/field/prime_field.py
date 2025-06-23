@@ -107,3 +107,6 @@ class PrimeFieldElement(FieldElement):
 
     def __repr__(self):
         return str(self.coeffs)
+
+    def is_zero(self):
+        return self.coeffs == 0

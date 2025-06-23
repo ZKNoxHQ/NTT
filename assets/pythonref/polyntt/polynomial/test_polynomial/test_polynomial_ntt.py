@@ -15,35 +15,20 @@ class TestPolynomialNTT(unittest.TestCase):
         # self.p1 = PolynomialNTT(self.ring, [self.F(1), self.F(2), self.F(3)])
         # self.p2 = PolynomialNTT(self.ring, [self.F(4), self.F(5)])
 
-    # def test_mul_with_ntt_fp(self):
-    #     # a test with BabyBear
-    #     F = PrimeField(p=2**31 - 2**24 + 1)
-    #     Fx = PolynomialRing(F, n=4)
-    #     P = Fx.random()
-    #     Q = Fx.random()
-    #     P_mul_Q = P.schoolbook_mul(Q)
-    #     Fy = PolynomialRingNTT(F, n=4)
-    #     P_ntt = Fy.ntt(P.coeffs)
-    #     Q_ntt = Fy.ntt(Q.coeffs)
-    #     PQ_ntt = [a*b for (a, b) in zip(P_ntt, Q_ntt)]
-    #     PQ = Fy.intt(PQ_ntt)
-    #     self.assertEqual(P_mul_Q, Fx(PQ))
-
     def test_mul_with_ntt_fp(self):
         # a test with BabyBear
-        F = PrimeField(p=12289)
-        # F = PrimeField(p=2**31 - 2**24 + 1)
-        for k in range(1, 9):
-            n = 1 << k
-            Fx = PolynomialRingNTT(F, n)
+        F = PrimeField(p=2**31 - 2**24 + 1)
+        n = 256
+        Fx = PolynomialRing(F, n)
+        Fy = PolynomialRingNTT(F, n)
+        for i in range(10):
             P = Fx.random()
             Q = Fx.random()
-            P_mul_Q = P*Q
-            P_ntt = Fx.ntt(P)
-            Q_ntt = Fx.ntt(Q)
-            PQ_ntt = P_ntt * Q_ntt
-            PQ = Fx.intt(PQ_ntt)
-            self.assertEqual(P_mul_Q, PQ)
+            P_mul_Q = P * Q
+            P = Fy(P.coeffs)
+            Q = Fy(Q.coeffs)
+            P_mul_Q_2 = P*Q
+            self.assertEqual(P_mul_Q, P_mul_Q_2)
 
     def test_mul_with_ntt_fp2(self):
         F = M31ExtensionField()
@@ -54,11 +39,10 @@ class TestPolynomialNTT(unittest.TestCase):
             Q = Fx.random()
             P_mul_Q = P*Q
             Fy = PolynomialRingNTT(F, n)
-            P_ntt = Fy.ntt(P)
-            Q_ntt = Fy.ntt(Q)
+            P_ntt = Fy(P.coeffs)
+            Q_ntt = Fy(Q.coeffs)
             PQ_ntt = P_ntt * Q_ntt
-            PQ = Fy.intt(PQ_ntt)
-            self.assertEqual(P_mul_Q, PQ)
+            self.assertEqual(P_mul_Q, PQ_ntt)
 
     def test_compare_using_extension(self):
 

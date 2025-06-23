@@ -57,19 +57,22 @@ class Polynomial:
     def __init__(self, parent, coeffs, ntt=False):
         """coeffs is a list of field elements or raw values; lowest degree first"""
         self.parent = parent
-        self.coeffs = [parent.F(elt) for elt in self._trim(coeffs)]
+        while len(coeffs) != self.parent.n:
+            coeffs.append(0)
+        self.coeffs = [parent.F(elt) for elt in coeffs]
+        # self._trim(coeffs)]
         self.ntt = ntt
 
-    def _trim(self, coeffs):
-        while coeffs and coeffs[-1] == self.parent.F(0):
-            coeffs.pop()
-        return coeffs or [self.parent.F(0)]
+    # def _trim(self, coeffs):
+    #     while coeffs and coeffs[-1] == self.parent.F(0):
+    #         coeffs.pop()
+    #     return coeffs or [self.parent.F(0)]
 
     def is_zero(self):
         """
         Return if polynomial is zero: f = 0
         """
-        return all(c == 0 for c in self.coeffs)
+        return all(c.is_zero() for c in self.coeffs)
 
     def is_constant(self):
         """
@@ -140,7 +143,10 @@ class Polynomial:
         return result
 
     def __eq__(self, other):
-        return self.coeffs == other.coeffs and self.parent == other.parent
+        if other == 0:
+            return self.is_zero()
+        else:
+            return self.coeffs == other.coeffs and self.parent == other.parent
 
     def __divmod__(self, divisor):
         """Return (quotient, remainder) of division with remainder"""

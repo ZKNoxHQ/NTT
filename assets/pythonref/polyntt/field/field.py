@@ -14,6 +14,7 @@ class FieldElement:
     def inverse(self): raise NotImplementedError
     def __neg__(self): return NotImplementedError
     def __eq__(self, other): return NotImplementedError
+    def is_zero(self): return NotImplementedError
 
 
 class Field:

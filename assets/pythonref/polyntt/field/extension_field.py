@@ -90,3 +90,6 @@ class ExtensionFieldElement(FieldElement):
     def __repr__(self):
         # return f"{self.coeffs[0]} + {self.coeffs[1]}·α"
         return f"[{self.coeffs[0]}, {self.coeffs[1]}]"
+
+    def is_zero(self):
+        return all([x.is_zero() for x in self.coeffs])
