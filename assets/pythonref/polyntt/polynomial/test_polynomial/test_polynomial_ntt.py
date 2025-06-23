@@ -2,7 +2,7 @@ import unittest
 from time import time
 from polyntt.field.extension_field import ExtensionField
 from polyntt.field.prime_field import PrimeField
-from polyntt.field.m31 import M31ExtensionField
+from polyntt.field.m31 import M31ExtensionField, M31Field
 from polyntt.params import PARAMS
 from polyntt.polynomial.polynomial_ntt import PolynomialNTT, PolynomialRingNTT
 from polyntt.polynomial.polynomial import PolynomialRing
@@ -66,7 +66,7 @@ class TestPolynomialNTT(unittest.TestCase):
 
         # Polynomials of degree 256 over F_BB
         F = PrimeField(p=2013265921)
-        Fx = PolynomialRingNTT(F, 1 << 8)
+        Fx = PolynomialRingNTT(F, 1 << 2)
         P = Fx.random()
         Q = Fx.random()
         t = time()
@@ -77,18 +77,41 @@ class TestPolynomialNTT(unittest.TestCase):
 
         # Polynomials of degree 128 over F_BB²
         F2 = ExtensionField(F, 2, 11)
-        # F2x = PolynomialRingNTT(F2, 1 << 7)
         F2x = PolynomialRingNTT(F2, 1 << 1)
-        print('comp P2')
         P2 = F2x.random()
-        print('p2')
-        print(P2)
         Q2 = F2x.random()
         t = time()
         for i in range(nreps):
             R2 = P2*Q2
         print(
             "Mult with Fp²[x]/(x¹²⁸+1): {:.0f}μs".format(10**6*(time() - t)/nreps))
+
+    def test_compare_ntt(self):
+
+        nreps = 3
+
+        # Polynomials of degree 256
+        k = 8
+
+        # Over BabyBear, degree 256
+        F1 = PrimeField(p=2**31-2**24+1)
+        F1x = PolynomialRingNTT(F1, 1 << k)
+        P = F1x.random()
+        t = time()
+        for i in range(nreps):
+            P_ntt = F1x.ntt(P)
+        print(
+            "\nNTT with F_BB[x]/(x²⁵⁶+1): {:.0f}μs".format(10**6 * (time() - t)/nreps))
+
+        # Over M31, degree 128
+        F2 = M31ExtensionField()
+        F2x = PolynomialRingNTT(F2, 1 << (k-1))
+        P2 = F2x.random()
+        t = time()
+        for i in range(nreps):
+            P2_ntt = F2x.ntt(P2)
+        print(
+            "NTT with F_M31²[x]/(x¹²⁸+1): {:.0f}μs".format(10**6*(time() - t)/nreps))
 
     def test_ntt_intt(self, iterations=100):
         """Test if ntt and intt are indeed inverses of each other."""
@@ -150,9 +173,6 @@ class TestPolynomialNTT(unittest.TestCase):
     #             Fx.intt(Fx.ntt(f)),
     #             Fx.intt_without_mod(Fx.ntt(f))
     #         )
-
-    def test_edge(self):
-        P = PolynomialNTT(self.ring, [self.F(1)])
 
 
 if __name__ == '__main__':

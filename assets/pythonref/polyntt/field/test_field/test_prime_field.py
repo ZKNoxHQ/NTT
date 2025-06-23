@@ -1,6 +1,8 @@
 import unittest
+from polyntt.field.m31 import M31Field
 from polyntt.field.prime_field import PrimeField
 from polyntt.field.extension_field import ExtensionField
+from time import time
 
 
 class TestPrimeField(unittest.TestCase):
@@ -61,6 +63,29 @@ class TestPrimeField(unittest.TestCase):
         for n in composites:
             with self.assertRaises(AssertionError):
                 PrimeField(n)
+
+    def test_bench(self):
+        nreps = 10
+
+        F1 = PrimeField(p=2**31-2**24+1)
+        a = F1.random()
+        b = F1.random()
+
+        t = time()
+        for i in range(nreps):
+            c = a._reduce()
+        print(
+            "BabyBear prime field multiplication:: {:.0f}ns".format(10**9*(time() - t)/nreps))
+
+        F2 = M31Field()
+        a = F2.random()
+        b = F2.random()
+
+        t = time()
+        for i in range(nreps):
+            c = a._reduce()
+        print(
+            "M31 prime field multiplication:: {:.0f}ns".format(10**9*(time() - t)/nreps))
 
 
 if __name__ == "__main__":

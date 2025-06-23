@@ -11,6 +11,11 @@ class M31Field(PrimeField):
             return self
         return M31ExtensionField(self, degree, -1)
 
+    def __call__(self, coeffs):
+        if isinstance(coeffs, M31Element):
+            return coeffs
+        return M31Element(coeffs, self)
+
 
 class M31Element(PrimeFieldElement):
 
@@ -38,7 +43,7 @@ class M31Element(PrimeFieldElement):
         return M31Element(0 if self.coeffs == 0 else self.field.p - self.coeffs, self.field)
 
     def __mul__(self, other):
-        return M31Element(self.field._reduce(self.coeffs * other.coeffs), self.field)
+        return M31Element(self.coeffs * other.coeffs, self.field)
 
     def inverse(self):
         # Use Fermat's little theorem since p is prime
