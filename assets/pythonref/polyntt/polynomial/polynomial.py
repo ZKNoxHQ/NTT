@@ -50,7 +50,11 @@ class PolynomialRing:
             for i in range(chunk_count):
                 chunk.append(num >> (i*m) & mask)
             result.extend(chunk)
-        return result
+
+        if self.F.degree == 2:
+            return self([[result[2*i], result[2*i+1]] for i in range(len(result)//2)])
+        else:
+            return self(result)
 
 
 class Polynomial:
