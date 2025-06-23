@@ -12,8 +12,8 @@ class TestPolynomialNTT(unittest.TestCase):
     def setUp(self):
         self.F = M31ExtensionField()
         self.ring = PolynomialRingNTT(self.F, n=4)
-        self.p1 = PolynomialNTT(self.ring, [self.F(1), self.F(2), self.F(3)])
-        self.p2 = PolynomialNTT(self.ring, [self.F(4), self.F(5)])
+        # self.p1 = PolynomialNTT(self.ring, [self.F(1), self.F(2), self.F(3)])
+        # self.p2 = PolynomialNTT(self.ring, [self.F(4), self.F(5)])
 
     # def test_mul_with_ntt_fp(self):
     #     # a test with BabyBear
@@ -152,9 +152,7 @@ class TestPolynomialNTT(unittest.TestCase):
     #         )
 
     def test_edge(self):
-        F = M31ExtensionField()
-        toto = F([1])
-        print(toto)
+        P = PolynomialNTT(self.ring, [self.F(1)])
 
 
 if __name__ == '__main__':

@@ -25,14 +25,12 @@ class PolynomialRing:
         return self(coefficients)
 
     def __call__(self, coefficients, ntt=False):
-        print('coeffoceijie', coefficients)
         if isinstance(coefficients, int):
             return self.element(self, [coefficients], ntt=ntt)
         if not isinstance(coefficients, list):
             raise TypeError(
                 f"Polynomials should be constructed from a list of integers, of length at most d = {self.n}"
             )
-        print('here')
         return self.element(self, coefficients, ntt=ntt)
 
     def __repr__(self):
@@ -59,17 +57,7 @@ class Polynomial:
     def __init__(self, parent, coeffs, ntt=False):
         """coeffs is a list of field elements or raw values; lowest degree first"""
         self.parent = parent
-        print("HERE")
-        print(coeffs)
-        aa = self._trim(coeffs)
-        print('zzz')
-        print('trime time', self._trim(coeffs))
-        for elt in self._trim(coeffs):
-            print(elt)
-            print(parent.F(elt))
-        print("doaads")
         self.coeffs = [parent.F(elt) for elt in self._trim(coeffs)]
-        print('poly coeff', self.coeffs)
         self.ntt = ntt
 
     def _trim(self, coeffs):

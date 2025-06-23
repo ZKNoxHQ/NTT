@@ -13,7 +13,7 @@ class PrimeField(Field):
     def __call__(self, coeffs):
         if isinstance(coeffs, PrimeFieldElement):
             return coeffs
-        return PrimeFieldElement(coeffs % self.p, self)
+        return PrimeFieldElement(coeffs, self)
 
     def extension(self, degree, alpha=None):
         if degree == 1:
@@ -54,10 +54,14 @@ class PrimeField(Field):
 class PrimeFieldElement(FieldElement):
     def __init__(self, coeffs, field):
         super().__init__(field)
-        self.coeffs = coeffs % field.p
+        self.coeffs = coeffs
+        self._reduce()
 
     def __iter__(self):
         return iter([self.coeffs])
+
+    def _reduce(self):
+        self.coeffs = self.coeffs % self.field.p
 
     def __add__(self, other):
         return self.field(self.coeffs + other.coeffs)

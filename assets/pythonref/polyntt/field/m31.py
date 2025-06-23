@@ -1,5 +1,4 @@
-from polyntt.field.field import FieldElement
-from polyntt.field.prime_field import PrimeField
+from polyntt.field.prime_field import PrimeField, PrimeFieldElement
 from polyntt.field.extension_field import ExtensionField, ExtensionFieldElement
 
 
@@ -10,26 +9,18 @@ class M31Field(PrimeField):
     def extension(self, degree):
         if degree == 1:
             return self
-        return ExtensionField(self, degree, -1)
+        return M31ExtensionField(self, degree, -1)
 
-    def __call__(self, coeffs):
 
-        if isinstance(coeffs, M31Element):
-            return coeffs
-        return M31Element(coeffs, self)
+class M31Element(PrimeFieldElement):
 
-    def _reduce(self, x):
-        p = self.p
+    def _reduce(self):
+        p = self.field.p
+        x = self.coeffs
         x = (x & p) + (x >> 31)
         if x >= p:
             x -= p
-        return x
-
-
-class M31Element(FieldElement):
-    def __init__(self, coeffs, field):
-        self.field = field
-        self.coeffs = field._reduce(coeffs)
+        self.coeffs = x
 
     def __add__(self, other):
         val = self.coeffs + other.coeffs
@@ -88,7 +79,4 @@ class M31ExtensionField(ExtensionField):
     def __call__(self, coeffs):
         if isinstance(coeffs, M31ExtensionElement):
             return coeffs
-        elif isinstance(coeffs, (tuple, list)) and len(coeffs) == 2:
-            return M31ExtensionElement([self.base(coeffs[0]), self.base(coeffs[1])], self)
-        else:
-            return M31ExtensionElement([self.base(coeffs), self.base(0)], self)
+        return M31ExtensionElement(coeffs, self)

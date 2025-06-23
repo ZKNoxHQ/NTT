@@ -71,6 +71,8 @@ class TestM31ExtensionField(unittest.TestCase):
         self.assertEqual(self.a + neg, self.zero)
 
     def test_multiplication(self):
+        print(type(self.a))
+        print(type(self.F))
         c = self.a * self.b
         # (1 + 2w)(3 + 4w) = (1*3 + 2*4*(-1)) + (1*4 + 2*3)w = (-5 + 10w)
         expected = self.F([
@@ -90,6 +92,9 @@ class TestM31ExtensionField(unittest.TestCase):
     def test_equality(self):
         self.assertEqual(self.a, self.F([1, 2]))
         self.assertNotEqual(self.a, self.b)
+
+    def test_embedding(self):
+        self.assertEqual(self.F(1), self.F([1, 0]))
 
 
 if __name__ == "__main__":

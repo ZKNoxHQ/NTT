@@ -74,6 +74,11 @@ class TestPolynomialOverM31_2(unittest.TestCase):
     #     self.assertTrue(isinstance(r, Polynomial))
     #     self.assertEqual(f, q * g + r)
 
+    def test_debug(self):
+        # P = self.Fpx([1, 2, 3])
+        Q = self.Fpx([self.field([1, 1]), 2, 3])
+        # self.assertEqual(P, Q)
+
 
 if __name__ == "__main__":
     unittest.main()

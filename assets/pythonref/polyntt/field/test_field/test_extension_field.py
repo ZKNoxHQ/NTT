@@ -44,6 +44,16 @@ class TestExtensionField(unittest.TestCase):
         self.assertEqual(self.ext(7), self.ext([7, 0]))
         self.assertEqual(self.ext(self.base(9)), self.ext([9, 0]))
 
+    def test_call_with_list_of_field_elements(self):
+        self.assertEqual(
+            self.ext([self.base(1), self.base(2)]),
+            self.ext([1, 2]),
+        )
+        self.assertEqual(
+            self.ext([self.base(1), 2]),
+            self.ext([1, 2]),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
