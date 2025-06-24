@@ -176,9 +176,9 @@ class TestPolynomialNTT(unittest.TestCase):
         R = PolynomialRingNTT(F, 256)
         for i in range(100):
             P = R.random()
-            Q1 = P * 12
-            Q2 = P * R([12] + [0 for i in range(255)])
-            self.assertEqual(Q1, Q2)
+            Q = P * R([12] + [0 for i in range(255)])
+            self.assertEqual(Q, P*12)
+            self.assertEqual(Q, 12*P)
 
 
 if __name__ == '__main__':

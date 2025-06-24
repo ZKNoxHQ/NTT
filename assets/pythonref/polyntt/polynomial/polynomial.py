@@ -139,6 +139,9 @@ class Polynomial:
                 new_coeffs[i + j - n] -= a[i] * b[j]
         return self.parent(new_coeffs)
 
+    def __rmul__(self, other):
+        return self * other
+
     def __call__(self, x):
         """Evaluate polynomial at field element x"""
         result = self.parent.F(0)

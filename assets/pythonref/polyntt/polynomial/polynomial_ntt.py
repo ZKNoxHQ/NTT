@@ -97,7 +97,6 @@ class PolynomialNTT(Polynomial):
     def __mul__(self, other):
         if isinstance(other, int):
             return self * self.parent(other)
-
         assert self.ntt == other.ntt
         if self.ntt:
             n = self.parent.n
