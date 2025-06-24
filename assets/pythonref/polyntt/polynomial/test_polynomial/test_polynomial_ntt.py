@@ -158,6 +158,19 @@ class TestPolynomialNTT(unittest.TestCase):
     #             Fx.intt_without_mod(Fx.ntt(f))
     #         )
 
+    def test_parent(self):
+        """Test the linearity of NTT."""
+        for (q, k) in PARAMS:
+            n = 1 << (k-1)
+            with self.subTest(q=q, k=k):
+                F = M31ExtensionField() if q == 2**31-1 else PrimeField(q)
+                Fx = PolynomialRingNTT(F, n)
+                for i in range(100):
+                    f = Fx([F.random() for j in range(n)])
+                    g = Fx([F.random() for j in range(n)])
+                    f_plus_g = f+g
+                    self.assertEqual(type(f), type(f_plus_g))
+
 
 if __name__ == '__main__':
     unittest.main()

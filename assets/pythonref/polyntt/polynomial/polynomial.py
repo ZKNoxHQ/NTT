@@ -101,7 +101,7 @@ class Polynomial:
              else self.parent.F(0))
             for i in range(max_len)
         ]
-        return Polynomial(self.parent, result)
+        return self.parent(result)
 
     def __neg__(self):
         """
@@ -118,7 +118,7 @@ class Polynomial:
              else self.parent.F(0))
             for i in range(max_len)
         ]
-        return Polynomial(self.parent, result)
+        return self.parent(result)
 
     def __mul__(self, other):
         n = self.parent.n
@@ -173,7 +173,7 @@ class Polynomial:
                 dividend[deg + i] -= coeff * divisor.coeffs[i]
             dividend = self._trim(dividend)
 
-        return Polynomial(self.parent, quotient, self.parent.F), Polynomial(self.parent, dividend)
+        return self(self.parent, quotient, self.parent.F), self(self.parent, dividend)
 
     def __mod__(self, divisor):
         return divmod(self, divisor)[1]
