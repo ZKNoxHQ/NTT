@@ -121,6 +121,8 @@ class Polynomial:
         return self.parent(result)
 
     def __mul__(self, other):
+        if isinstance(other, int):
+            return self * self.parent(other)
         n = self.parent.n
         a = self.coeffs
         while len(a) < n:

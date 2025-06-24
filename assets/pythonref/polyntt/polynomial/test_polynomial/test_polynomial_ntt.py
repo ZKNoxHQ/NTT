@@ -171,6 +171,15 @@ class TestPolynomialNTT(unittest.TestCase):
                     f_plus_g = f+g
                     self.assertEqual(type(f), type(f_plus_g))
 
+    def test_mul_with_integer(self):
+        F = PrimeField(2**31-2**24+1)
+        R = PolynomialRingNTT(F, 256)
+        for i in range(100):
+            P = R.random()
+            Q1 = P * 12
+            Q2 = P * R([12] + [0 for i in range(255)])
+            self.assertEqual(Q1, Q2)
+
 
 if __name__ == '__main__':
     unittest.main()
