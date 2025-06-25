@@ -101,6 +101,8 @@ class PrimeFieldElement(FieldElement):
     def __eq__(self, other):
         if isinstance(other, FieldElement):
             return self.coeffs == other.coeffs and self.field == self.field
+        if isinstance(other, int):
+            return self.coeffs == other
         if other == 0:
             return self.coeffs == 0
         return NotImplemented

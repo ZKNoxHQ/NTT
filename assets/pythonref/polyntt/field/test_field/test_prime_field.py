@@ -64,6 +64,10 @@ class TestPrimeField(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 PrimeField(n)
 
+    def test_eq_with_int(self):
+        one = self.F(1)
+        self.assertEqual(one, 1)
+
     def test_bench(self):
         nreps = 10
 
