@@ -88,6 +88,13 @@ class TestPolynomialOverM31_2(unittest.TestCase):
             P = R.random()
             self.assertEqual(P, R.uncompact_256(P.compact_256(32), 32))
 
+    def test_radd_rsub(self):
+        R = PolynomialRing(self.field, 256)
+        for i in range(100):
+            P = R.random()
+            self.assertEqual(P-12, P - R([12] + [0 for i in range(255)]))
+            self.assertEqual(P+12, P + R([12] + [0 for i in range(255)]))
+
 
 if __name__ == "__main__":
     unittest.main()

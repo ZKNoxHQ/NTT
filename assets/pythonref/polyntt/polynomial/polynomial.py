@@ -1,3 +1,7 @@
+from polyntt.field.extension_field import ExtensionFieldElement
+from polyntt.field.prime_field import PrimeFieldElement
+
+
 class PolynomialRing:
     """
     Initialise the polynomial ring:
@@ -94,6 +98,8 @@ class Polynomial:
         ) or "0"
 
     def __add__(self, other):
+        if isinstance(other, int) or isinstance(other, PrimeFieldElement) or isinstance(other, ExtensionFieldElement):
+            return self + self.parent(other)
         max_len = max(len(self.coeffs), len(other.coeffs))
         result = [
             (self.coeffs[i] if i < len(self.coeffs) else self.parent.F(0)) +
@@ -103,6 +109,9 @@ class Polynomial:
         ]
         return self.parent(result)
 
+    def __radd(self, other):
+        return self + other
+
     def __neg__(self):
         """
         Returns -f, by negating all coefficients
@@ -111,6 +120,8 @@ class Polynomial:
         return self.parent(neg_coeffs)
 
     def __sub__(self, other):
+        if isinstance(other, int) or isinstance(other, PrimeFieldElement) or isinstance(other, ExtensionFieldElement):
+            return self - self.parent(other)
         max_len = max(len(self.coeffs), len(other.coeffs))
         result = [
             (self.coeffs[i] if i < len(self.coeffs) else self.parent.F(0)) -
@@ -119,6 +130,9 @@ class Polynomial:
             for i in range(max_len)
         ]
         return self.parent(result)
+
+    def __rsub__(self, other):
+        return self - other
 
     def __mul__(self, other):
         if isinstance(other, int):
