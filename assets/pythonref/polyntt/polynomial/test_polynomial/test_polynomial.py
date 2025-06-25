@@ -94,6 +94,8 @@ class TestPolynomialOverM31_2(unittest.TestCase):
             P = R.random()
             self.assertEqual(P-12, P - R([12] + [0 for i in range(255)]))
             self.assertEqual(P+12, P + R([12] + [0 for i in range(255)]))
+            self.assertEqual(12-P, R([12] + [0 for i in range(255)])-P)
+            self.assertEqual(12+P, R([12] + [0 for i in range(255)])+P)
 
 
 if __name__ == "__main__":

@@ -109,8 +109,8 @@ class Polynomial:
         ]
         return self.parent(result)
 
-    def __radd(self, other):
-        return self + other
+    def __radd__(self, other):
+        return self+other
 
     def __neg__(self):
         """
@@ -132,7 +132,7 @@ class Polynomial:
         return self.parent(result)
 
     def __rsub__(self, other):
-        return self - other
+        return self.parent(other)-self
 
     def __mul__(self, other):
         if isinstance(other, int):
