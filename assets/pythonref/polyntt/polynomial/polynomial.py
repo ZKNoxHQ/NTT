@@ -14,7 +14,6 @@ class PolynomialRing:
         self.F = F
         self.n = n
         self.element = Polynomial
-        self.ω = roots_dict_mod[self.F.p][n][0]
 
     def gen(self):
         """
@@ -339,34 +338,3 @@ class Polynomial:
         for i in range(len(a)):
             b[(i * m) // 256] |= a[i] << ((i % (256//m)) * m)
         return b
-
-    def to_fp2_ring(self):
-        # this map is Fp[x]/(x^n+1) -> Fp²[y]/(y^{n/2}+1)
-        # by x -> ωy
-        r = []
-        a = self.coeffs
-        n = len(a)//2
-        ω = self.parent.ω
-        Fp2 = ω.parent
-        ω_i = Fp2(1)  # [1, 0]
-        for i in range(n):
-            r.append(Fp2([a[i], Fp2.p-a[i+n]]) * ω_i)
-            ω_i = ω_i * ω
-        return r  # these are only coefficients
-
-    def to_fp_ring(self):
-        # inverse map
-        r = []
-        a = self.coeffs
-        s = []
-        n = len(a)
-        ω = self.parent.ω
-        ω_inv = ω.inverse()
-        Fp2 = ω.parent
-        ω_inv_i = Fp2([1, 0])
-        for i in range(n):
-            c = a[i] * ω_inv_i
-            ω_inv_i = ω_inv_i * ω_inv
-            r.append(c[0])
-            s.append(Fp2.p-c[1])
-        return r+s  # these are only coefficients
