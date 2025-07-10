@@ -164,7 +164,7 @@ class PolynomialNTT(Polynomial):
         a = self.coeffs
         n = len(a)//2
         ω = self.parent.ω
-        Fp2 = ω.parent
+        Fp2 = ω.field
         ω_i = Fp2(1)  # [1, 0]
         for i in range(n):
             r.append(Fp2([a[i], Fp2.p-a[i+n]]) * ω_i)
@@ -179,7 +179,7 @@ class PolynomialNTT(Polynomial):
         n = len(a)
         ω = self.parent.ω
         ω_inv = ω.inverse()
-        Fp2 = ω.parent
+        Fp2 = ω.field
         ω_inv_i = Fp2([1, 0])
         for i in range(n):
             c = a[i] * ω_inv_i
