@@ -20,7 +20,7 @@ class PolynomialRingNTT(PolynomialRing):
         self.ψ_inv_rev = ψ_inv_rev[F.p]
         # inverse of n mod q for intt
         self.n_inv = n_inv[F.p]
-        self.ω = roots_dict_mod[self.F.p][n][0]
+        self.ω = F(roots_dict_mod[self.F.p][n][0])
 
     # def __call__(self, coefficients, ntt=False):
     #     if isinstance(coefficients, int):
