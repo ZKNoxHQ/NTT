@@ -20,7 +20,7 @@ class PolynomialRingNTT(PolynomialRing):
         self.ψ_inv_rev = ψ_inv_rev[F.p]
         # inverse of n mod q for intt
         self.n_inv = n_inv[F.p]
-        self.ω = F(roots_dict_mod[self.F.p][n][0])
+        # self.ω = F(roots_dict_mod[self.F.p][n][0])
 
     # def __call__(self, coefficients, ntt=False):
     #     if isinstance(coefficients, int):
@@ -157,33 +157,31 @@ class PolynomialNTT(Polynomial):
     def __str__(self):
         return self.__repr__()
 
-    def to_fp2_ring(self):
+    def to_fp2_ring(self, ω):
         # this map is Fp[x]/(x^n+1) -> Fp²[y]/(y^{n/2}+1)
         # by x -> ωy
         r = []
         a = self.coeffs
         n = len(a)//2
-        ω = self.parent.ω
         Fp2 = ω.field
         ω_i = Fp2(1)  # [1, 0]
         for i in range(n):
-            r.append(Fp2([a[i], Fp2.p-a[i+n]]) * ω_i)
+            r.append(Fp2([a[i], -a[i+n]]) * ω_i)
             ω_i = ω_i * ω
         return r  # these are only coefficients
 
-    def to_fp_ring(self):
+    def to_fp_ring(self, ω):
         # inverse map
         r = []
         a = self.coeffs
         s = []
         n = len(a)
-        ω = self.parent.ω
         ω_inv = ω.inverse()
         Fp2 = ω.field
         ω_inv_i = Fp2([1, 0])
         for i in range(n):
             c = a[i] * ω_inv_i
             ω_inv_i = ω_inv_i * ω_inv
-            r.append(c[0])
-            s.append(Fp2.p-c[1])
+            r.append(c.coeffs[0])
+            s.append(-c.coeffs[1])
         return r+s  # these are only coefficients

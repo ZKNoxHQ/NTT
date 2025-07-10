@@ -180,6 +180,22 @@ class TestPolynomialNTT(unittest.TestCase):
             self.assertEqual(Q, P*12)
             self.assertEqual(Q, 12*P)
 
+    def test_fp_fp2(self):
+        F = M31Field()
+        F2 = M31ExtensionField()
+        from polyntt.polynomial.ntt_constants_recursive import roots_dict_mod
+        n = 256
+        ω = F2(roots_dict_mod[F.p][n][0])
+        R = PolynomialRingNTT(F, n)
+        R2 = PolynomialRingNTT(F2, n//2)
+        for i in range(100):
+            P = R.random()
+            _P2 = P.to_fp2_ring(ω)
+            P2 = R2(_P2)
+            _P = P2.to_fp_ring(ω)
+            P_back = R(_P)
+            self.assertEqual(P, P_back)
+
 
 if __name__ == '__main__':
     unittest.main()
