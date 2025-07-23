@@ -5,8 +5,4 @@ assets/pythonref/polyntt.egg-info/
 assets/pythonref/polyntt/__pycache__/
 assets/pythonref/polyntt/scripts/__pycache__/
 assets/pythonref/polyntt/tests/__pycache__/
-assets/pythonref/polyntt/field/__pycache__/
-assets/pythonref/polyntt/field/test_field/__pycache__/
-assets/pythonref/polyntt/polynomial/__pycache__/
-assets/pythonref/polyntt/polynomial/test_polynomial/__pycache__/
 
