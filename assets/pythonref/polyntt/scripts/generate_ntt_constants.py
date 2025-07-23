@@ -1,13 +1,13 @@
-from polyntt.field.m31 import M31ExtensionField
-from polyntt.field.prime_field import PrimeField
 from polyntt.params import PARAMS
-from polyntt.utils import bit_reverse_order  # , sqrt_mod
+from polyntt.utils import bit_reverse_order, sqrt_mod
+# from polyntt.m31 import *
+from polyntt.m31_2 import mul2, inv2, p, sqrt_m31_2, opp2
 
 #
 # Generate constants for the iterative case
 #
 
-f = open("polyntt/polynomial/ntt_constants_iterative.py", "w")
+f = open("polyntt/ntt_constants_iterative.py", "w")
 f.write("# File generated with `python polyntt/generate_ntt_constants.py`.\n")
 f.write(
     "# Precomputations for NTT.\n\n"
@@ -53,31 +53,45 @@ for (q, two_adicity) in PARAMS:
         print("NOT DEFINED YET")
 
     if q != 2**31-1:
-        F = PrimeField(q)
-    else:
-        F = M31ExtensionField()
 
-    n = 1 << (two_adicity-1)
-    ψ = F(ψ)
-    toto = ψ
-    for i in range(two_adicity-1):
-        toto = toto * toto
-    assert toto != F(1)
-    assert toto * toto == F(1)
+        n = 1 << (two_adicity-1)
+        assert pow(ψ, 2*n, q) == 1 and pow(ψ, n, q) != 1
 
-    ψ_inv = F(ψ).inverse()
-    assert ψ*ψ_inv == F(1)
+        ψ_inv = pow(ψ, -1, q)
+        assert (ψ*ψ_inv) % q == 1
 
-    # Precompute powers of ψ to speedup main NTT process.
-    ψ_table[q] = [F(1)] * n
-    ψ_inv_table[q] = [F(1)] * n
-    for i in range(1, n):
-        ψ_table[q][i] = ψ_table[q][i-1] * ψ
-        ψ_inv_table[q][i] = ψ_inv_table[q][i-1] * ψ_inv
+        # Precompute powers of ψ to speedup main NTT process.
+        ψ_table[q] = [1] * n
+        ψ_inv_table[q] = [1] * n
+        for i in range(1, n):
+            ψ_table[q][i] = ((ψ_table[q][i-1] * ψ) % q)
+            ψ_inv_table[q][i] = ((ψ_inv_table[q][i-1] * ψ_inv) % q)
 
-    # Change the lists into bit-reverse order.
-    ψ_rev[q] = bit_reverse_order(ψ_table[q])
-    ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
+        # Change the lists into bit-reverse order.
+        ψ_rev[q] = bit_reverse_order(ψ_table[q])
+        ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
+
+    else:  # q = 2³¹ - 1, we use the NTT over Fp2
+        # check that ψ⁹ == 1  and ψ⁸ ≠ 1
+        toto = ψ
+        for i in range(two_adicity-1):
+            toto = mul2(toto, toto)
+        assert toto != [1, 0]
+        assert mul2(toto, toto) == [1, 0]
+
+        ψ_inv = inv2(ψ)
+        assert mul2(ψ, ψ_inv) == [1, 0]
+
+        # Precompute powers of ψ to speedup main NTT process.
+        ψ_table[q] = [[1, 0]] * n
+        ψ_inv_table[q] = [[1, 0]] * n
+        for i in range(1, n):
+            ψ_table[q][i] = mul2(ψ_table[q][i-1], ψ)
+            ψ_inv_table[q][i] = mul2(ψ_inv_table[q][i-1], ψ_inv)
+
+        # Change the lists into bit-reverse order.
+        ψ_rev[q] = bit_reverse_order(ψ_table[q])
+        ψ_inv_rev[q] = bit_reverse_order(ψ_inv_table[q])
 
 
 # writing ψ
