@@ -9,6 +9,7 @@ from polyntt.ntt_constants_recursive import roots_dict_mod
 from polyntt.ntt import NTT
 from polyntt.m31_2 import mul2, add2, sub2, inv2
 
+
 class NTTIterative(NTT):
 
     def __init__(self, q):
